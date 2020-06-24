@@ -193,6 +193,140 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-Vue中使用axios/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/niuxinyublog/2019/08/26/post-Vue中使用axios/" class="post-title-link" itemprop="url">post Vue中使用axios</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 21:44:49 / 修改时间：22:00:32" itemprop="dateCreated datePublished" datetime="2019-08-26T21:44:49+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Vue中使用axios"><a href="#Vue中使用axios" class="headerlink" title="Vue中使用axios"></a>Vue中使用axios</h1><p>首先需要了解，在<code>npm install</code>中的 <code>-S</code>和<code>-D</code>的区别。</p>
+<p>-S</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">即--save（保存）</span><br><span class="line">包名会被注册在package.json的dependencies里面，在生产环境下这个包的依赖依然存在</span><br></pre></td></tr></table></figure>
+
+<p>-D</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">即--dev（生产）</span><br><span class="line">包名会被注册在package.json的devDependencies里面，仅在开发环境下存在的包用-D，如babel，sass-loader这些解析器</span><br></pre></td></tr></table></figure>
+
+<p>啥也不写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">包名不会进入package.json里面，因此别人不知道你安装了这个包（...智障）</span><br></pre></td></tr></table></figure>
+
+<p>使用过程：</p>
+<p>首先项目目录内安装axios库，在项目目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm i axios -S</span><br></pre></td></tr></table></figure>
+
+<p>之后，需要在main.js中引入，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 导入axios</span></span><br><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">"axios"</span></span><br></pre></td></tr></table></figure>
+
+<p>然后需要为Vue添加一个原型属性：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.prototype.$http = axios;</span><br></pre></td></tr></table></figure>
+
+<p>当然，此时的<font color="red"><strong>$http</strong></font>可以任意取名，比如可以就叫<font color="red"><strong>axios</strong></font>。</p>
+<p>这样设置完毕之后就可以全局使用<strong>$http</strong>发起请求。</p>
+<h2 id="跨域问题的解决"><a href="#跨域问题的解决" class="headerlink" title="跨域问题的解决"></a>跨域问题的解决</h2><p>目前在开发环境下的跨域可以通过vue.config.js文件中的配置解决，生产环境中的跨域可能需要nginx。</p>
+<p>因为后端使用的是Tomcat，目前解决的跨域的问题就是将vue项目放在Tomcat下一同启动。</p>
+<p>开发环境下的解决办法：</p>
+<p>vue,config,js文件中:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    devServer:&#123;</span><br><span class="line">        proxy:&#123;</span><br><span class="line">            <span class="string">"/api"</span>:&#123; <span class="comment">//此处写就是在请求的时候会被替换为此处的的内容</span></span><br><span class="line">                <span class="comment">// 需要跨域的目标网址</span></span><br><span class="line">                target:<span class="string">"http://oa.zdyxkj.com"</span>,</span><br><span class="line">                <span class="comment">// 是否跨域</span></span><br><span class="line">                changeOrigin:<span class="literal">true</span>,</span><br><span class="line">                <span class="comment">// 下边的pathRewrite是将/api路径重写为/，正好和target 的目标路径拼接为完整的请求路径</span></span><br><span class="line">                pathRewrite:&#123;</span><br><span class="line">                    <span class="string">'^/api'</span>:<span class="string">'/'</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="axios发起post请求的时候，如果参数中包含中文导致后台拿到的参数中文显示乱码的问题"><a href="#axios发起post请求的时候，如果参数中包含中文导致后台拿到的参数中文显示乱码的问题" class="headerlink" title="axios发起post请求的时候，如果参数中包含中文导致后台拿到的参数中文显示乱码的问题"></a>axios发起post请求的时候，如果参数中包含中文导致后台拿到的参数中文显示乱码的问题</h2><p>可以适当的参考该<a href="https://blog.csdn.net/kaola_l/article/details/80336011" target="_blank" rel="noopener">文章</a>，目前该问题还没有解决（<font color="red">已解决</font> 后端解决）</p>
+<p>文中提到的解决办法：设置请求头。</p>
+<p>需要在main.js中添加：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">axios.defaults.headers.post[<span class="string">'Content-Type'</span>] = <span class="string">'application/x-www-form-urlencoded'</span>;</span><br><span class="line">axios.defaults.baseURL = <span class="string">'http://localhost:7878/zkview'</span>;</span><br><span class="line">Vue.prototype.$ajax = axios;</span><br></pre></td></tr></table></figure>
+
+<p>其中重点就是第一句话为post设置请求头。</p>
+<p>还可以参考<a href="https://makemyownlife.iteye.com/blog/1678773" target="_blank" rel="noopener">该文章</a></p>
+<p><strong><font color="red">设置请求头很重要，由于大多数的web服务器只能识别form的post的请求，所以需要设置好请求头的格式才可以将参数对象传递到后端</font></strong></p>
+<p><a href="https://blog.csdn.net/weixin_41797287/article/details/80648119" target="_blank" rel="noopener">原因参考该文章</a></p>
+<p>请求头的设置：</p>
+<p>需要在main.js中，或者单独在api文件夹下对axios进行配置：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置axios为form-data</span></span><br><span class="line">axios.defaults.headers.post[<span class="string">'Content-Type'</span>] = <span class="string">'application/x-www-form-urlencoded'</span>;</span><br><span class="line">axios.defaults.headers.get[<span class="string">'Content-Type'</span>] = <span class="string">'application/x-www-form-urlencoded'</span>;</span><br><span class="line">axios.defaults.transformRequest = [<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> ret = <span class="string">""</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> it <span class="keyword">in</span> data) &#123;</span><br><span class="line">      ret += <span class="built_in">encodeURIComponent</span>(it) + <span class="string">'='</span> + <span class="built_in">encodeURIComponent</span>(data[it]) + <span class="string">'&amp;'</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>最重要的是这是get和post的默认请求头。</p>
+<h2 id="axios-get和post请求的写法"><a href="#axios-get和post请求的写法" class="headerlink" title="axios get和post请求的写法"></a>axios get和post请求的写法</h2><p>参考该<a href="https://www.jianshu.com/p/b10454ed38ba" target="_blank" rel="noopener">文章</a></p>
+<h2 id="get请求的方式："><a href="#get请求的方式：" class="headerlink" title="get请求的方式："></a><strong>get</strong>请求的方式：</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不带参数的get请求</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> url = <span class="string">"..."</span></span><br><span class="line"><span class="keyword">this</span>.$axios.get(url)</span><br><span class="line">.then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res) <span class="comment">//返回的数据</span></span><br><span class="line">&#125;)</span><br><span class="line">.catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err) <span class="comment">//错误信息</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>它的参数需要写在params属性下，也就是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//带参数的get请求</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> url = <span class="string">"...getById"</span></span><br><span class="line"><span class="keyword">this</span>.$axios.get(url, &#123;</span><br><span class="line">    params: &#123;</span><br><span class="line">        id: <span class="number">1</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line">.then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res) <span class="comment">//返回的数据</span></span><br><span class="line">&#125;)</span><br><span class="line">.catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err) <span class="comment">//错误信息</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="发起post请求"><a href="#发起post请求" class="headerlink" title="发起post请求"></a>发起<strong>post</strong>请求</h2><p>与上面相同，就是参数不需要写在params属性下了，即：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//带参数的post请求</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> url = <span class="string">"...getById"</span></span><br><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">    id: <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">this</span>.$axios.post(url, data)</span><br><span class="line">.then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res) <span class="comment">//返回的数据</span></span><br><span class="line">&#125;)</span><br><span class="line">.catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err) <span class="comment">//错误信息</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>后面跟着的data：必须是一个对象，即{参数名:需要传递的参数}</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$http.post(<span class="string">"http://oa.zdyxkj.com/user_a?"</span>, data).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>拼接在请求地址后边就可以。</p>
+<h2 id="经典写法"><a href="#经典写法" class="headerlink" title="经典写法"></a>经典写法</h2><p>axios也可以用jQ的写法，不过回调函数还是Promise的写法，如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$axios(&#123;</span><br><span class="line">  method: <span class="string">'post'</span>,</span><br><span class="line">  url: <span class="string">'...'</span>,</span><br><span class="line">  data: &#123;</span><br><span class="line">    firstName: <span class="string">'Fred'</span>,</span><br><span class="line">    lastName: <span class="string">'Flintstone'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置form-data请求格式"><a href="#设置form-data请求格式" class="headerlink" title="设置form-data请求格式"></a>设置form-data请求格式</h2><p>我用默认的post方法发送数据的时候发现后端获取不到数据，然而在network中看到参数是的确传出去的了。而且用postman测试的时候也是可以的，比较了下两个的不同发现是postman使用的是form-data格式，于是用form-data格式再次请求，发现OJBK</p>
+<p>在查找设置请求格式的时候花了点时间，网上的方案有好几个，这个我亲测成功，发上来。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">"axios"</span>  <span class="comment">//引入</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//设置axios为form-data</span></span><br><span class="line">axios.defaults.headers.post[<span class="string">'Content-Type'</span>] = <span class="string">'application/x-www-form-urlencoded'</span>;</span><br><span class="line">axios.defaults.headers.get[<span class="string">'Content-Type'</span>] = <span class="string">'application/x-www-form-urlencoded'</span>;</span><br><span class="line">axios.defaults.transformRequest = [<span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> ret = <span class="string">''</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> it <span class="keyword">in</span> data) &#123;</span><br><span class="line">      ret += <span class="built_in">encodeURIComponent</span>(it) + <span class="string">'='</span> + <span class="built_in">encodeURIComponent</span>(data[it]) + <span class="string">'&amp;'</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line">&#125;]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//然后再修改原型链</span></span><br><span class="line">Vue.prototype.$axios = axios</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-背景图片设置全屏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -425,7 +559,7 @@
         
           <a href="/niuxinyublog/archives/">
         
-          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-count">53</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
