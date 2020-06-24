@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="JavaScript 中 this 的指向问题场景 1：全局环境下的 this这种情况相对简单直接，函数在浏览器全局环境中被简单调用，非严格模式下this指向window; 在use strict指明严格模式的情况下就是undefined: 123456789function f1 () &amp;#123;    console.log(this)&amp;#125;function f2 () &amp;#123;">
+<meta name="keywords" content="JavaScript 中this的指向问题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 中this的指向">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2020/01/25/JavaScript-中this的指向/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="JavaScript 中 this 的指向问题场景 1：全局环境下的 this这种情况相对简单直接，函数在浏览器全局环境中被简单调用，非严格模式下this指向window; 在use strict指明严格模式的情况下就是undefined: 123456789function f1 () &amp;#123;    console.log(this)&amp;#125;function f2 () &amp;#123;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-01-25T04:57:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript 中this的指向">
+<meta name="twitter:description" content="JavaScript 中 this 的指向问题场景 1：全局环境下的 this这种情况相对简单直接，函数在浏览器全局环境中被简单调用，非严格模式下this指向window; 在use strict指明严格模式的情况下就是undefined: 123456789function f1 () &amp;#123;    console.log(this)&amp;#125;function f2 () &amp;#123;">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2020/01/25/JavaScript-中this的指向/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>JavaScript 中this的指向 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/01/25/JavaScript-中this的指向/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">JavaScript 中this的指向
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-01-25 11:52:53 / 修改时间：12:57:58" itemprop="dateCreated datePublished" datetime="2020-01-25T11:52:53+08:00">2020-01-25</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript-中-this-的指向问题"><a href="#JavaScript-中-this-的指向问题" class="headerlink" title="JavaScript 中 this 的指向问题"></a>JavaScript 中 this 的指向问题</h1><h3 id="场景-1：全局环境下的-this"><a href="#场景-1：全局环境下的-this" class="headerlink" title="场景 1：全局环境下的 this"></a>场景 1：全局环境下的 this</h3><p>这种情况相对简单直接，函数在浏览器全局环境中被简单调用，非严格模式下<code>this</code>指向<code>window</code>; 在<code>use strict</code>指明严格模式的情况下就是<code>undefined</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">f2</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">    'use strict'</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">&#125;</span><br><span class="line">f1() <span class="comment">// window</span></span><br><span class="line">f2() <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+
+<p>对于该问题的变种问题</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;</span><br><span class="line">    bar: <span class="number">10</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> fn1 = foo.fn</span><br><span class="line">fn1() <span class="comment">// window</span></span><br></pre></td></tr></table></figure>
+
+<p>这里<code>this</code>仍然指向的是<code>window</code>。虽然<code>fn</code>函数在<code>foo</code>对象中作为方法被引用，但是在赋值给<code>fn1</code>之后，<code>fn1</code>的执行仍然是在<code>window</code>的全局环境中。因此输出<code>window</code>和<code>undefined</code>，还是上面这道题目，如果调用改变为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;</span><br><span class="line">    bar: <span class="number">10</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">       <span class="built_in">console</span>.log(<span class="keyword">this</span>.bar)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">foo.fn()</span><br></pre></td></tr></table></figure>
+
+<p>将会输出：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">bar</span>: <span class="number">10</span>, <span class="attr">fn</span>: ƒ&#125;</span><br><span class="line"><span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p>这其实属于第二种情况了，因为这个时候<code>this</code>指向的是最后调用它的对象，在<code>foo.fn()</code>语句中<code>this</code>指向<code>foo</code>对象。请记住：<strong>在执行函数时，如果函数中的this是被上一级的对象所调用，那么this指向的就是上一级的对象；否则指向全局环境。</strong></p>
+<h3 id="场景2：上下文对象调用中的-this"><a href="#场景2：上下文对象调用中的-this" class="headerlink" title="场景2：上下文对象调用中的 this"></a>场景2：上下文对象调用中的 this</h3><p>我们直接来看“难”一点的：当存在更复杂的调用关系时，</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> person = &#123;</span><br><span class="line">    name: <span class="string">'Lucas'</span>,</span><br><span class="line">    brother: &#123;</span><br><span class="line">        name: <span class="string">'Mike'</span>,</span><br><span class="line">        fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.name</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(person.brother.fn())</span><br></pre></td></tr></table></figure>
+
+<p>在这种嵌套的关系中，<code>this</code>指向<strong>最后</strong>调用它的对象，因此输出将会是：<code>Mike</code></p>
+<p>下边是更为复杂的嵌套关系</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> o1 = &#123;</span><br><span class="line">    text: <span class="string">'o1'</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.text</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> o2 = &#123;</span><br><span class="line">    text: <span class="string">'o2'</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> o1.fn()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> o3 = &#123;</span><br><span class="line">    text: <span class="string">'o3'</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> fn = o1.fn</span><br><span class="line">        <span class="keyword">return</span> fn()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(o1.fn())</span><br><span class="line"><span class="built_in">console</span>.log(o2.fn())</span><br><span class="line"><span class="built_in">console</span>.log(o3.fn())</span><br></pre></td></tr></table></figure>
+
+<p>答案是：<code>o1</code>、<code>o1</code>、<code>undefined</code></p>
+<p>我们来一一分析。</p>
+<ul>
+<li>第一个 <code>console</code> 最简单，<code>o1</code> 没有问题。难点在第二个和第三个上面，关键还是看调用 <code>this</code> 的那个函数。</li>
+<li>第二个 <code>console</code> 的 <code>o2.fn()</code>，最终还是调用 <code>o1.fn()</code>，因此答案仍然是 <code>o1</code>。</li>
+<li>最后一个，在进行 <code>var fn = o1.fn</code> 赋值之后，是“裸奔”调用，因此这里的 <code>this</code> 指向 <code>window</code>，答案当然是 <code>undefined</code>。</li>
+</ul>
+<p>如果是在面试中，我作为面试官，就会追问：如果我们需要让：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(o2.fn())</span><br></pre></td></tr></table></figure>
+
+<p>输出 <code>o2</code>，该怎么做？</p>
+<p>一般开发者可能会想到使用<code>bind/call/apply</code>来对<code>this</code>的指向进行干预，这确实是一种思路。但是我接着问，<strong>如果不能使用bind/call/apply，有别的方法吗？</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> o1 = &#123;</span><br><span class="line">    text: <span class="string">'o1'</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.text</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> o2 = &#123;</span><br><span class="line">    text: <span class="string">'o2'</span>,</span><br><span class="line">    fn: o1.fn</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(o2.fn())</span><br></pre></td></tr></table></figure>
+
+<p>还是应用那个重要的结论：<code>this</code> 指向<strong>最后</strong>调用它的对象，在 <code>fn</code> 执行时，挂到 <code>o2</code> 对象上即可，我们提前进行了类似赋值的操作。</p>
+<h2 id="场景3：bind-call-apply-改变-this-指向"><a href="#场景3：bind-call-apply-改变-this-指向" class="headerlink" title="场景3：bind/call/apply 改变 this 指向"></a>场景3：bind/call/apply 改变 this 指向</h2><p>上文提到 bind/call/apply：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;</span><br><span class="line">    name: <span class="string">'lucas'</span>,</span><br><span class="line">    logName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> bar = &#123;</span><br><span class="line">    name: <span class="string">'mike'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(foo.logName.call(bar))</span><br></pre></td></tr></table></figure>
+
+<p>将会输出<code>mike</code>，这不难理解。<strong>但是对 call/apply/bind 的高级考察往往会结合构造函数以及组合式实现继承。实现继承的话题，我们会单独讲到。构造函数的使用案例，我们结合下面的场景进行分析。</strong></p>
+<h2 id="场景-4：构造函数和-this"><a href="#场景-4：构造函数和-this" class="headerlink" title="场景 4：构造函数和 this"></a>场景 4：构造函数和 this</h2><p>这方面最直接的例题为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.bar = <span class="string">"Lucas"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Foo()</span><br><span class="line"><span class="built_in">console</span>.log(instance.bar)</span><br></pre></td></tr></table></figure>
+
+<p>答案将会输出 <code>Lucas</code>。但是这样的场景往往伴随着下一个问题：<code>**new**</code> <strong>操作符调用构造函数，具体做了什么？</strong>以下供参考：</p>
+<ul>
+<li>创建一个新的对象；</li>
+<li>将构造函数的 <code>this</code> 指向这个新对象；</li>
+<li>为这个对象添加属性、方法等；</li>
+<li>最终返回新对象。</li>
+</ul>
+<p>以上过程，也可以用代码表述：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj  = &#123;&#125;</span><br><span class="line">obj.__proto__ = Foo.prototype</span><br><span class="line">Foo.call(obj)</span><br></pre></td></tr></table></figure>
+
+<p>当然，这里对 <code>new</code> 的模拟是一个简单基本版的，更复杂的情况这个问题下我不会赘述。</p>
+<p>需要指出的是，如果在构造函数中出现了显式 <code>return</code> 的情况，那么需要注意分为两种场景：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.user = <span class="string">"Lucas"</span></span><br><span class="line">    <span class="keyword">const</span> o = &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Foo()</span><br><span class="line"><span class="built_in">console</span>.log(instance.user)</span><br></pre></td></tr></table></figure>
+
+<p>将会输出 <code>undefined</code>，此时 <code>instance</code> 是返回的空对象 <code>o</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Foo</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.user = <span class="string">"Lucas"</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> instance = <span class="keyword">new</span> Foo()</span><br><span class="line"><span class="built_in">console</span>.log(instance.user)</span><br></pre></td></tr></table></figure>
+
+<p>将会输出 <code>Lucas</code>，也就是说此时 <code>instance</code> 是返回的目标对象实例 <code>this</code>。</p>
+<p><strong>结论：</strong>如果构造函数中显式返回一个值，且返回的是一个对象，那么 <code>this</code> 就指向这个返回的对象；如果返回的不是一个对象，那么 <code>this</code> 仍然指向实例。</p>
+<h2 id="场景-5：箭头函数中的-this-指向"><a href="#场景-5：箭头函数中的-this-指向" class="headerlink" title="场景 5：箭头函数中的 this 指向"></a>场景 5：箭头函数中的 this 指向</h2><p>箭头函数使用<code>this</code>不适用以上标准规则，而是根据外层（函数或者全局）上下文作用域来决定。</p>
+<p>来看题目：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;  </span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </span><br><span class="line">        setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;  </span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="built_in">console</span>.log(foo.fn())</span><br></pre></td></tr></table></figure>
+
+<p>这道题中，<code>this</code> 出现在 <code>setTimeout()</code> 中的匿名函数里，因此 <code>this</code> 指向 <code>window</code> 对象。如果需要 <code>this</code> 指向 <code>foo</code> 这个 object 对象，可以巧用箭头函数解决：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> foo = &#123;  </span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;  </span><br><span class="line">        setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;  </span><br><span class="line">            <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;  </span><br><span class="line">&#125; </span><br><span class="line"><span class="built_in">console</span>.log(foo.fn())</span><br><span class="line"></span><br><span class="line"><span class="comment">// &#123;fn: ƒ&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>单纯箭头函数中的 <code>this</code> 非常简单，<strong>但是综合所有情况，结合</strong> <code>**this**</code> <strong>的优先级考察，这时候</strong> <code>**this**</code> <strong>指向并不好确定。请继续阅读。</strong></p>
+<h2 id="终极场景-6：this-优先级相关"><a href="#终极场景-6：this-优先级相关" class="headerlink" title="终极场景 6：this 优先级相关"></a>终极场景 6：this 优先级相关</h2><p>我们常常把通过 <code>call</code>、<code>apply</code>、<code>bind</code>、<code>new</code> 对 <code>this</code> 绑定的情况称为显式绑定；根据调用关系确定的 <code>this</code> 指向称为隐式绑定。</p>
+<p><strong>那么显式绑定和隐式绑定谁的优先级更高呢？</strong></p>
+<p>请看例题：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span> (<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">1</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">2</span>,</span><br><span class="line">    foo: foo</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">obj1.foo.call(obj2)</span><br><span class="line">obj2.foo.call(obj1)</span><br></pre></td></tr></table></figure>
+
+<p>输出分别为 2、1，也就是说 <code>call</code>、<code>apply</code> 的显式绑定一般来说优先级比隐式绑定更高。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span> (<span class="params">a</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.a = a</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = foo.bind(obj1)</span><br><span class="line">bar(<span class="number">2</span>)</span><br><span class="line"><span class="built_in">console</span>.log(obj1.a)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码通过 <code>bind</code>，将 <code>bar</code> 函数中的 <code>this</code> 绑定为 <code>obj1</code> 对象。执行 <code>bar(2)</code> 后，<code>obj1.a</code> 值为 2。即经过 <code>bar(2)</code> 执行后，<code>obj1</code> 对象为：<code>{a: 2}</code>。</p>
+<p>当再使用 <code>bar</code> 作为构造函数时：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> baz = <span class="keyword">new</span> bar(<span class="number">3</span>)</span><br><span class="line"><span class="built_in">console</span>.log(baz.a)</span><br></pre></td></tr></table></figure>
+
+<p>将会输出 3。我们看 <code>bar</code> 函数本身是通过 <code>bind</code> 方法构造的函数，其内部已经对将 <code>this</code> 绑定为 <code>obj1</code>，它再作为构造函数，通过 <code>new</code> 调用时，返回的实例已经与 <code>obj1</code> 解绑。 也就是说：</p>
+<p><strong>new</strong> <strong>绑定修改了</strong> <strong>bind</strong> <strong>绑定中的</strong> <strong>this，因此</strong> <strong>new</strong> <strong>绑定的优先级比显式</strong> <strong>bind</strong> <strong>绑定更高。</strong></p>
+<p>我们再看：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> bar = foo.call(obj1)</span><br><span class="line"><span class="built_in">console</span>.log(bar.call(obj2))</span><br></pre></td></tr></table></figure>
+
+<p>将会输出 2。由于 <code>foo()</code> 的 <code>this</code> 绑定到 <code>obj1</code>，<code>bar</code>（引用箭头函数）的 <code>this</code> 也会绑定到 <code>obj1</code>，箭头函数的绑定无法被修改。</p>
+<p>如果将 <code>foo</code> 完全写成箭头函数的形式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">123</span></span><br><span class="line"><span class="keyword">const</span> foo = <span class="function"><span class="params">()</span> =&gt;</span> <span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = foo.call(obj1)</span><br><span class="line"><span class="built_in">console</span>.log(bar.call(obj2))</span><br></pre></td></tr></table></figure>
+
+<p>将会输出 <code>123</code>。</p>
+<p>这里我再“抖个机灵”，仅仅将上述代码的第一处变量 <code>a</code> 的赋值改为：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="number">123</span></span><br><span class="line"><span class="keyword">const</span> foo = <span class="function"><span class="params">()</span> =&gt;</span> <span class="function"><span class="params">a</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj1 = &#123;</span><br><span class="line">    a: <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj2 = &#123;</span><br><span class="line">    a: <span class="number">3</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> bar = foo.call(obj1)</span><br><span class="line"><span class="built_in">console</span>.log(bar.call(obj2))</span><br></pre></td></tr></table></figure>
+
+<p>答案将会输出为 <code>undefined</code>，原因是因为使用 <code>const</code> 声明的变量不会挂载到 <code>window</code> 全局对象当中。因此 <code>this</code> 指向 <code>window</code> 时，自然也找不到 <code>a</code> 变量了。关于 <code>const</code> 或者 <code>let</code> 等声明变量的方式不再本课的主题当中，我们后续也将专门进行介绍。</p>
+<p>在ES5中，全局变量直接挂载到全局对象的属性上，所以能在window上看到var声明的变量<br>在ES6中，全局对象的属性和全局变量脱钩，但是为了保持兼容性，旧的不变，所以var、function声明的全局变量依然可以在window对象上看到，而let、const声明的全局变量在window对象上看不到</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JavaScript-中this的指向问题/" rel="tag"># JavaScript 中this的指向问题</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/21/从ES6到ES10的新特性万字大总结/" rel="next" title="从ES6到ES10的新特性万字大总结">
+                  <i class="fa fa-chevron-left"></i> 从ES6到ES10的新特性万字大总结
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2020/02/06/5个提升你js编码水平的实例/" rel="prev" title="5个提升你js编码水平的实例">
+                  5个提升你js编码水平的实例 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript-中-this-的指向问题"><span class="nav-number">1.</span> <span class="nav-text">JavaScript 中 this 的指向问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#场景-1：全局环境下的-this"><span class="nav-number">1.0.1.</span> <span class="nav-text">场景 1：全局环境下的 this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景2：上下文对象调用中的-this"><span class="nav-number">1.0.2.</span> <span class="nav-text">场景2：上下文对象调用中的 this</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景3：bind-call-apply-改变-this-指向"><span class="nav-number">1.1.</span> <span class="nav-text">场景3：bind/call/apply 改变 this 指向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景-4：构造函数和-this"><span class="nav-number">1.2.</span> <span class="nav-text">场景 4：构造函数和 this</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#场景-5：箭头函数中的-this-指向"><span class="nav-number">1.3.</span> <span class="nav-text">场景 5：箭头函数中的 this 指向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终极场景-6：this-优先级相关"><span class="nav-number">1.4.</span> <span class="nav-text">终极场景 6：this 优先级相关</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

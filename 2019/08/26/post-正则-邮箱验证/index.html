@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="正则表达式判断邮箱js 正则表达式验证邮箱： 方案1 (常用)规则定义如下： 以大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]开头，并需要重复一次至多次[+]。中间必须包括@符号。@之后需要连接大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]，并需要重复一次至多次[+]。结尾必须是点号[.]连接2至4位的大小">
+<meta name="keywords" content="正则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="post 正则 邮箱验证">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-正则-邮箱验证/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="正则表达式判断邮箱js 正则表达式验证邮箱： 方案1 (常用)规则定义如下： 以大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]开头，并需要重复一次至多次[+]。中间必须包括@符号。@之后需要连接大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]，并需要重复一次至多次[+]。结尾必须是点号[.]连接2至4位的大小">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-26T14:00:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="post 正则 邮箱验证">
+<meta name="twitter:description" content="正则表达式判断邮箱js 正则表达式验证邮箱： 方案1 (常用)规则定义如下： 以大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]开头，并需要重复一次至多次[+]。中间必须包括@符号。@之后需要连接大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]，并需要重复一次至多次[+]。结尾必须是点号[.]连接2至4位的大小">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-正则-邮箱验证/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>post 正则 邮箱验证 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-正则-邮箱验证/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">post 正则 邮箱验证
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 21:58:27 / 修改时间：22:00:16" itemprop="dateCreated datePublished" datetime="2019-08-26T21:58:27+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="正则表达式判断邮箱"><a href="#正则表达式判断邮箱" class="headerlink" title="正则表达式判断邮箱"></a>正则表达式判断邮箱</h1><p>js 正则表达式验证邮箱：</p>
+<h4 id="方案1-常用"><a href="#方案1-常用" class="headerlink" title="方案1 (常用)"></a>方案1 (常用)</h4><p><strong>规则定义如下：</strong></p>
+<p>以大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]开头，并需要重复一次至多次[+]。中间必须包括@符号。@之后需要连接大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]，并需要重复一次至多次[+]。结尾必须是点号[.]连接2至4位的大小写字母[A-Za-z]{2,4}。</p>
+<p><strong>利用以上规则给出如下正则表达式：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,4&#125;)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖@42du.cn'</span>) = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>方案1是最常用的邮件正则表达式验证方案，也适合大多数的应用场景。从以上测试可以看出，该表达式不支持.online及.store结尾的域名。<br>如需兼容这类域名（大于4位），调整正则结尾｛2,4｝的限制部分即可（例：{2,8}）。另一个问题是邮件用户名不能包括中文。</p>
+<h4 id="方案2-（修订方案1）"><a href="#方案2-（修订方案1）" class="headerlink" title="方案2 （修订方案1）"></a>方案2 （修订方案1）</h4><p>规则补充如下：</p>
+<p>用户名可以包括中文[\u4e00-\u9fa5],域名结尾最长可为8位{2,8}。更新后的正则表达式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,8&#125;)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖@42du.cn'</span>) = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方案3-（安全）"><a href="#方案3-（安全）" class="headerlink" title="方案3 （安全）"></a>方案3 （安全）</h4><p>在手机验证码出现之前，差不多邮箱验证是保证用户唯一性的唯一条件。而临时邮箱（也称10分钟邮箱或一次性邮箱）的出现，<br>则使得邮箱验证及帐户激活这种机制失去了意义。而临时邮箱的地址是不可枚举的，我们只能才采取白名单的方式，只允许有限的邮箱域名通过验证。</p>
+<p>根据方案1的补充如下规则：</p>
+<p>邮箱域名只能是163.com，qq.com或者42du.cn。<br>给出正则表达式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖dd@42du.cn'</span>) = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>方案3验证虽然能保证安全性，但是如果白名单太长会造成模式字符串太长。这时可以将邮箱域名白名单写成数组，利用正则表达式做初步验证，用白名单做域名的二次验证。<br>现给出邮箱验证函数如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isEmail = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,4&#125;)$/</span>;</span><br><span class="line">    <span class="keyword">var</span> domains= [<span class="string">"qq.com"</span>,<span class="string">"163.com"</span>,<span class="string">"vip.163.com"</span>,<span class="string">"263.net"</span>,<span class="string">"yeah.net"</span>,<span class="string">"sohu.com"</span>,<span class="string">"sina.cn"</span>,<span class="string">"sina.com"</span>,<span class="string">"eyou.com"</span>,<span class="string">"gmail.com"</span>,<span class="string">"hotmail.com"</span>,<span class="string">"42du.cn"</span>];</span><br><span class="line">    <span class="keyword">if</span>(pattern.test(val)) &#123;</span><br><span class="line">        <span class="keyword">var</span> domain = val.substring(val.indexOf(<span class="string">"@"</span>)+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i&lt; domains.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(domain == domains[i]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出 true</span></span><br><span class="line">isEmail(<span class="string">"cn42du@163.com"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上述isEmail()函数列举了常用的11种邮箱域名，大家可以根据需要适当补充或删减。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/正则/" rel="tag"># 正则</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/26/post-Vue路由问题/" rel="next" title="post Vue路由问题">
+                  <i class="fa fa-chevron-left"></i> post Vue路由问题
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/26/post-正则验证手机号/" rel="prev" title="post 正则验证手机号">
+                  post 正则验证手机号 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#正则表达式判断邮箱"><span class="nav-number">1.</span> <span class="nav-text">正则表达式判断邮箱</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#方案1-常用"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">方案1 (常用)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案2-（修订方案1）"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">方案2 （修订方案1）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#方案3-（安全）"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">方案3 （安全）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

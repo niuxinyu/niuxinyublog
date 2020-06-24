@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="不容错过的babel7知识对 Babel 的配置项的作用不那么了解，是否会影响日常开发呢？老实说，大多情况下没有特别大的影响（毕竟有搜索引擎）。 不过呢，还是想更进一步了解下，于是最近认真阅读了 Babel 的文档，外加不断编译验证，输出了本篇文章，为了更好的阅读体验，修修改改，最终算是以我个人比较喜欢的方式推进了每个知识点（每一个配置的引入都是有原因的），希望能够帮助你对 Babel 的各种配置">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不容错过的babel7知识">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2020/03/02/不容错过的babel7知识/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="不容错过的babel7知识对 Babel 的配置项的作用不那么了解，是否会影响日常开发呢？老实说，大多情况下没有特别大的影响（毕竟有搜索引擎）。 不过呢，还是想更进一步了解下，于是最近认真阅读了 Babel 的文档，外加不断编译验证，输出了本篇文章，为了更好的阅读体验，修修改改，最终算是以我个人比较喜欢的方式推进了每个知识点（每一个配置的引入都是有原因的），希望能够帮助你对 Babel 的各种配置">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-03-02T14:19:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="不容错过的babel7知识">
+<meta name="twitter:description" content="不容错过的babel7知识对 Babel 的配置项的作用不那么了解，是否会影响日常开发呢？老实说，大多情况下没有特别大的影响（毕竟有搜索引擎）。 不过呢，还是想更进一步了解下，于是最近认真阅读了 Babel 的文档，外加不断编译验证，输出了本篇文章，为了更好的阅读体验，修修改改，最终算是以我个人比较喜欢的方式推进了每个知识点（每一个配置的引入都是有原因的），希望能够帮助你对 Babel 的各种配置">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2020/03/02/不容错过的babel7知识/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>不容错过的babel7知识 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/03/02/不容错过的babel7知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">不容错过的babel7知识
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-02 21:26:54 / 修改时间：22:19:50" itemprop="dateCreated datePublished" datetime="2020-03-02T21:26:54+08:00">2020-03-02</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="不容错过的babel7知识"><a href="#不容错过的babel7知识" class="headerlink" title="不容错过的babel7知识"></a>不容错过的babel7知识</h1><p>对 <code>Babel</code> 的配置项的作用不那么了解，是否会影响日常开发呢？老实说，大多情况下没有特别大的影响（毕竟有搜索引擎）。</p>
+<p>不过呢，还是想更进一步了解下，于是最近认真阅读了 <code>Babel</code> 的文档，外加不断编译验证，输出了本篇文章，为了更好的阅读体验，修修改改，最终算是以我个人比较喜欢的方式推进了每个知识点（每一个配置的引入都是有原因的），希望能够帮助你对 <code>Babel</code> 的各种配置有一个更清晰的认识 (已经很懂的小伙伴，无视本文) 。</p>
+<blockquote>
+<p>Babel 是一个 JS 编译器</p>
+</blockquote>
+<p>Babel 是一个工具链，主要用于将 ECMAScript 2015+ 版本的代码转换为向后兼容的 JavaScript 语法，以便能够运行在当前和旧版本的浏览器或其他环境中。</p>
+<p>我们先看看 <code>Babel</code> 能够做什么：</p>
+<ul>
+<li>语法转换</li>
+<li>通过 <code>Polyfill</code> 方式在目标环境中添加缺失的特性(<code>@babel/polyfill模块</code>)</li>
+<li>源码转换(codemods)</li>
+</ul>
+<p>本篇文章的目的是搞明白 <code>Babel</code> 的使用和配置，搞清楚 <code>@babel/runtime</code>，<code>@babel/polyfill</code>，<code>@babel/plugin-transform-runtime</code> 这些作用是什么，插件和预设都是用来干什么的，我们为什么需要配置它们，而不是讲如何进行 <code>AST</code> 转换。</p>
+<blockquote>
+<p>更多文章可戳（如Star，谢谢你）：<a href="https://github.com/YvetteLau/Blog" target="_blank" rel="noopener">https://github.com/YvetteLau/Blog</a></p>
+</blockquote>
+<p>为了更清晰的了解每一步，首先创建一个新项目，例如 <code>babelTemp</code>(你爱取啥名取啥名)，使用 <code>npm init -y</code> 进行初始化，创建 <code>src/index.js</code>，文件内容如下（你也可以随便写点什么）:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = <span class="function"><span class="params">()</span> =&gt;</span> &#123;    <span class="built_in">console</span>.log(<span class="string">'a'</span>);&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>OK，创建好的项目先放在一边，先了解下理论知识:</p>
+<h3 id="核心库-babel-core"><a href="#核心库-babel-core" class="headerlink" title="核心库 @babel/core"></a>核心库 @babel/core</h3><p>Babel 的核心功能包含在 <code>@babel/core</code> 模块中。看到 <code>core</code> 这个词了吧，意味着<strong>核心</strong>，没有它，在 <code>babel</code> 的世界里注定寸步难行。不安装 <code>@babel/core</code>，无法使用 <code>babel</code> 进行编译。</p>
+<h3 id="CLI命令行工具-babel-cli"><a href="#CLI命令行工具-babel-cli" class="headerlink" title="CLI命令行工具 @babel/cli"></a>CLI命令行工具 @babel/cli</h3><p><code>babel</code> 提供的命令行工具，主要是提供 <code>babel</code> 这个命令，适合安装在项目里。</p>
+<p><code>@babel/node</code> 提供了 <code>babel-node</code> 命令，但是 <code>@babel/node</code> 更适合全局安装，不适合安装在项目里。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev @babel/core @babel/cli</span><br></pre></td></tr></table></figure>
+
+<p>现在你就可以在项目中使用 <code>babel</code> 进行编译啦（如果不安装 <code>@babel/core</code>，会报错噢）</p>
+<p>将命令配置在 <code>package.json</code> 文件的 <code>scripts</code> 字段中:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//...</span></span><br><span class="line">"scripts": &#123;    </span><br><span class="line">    "compiler": "babel src --out-dir lib --watch"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>npm run compiler</code> 来执行编译，现在我们没有配置任何插件，编译前后的代码是完全一样的。</p>
+<p>因为 <code>Babel</code> 虽然开箱即用，但是什么动作也不做，如果想要 <code>Babel</code> 做一些实际的工作，就需要为其添加插件(<code>plugin</code>)。</p>
+<h3 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h3><p><code>Babel</code> 构建在插件之上，使用现有的或者自己编写的插件可以组成一个转换通道，<code>Babel</code> 的插件分为两种: 语法插件和转换插件。</p>
+<blockquote>
+<p>语法插件</p>
+</blockquote>
+<p>这些插件只允许 <code>Babel</code> <strong>解析（parse）</strong> 特定类型的语法（不是转换），可以在 <code>AST</code> 转换时使用，以支持解析新语法，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> babel <span class="keyword">from</span> <span class="string">"@babel/core"</span>;</span><br><span class="line"><span class="keyword">const</span> code = babel.transformFromAstSync(ast, &#123;</span><br><span class="line">     <span class="comment">//支持可选链</span></span><br><span class="line">     plugins: [<span class="string">"@babel/plugin-proposal-optional-chaining"</span>],</span><br><span class="line">     babelrc: <span class="literal">false</span></span><br><span class="line">&#125;).code;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>转换插件</p>
+</blockquote>
+<p>转换插件会启用相应的语法插件(因此不需要同时指定这两种插件)，这点很容易理解，如果不启用相应的语法插件，意味着无法解析，连解析都不能解析，又何谈转换呢？</p>
+<h4 id="插件的使用"><a href="#插件的使用" class="headerlink" title="插件的使用"></a>插件的使用</h4><p>如果插件发布在 <code>npm</code> 上，可以直接填写插件的名称， <code>Babel</code> 会自动检查它是否已经被安装在 <code>node_modules</code> 目录下，在项目目录下新建 <code>.babelrc</code> 文件 (下文会具体介绍配置文件)，配置如下：</p>
+<p>首先安装 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cnpm install --save-dev @babel/plugin-transform-arrow-functions</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// .babelrc</span><br><span class="line">&#123;</span><br><span class="line">	&quot;plugins&quot;: [&quot;@babel/plugin-transform-arrow-functions&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以指定插件的相对/绝对路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	&quot;plugins&quot;: [&quot;./node_modules/@babel/plugin-transform-arrow-functions&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>npm run compiler</code>，可以看到箭头函数已经被编译OK， <code>lib/index.js</code> 内容如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> fn = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'hello babel'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们仅支持转换箭头函数，如果想将其它的新的JS特性转换成低版本，需要使用其它对应的 <code>plugin</code> 。如果我们一个个配置的话，会非常繁琐，因为你可能需要配置几十个插件，这显然非常不便，那么有没有什么办法可以简化这个配置呢？</p>
+<p>有！预设！(感谢强大的 <code>Babel</code>)</p>
+<h3 id="预设"><a href="#预设" class="headerlink" title="预设"></a>预设</h3><p>通过使用或创建一个 <code>preset</code> 即可<strong>轻松</strong>使用一组插件。</p>
+<blockquote>
+<p>官方 Preset</p>
+</blockquote>
+<ul>
+<li>@babel/preset-env</li>
+<li>@babel/preset-flow</li>
+<li>@babel/preset-react</li>
+<li>@babel/preset-typescript</li>
+</ul>
+<p><strong>注:</strong> 从 Babel v7 开始，所有针对标准提案阶段的功能所编写的预设(stage preset)都已被弃用，官方已经移除了 <code>@babel/preset-stage-x</code>。</p>
+<h4 id="babel-preset-env"><a href="#babel-preset-env" class="headerlink" title="@babel/preset-env"></a>@babel/preset-env</h4><p><code>@babel/preset-env</code> 主要作用是对我们所使用的并且目标浏览器中缺失的功能进行代码转换和加载 <code>polyfill</code>，在不进行任何配置的情况下，<code>@babel/preset-env</code> 所包含的插件将支持所有最新的JS特性(ES2015,ES2016等，不包含 stage 阶段)，将其转换成ES5代码。例如，如果你的代码中使用了可选链(目前，仍在 stage 阶段)，那么只配置 <code>@babel/preset-env</code>，转换时会抛出错误，需要另外安装相应的插件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// .babelrc</span><br><span class="line">&#123;</span><br><span class="line">	&quot;presets&quot;: [&quot;@babel/preset-env&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要说明的是，<code>@babel/preset-env</code> 会根据你配置的目标环境，生成插件列表来编译。对于基于浏览器或 <code>Electron</code> 的项目，官方推荐使用 <code>.browserslistrc</code> 文件来指定目标环境。默认情况下，如果你没有在 <code>Babel</code> 配置文件中(如 .babelrc)设置 <code>targets</code> 或 <code>ignoreBrowserslistConfig</code>，<code>@babel/preset-env</code> 会使用 <code>browserslist</code> 配置源。</p>
+<p>如果你不是要兼容所有的浏览器和环境，推荐你指定目标环境，这样你的编译代码能够保持最小。</p>
+<p>例如，仅包括浏览器市场份额超过0.25％的用户所需的 <code>polyfill</code> 和代码转换（忽略没有安全更新的浏览器，如 IE10 和 BlackBerry）:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// .browserlistrc</span><br><span class="line">&gt; 0.25%</span><br><span class="line">not dead</span><br></pre></td></tr></table></figure>
+
+<p>查看 <a href="https://github.com/browserslist/browserslist" target="_blank" rel="noopener"><code>browserslist</code> 的更多配置</a></p>
+<p>例如，你将 <code>.browserslistrc</code> 的内容配置为:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">last 2 Chrome versions</span><br></pre></td></tr></table></figure>
+
+<p>然后再执行 <code>npm run compiler</code>，你会发现箭头函数不会被编译成ES5，因为 <code>chrome</code> 的最新2个版本都能够支持箭头函数。现在，我们将 <code>.browserslistrc</code> 仍然换成之前的配置。</p>
+<p>就咱们目前的代码来说，当前的配置似乎已经是OK的了。</p>
+<p>我们修改下 <code>src/index.js</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isHas = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>].includes(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="params">resolve</span> =&gt;</span> &#123;</span><br><span class="line">    resolve(<span class="number">100</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>编译出来的结果是</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isHas = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].includes(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  resolve(<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>这个编译出来的代码在低版本浏览器中使用的话，显然是有问题的，因为低版本浏览器中数组实例上没有 <code>includes</code> 方法，也没有 <code>Promise</code> 构造函数。</p>
+<p>这是为什么呢？因为语法转换只是将高版本的语法转换成低版本的，但是新的内置函数、实例方法无法转换。这时，就需要使用 <code>polyfill</code> 上场了，顾名思义，<code>polyfill</code>的中文意思是垫片，所谓垫片就是垫平不同浏览器或者不同环境下的差异，让新的内置函数、实例方法等在低版本浏览器中也可以使用。</p>
+<h3 id="Polyfill"><a href="#Polyfill" class="headerlink" title="Polyfill"></a>Polyfill</h3><p><code>@babel/polyfill</code> 模块包括 <code>core-js</code> 和一个自定义的 <code>regenerator runtime</code> 模块，可以模拟完整的 ES2015+ 环境（不包含第4阶段前的提议）。</p>
+<p>这意味着可以使用诸如 <code>Promise</code> 和 <code>WeakMap</code> 之类的新的内置组件、 <code>Array.from</code> 或 <code>Object.assign</code> 之类的静态方法、<code>Array.prototype.includes</code> 之类的实例方法以及生成器函数(前提是使用了 <code>@babel/plugin-transform-regenerator</code> 插件)。为了添加这些功能，<code>polyfill</code> 将添加到全局范围和类似 <code>String</code> 这样的内置原型中(会对全局环境造成污染，后面我们会介绍不污染全局环境的方法)。</p>
+<p><strong>补充说明 (2020/01/07)：</strong>V7.4.0 版本开始，<code>@babel/polyfill</code> 已经被废弃(前端发展日新月异)，需单独安装 <code>core-js</code> 和 <code>regenerator-runtime</code> 模块。</p>
+<p>首先，安装 <code>@babel/polyfill</code> 依赖:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save @babel/polyfill</span><br></pre></td></tr></table></figure>
+
+<p>注意：不使用 <code>--save-dev</code>，因为这是一个需要在源码之前运行的垫片。</p>
+<p>我们需要将完整的 <code>polyfill</code> 在代码之前加载，修改我们的 <code>src/index.js</code>:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'@babel/polyfill'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> isHas = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].includes(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  resolve(<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><code>@babel/polyfill</code> 需要在其它代码之前引入，我们也可以在 <code>webpack</code> 中进行配置。</p>
+<p>例如:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">entry: &#123;</span><br><span class="line">    <span class="built_in">require</span>.resolve(<span class="string">'./polyfills'</span>),</span><br><span class="line">        path.resolve(<span class="string">'./index'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>polyfills.js</code> 文件内容如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当然，还可能有一些其它的 polyfill，例如 stage 4之前的一些 polyfill</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'@babel/polyfill'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>现在，我们的代码不管在低版本还是高版本浏览器(或node环境)中都能正常运行了。不过，很多时候，我们未必需要完整的 <code>@babel/polyfill</code>，这会导致我们最终构建出的包的体积增大，<code>@babel/polyfill</code>的包大小为89K (当前 <code>@babel/polyfill</code> 版本为 7.7.0)。</p>
+<p>我们更期望的是，如果我使用了某个新特性，再引入对应的 <code>polyfill</code>，避免引入无用的代码。</p>
+<p>值得庆幸的是， <code>Babel</code> 已经考虑到了这一点。</p>
+<p><code>@babel/preset-env</code> 提供了一个 <code>useBuiltIns</code> 参数，设置值为 <code>usage</code> 时，就只会包含代码需要的 <code>polyfill</code> 。有一点需要注意：配置此参数的值为 <code>usage</code> ，必须要同时设置 <code>corejs</code> (如果不设置，会给出警告，默认使用的是”corejs”: 2) ，注意: 这里仍然需要安装 <code>@babel/polyfill</code>(当前 <code>@babel/polyfill</code> 版本默认会安装 “corejs”: 2):</p>
+<p>首先说一下使用 <code>core-js@3</code> 的原因，<code>core-js@2</code> 分支中已经不会再添加新特性，新特性都会添加到 <code>core-js@3</code>。例如你使用了 <code>Array.prototype.flat()</code>，如果你使用的是 <code>core-js@2</code>，那么其不包含此新特性。为了可以使用更多的新特性，建议大家使用 <code>core-js@3</code>。</p>
+<p>安装依赖依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save core-js@3</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://github.com/zloirock/core-js" target="_blank" rel="noopener">core-js (点击了解更多)</a> : JavaScript 的模块化标准库，包含 <code>Promise</code>、<code>Symbol</code>、<code>Iterator</code>和许多其他的特性，它可以让你仅加载必需的功能。</p>
+</blockquote>
+<p>现在，修改 <code>Babel</code> 的配置文件如下:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// .babelrc</span></span><br><span class="line"><span class="keyword">const</span> presets = [</span><br><span class="line">    [</span><br><span class="line">        <span class="string">"@babel/env"</span>,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">"useBuiltIns"</span>: <span class="string">"usage"</span>,</span><br><span class="line">            <span class="string">"corejs"</span>: <span class="number">3</span></span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p><code>Babel</code> 会检查所有代码，以便查找在目标环境中缺失的功能，然后仅仅把需要的 <code>polyfill</code> 包含进来。</p>
+<p>例如，<code>src/index.js</code> 代码不变：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> isHas = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].includes(<span class="number">2</span>);</span><br><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve</span>) </span>&#123;</span><br><span class="line">  resolve(<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>我们看看编译出来的文件(<code>lib/index</code>):</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"core-js/modules/es.array.includes"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"core-js/modules/es.object.to-string"</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">require</span>(<span class="string">"core-js/modules/es.promise"</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> isHas = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].includes(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span> (<span class="params">resolve, reject</span>) </span>&#123;</span><br><span class="line">    resolve(<span class="number">100</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>同样的代码，我们用 <code>webpack</code> 构建一下(<code>production</code> 模式)，能看到最终的代码大小仅为: 20KB。而如果我们引入整个 <code>@babel/polyfill</code> 的话，构建出的包大小为：89KB</p>
+<p>前面曾提到，在 <code>useBuiltIns</code> 参数值为 <code>usage</code> 时，仍然需要安装 <code>@babel/polyfill</code>，虽然我们上面的代码转换中看起来并没有使用到，但是，如果我们源码中使用到了 <code>async/await</code>，那么编译出来的代码需要 <code>require(&quot;regenerator-runtime/runtime&quot;)</code>，在 <code>@babel/polyfill</code> 的依赖中，当然啦，你也可以只安装 <code>regenerator-runtime/runtime</code> 取代安装 <code>@babel/polyfill</code>。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2020/03/02/Vue-中-强制组件重新渲染的正确方法/" rel="next" title="Vue 中 强制组件重新渲染的正确方法">
+                  <i class="fa fa-chevron-left"></i> Vue 中 强制组件重新渲染的正确方法
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#不容错过的babel7知识"><span class="nav-number">1.</span> <span class="nav-text">不容错过的babel7知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#核心库-babel-core"><span class="nav-number">1.0.1.</span> <span class="nav-text">核心库 @babel/core</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CLI命令行工具-babel-cli"><span class="nav-number">1.0.2.</span> <span class="nav-text">CLI命令行工具 @babel/cli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插件"><span class="nav-number">1.0.3.</span> <span class="nav-text">插件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#插件的使用"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">插件的使用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#预设"><span class="nav-number">1.0.4.</span> <span class="nav-text">预设</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#babel-preset-env"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">@babel/preset-env</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Polyfill"><span class="nav-number">1.0.5.</span> <span class="nav-text">Polyfill</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

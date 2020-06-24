@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="Vue组件通信的六种方式前言组件是 vue.js最强大的功能之一，而组件实例的作用域是相互独立的，这就意味着不同组件之间的数据无法相互引用。一般来说，组件可以有以下几种关系：  如上图所示，A 和 B、B 和 C、B 和 D 都是父子关系，C 和 D 是兄弟关系，A 和 C 是隔代关系（可能隔多代）。 针对不同的使用场景，如何选择行之有效的通信方式？这是我们所要探讨的主题。本文总结了vue组件间通">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="post Vue组件通信的六种方式">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/08/31/post-Vue组件通信的六种方式/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="Vue组件通信的六种方式前言组件是 vue.js最强大的功能之一，而组件实例的作用域是相互独立的，这就意味着不同组件之间的数据无法相互引用。一般来说，组件可以有以下几种关系：  如上图所示，A 和 B、B 和 C、B 和 D 都是父子关系，C 和 D 是兄弟关系，A 和 C 是隔代关系（可能隔多代）。 针对不同的使用场景，如何选择行之有效的通信方式？这是我们所要探讨的主题。本文总结了vue组件间通">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70530315?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70ac2d51?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70ef8eb1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf77e44744?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf7131f3db?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+<meta property="og:updated_time" content="2019-08-31T11:00:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="post Vue组件通信的六种方式">
+<meta name="twitter:description" content="Vue组件通信的六种方式前言组件是 vue.js最强大的功能之一，而组件实例的作用域是相互独立的，这就意味着不同组件之间的数据无法相互引用。一般来说，组件可以有以下几种关系：  如上图所示，A 和 B、B 和 C、B 和 D 都是父子关系，C 和 D 是兄弟关系，A 和 C 是隔代关系（可能隔多代）。 针对不同的使用场景，如何选择行之有效的通信方式？这是我们所要探讨的主题。本文总结了vue组件间通">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70530315?imageView2/0/w/1280/h/960/format/webp/ignore-error/1">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/08/31/post-Vue组件通信的六种方式/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>post Vue组件通信的六种方式 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/31/post-Vue组件通信的六种方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">post Vue组件通信的六种方式
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-31 17:04:39 / 修改时间：19:00:50" itemprop="dateCreated datePublished" datetime="2019-08-31T17:04:39+08:00">2019-08-31</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Vue组件通信的六种方式"><a href="#Vue组件通信的六种方式" class="headerlink" title="Vue组件通信的六种方式"></a>Vue组件通信的六种方式</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>组件是 vue.js最强大的功能之一，而组件实例的作用域是相互独立的，这就意味着不同组件之间的数据无法相互引用。一般来说，组件可以有以下几种关系：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70530315?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="组件间的关系"></p>
+<p>如上图所示，A 和 B、B 和 C、B 和 D 都是父子关系，C 和 D 是兄弟关系，A 和 C 是隔代关系（可能隔多代）。</p>
+<p>针对不同的使用场景，如何选择行之有效的通信方式？这是我们所要探讨的主题。本文总结了vue组件间通信的几种方式，如props、<code>$emit</code>/<code>$on</code>、vuex、<code>$parent</code> / <code>$children</code>、<code>$attrs</code>/<code>$listeners</code>和provide/inject，以通俗易懂的实例讲述这其中的差别及使用场景，希望对小伙伴有些许帮助。</p>
+<p>本文的代码请猛戳<a href="https://link.juejin.im/?target=https%3A%2F%2Fgithub.com%2Fljianshu%2FBlog%2Ftree%2Fmaster%2Fvue2.0%E5%AD%A6%E4%B9%A0" target="_blank" rel="noopener">github博客</a>，纸上得来终觉浅，大家动手多敲敲代码！</p>
+<h2 id="方法一-props-emit"><a href="#方法一-props-emit" class="headerlink" title="方法一     props/$emit"></a>方法一     props/$emit</h2><p>父组件通过props的方式向子组件B传递，B to A通过在 B 组件中<code>$emti</code>，父组件中v-on的方式实现。</p>
+<h3 id="1-父组件向子组件传值"><a href="#1-父组件向子组件传值" class="headerlink" title="1.父组件向子组件传值"></a>1.父组件向子组件传值</h3><p>接下来我们通过一个例子，说明父组件如何向子组件传递值：在子组件<code>Users.vue</code>中如何获取父组件App.vue中的数据 <code>users:[&quot;Henry&quot;,&quot;Bucky&quot;,&quot;Emily&quot;]</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//App.vue父组件</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;users v-bind:users=&quot;users&quot;&gt;&lt;/users&gt;//前者自定义名称便于子组件调用，后者要传递数据名</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Users from &quot;./components/Users&quot;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;App&apos;,</span><br><span class="line">  data()&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">      users:[&quot;Henry&quot;,&quot;Bucky&quot;,&quot;Emily&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  components:&#123;</span><br><span class="line">    &quot;users&quot;:Users</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">//users子组件</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">    &lt;ul&gt;</span><br><span class="line">      &lt;li v-for=&quot;user in users&quot;&gt;&#123;&#123;user&#125;&#125;&lt;/li&gt;//遍历传递过来的值，然后呈现到页面</span><br><span class="line">    &lt;/ul&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;HelloWorld&apos;,</span><br><span class="line">  props:&#123;</span><br><span class="line">    users:&#123;           //这个就是父组件中子标签自定义名字</span><br><span class="line">      type:Array,</span><br><span class="line">      required:true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：父组件通过props向下传递数据给子组件。注：组件中的数据共有三种形式：data、props、computed</strong></p>
+<h3 id="2-子组件向父组件传值（通过事件形式）"><a href="#2-子组件向父组件传值（通过事件形式）" class="headerlink" title="2.子组件向父组件传值（通过事件形式）"></a>2.子组件向父组件传值（通过事件形式）</h3><p>接下来我们通过一个例子，说明子组件如何向父组件传递值：当我们点击“Vue.js Demo”后，子组件向父组件传递值，文字由原来的“传递的是一个值”变成“子向父组件传值”，实现子组件向父组件值的传递。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70ac2d51?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="demo"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">// 子组件</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;header&gt;</span><br><span class="line">    &lt;h1 @click=&quot;changeTitle&quot;&gt;&#123;&#123;title&#125;&#125;&lt;/h1&gt;//绑定一个点击事件</span><br><span class="line">  &lt;/header&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;app-header&apos;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      title:&quot;Vue.js Demo&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    changeTitle() &#123;</span><br><span class="line">      this.$emit(&quot;titleChanged&quot;,&quot;子向父组件传值&quot;);//自定义事件  传递值“子向父组件传值”</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 父组件</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=&quot;app&quot;&gt;</span><br><span class="line">    &lt;app-header v-on:titleChanged=&quot;updateTitle&quot; &gt;&lt;/app-header&gt;//与子组件titleChanged自定义事件保持一致</span><br><span class="line">   // updateTitle($event)接受传递过来的文字</span><br><span class="line">    &lt;h2&gt;&#123;&#123;title&#125;&#125;&lt;/h2&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Header from &quot;./components/Header&quot;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;App&apos;,</span><br><span class="line">  data()&#123;</span><br><span class="line">    return&#123;</span><br><span class="line">      title:&quot;传递的是一个值&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods:&#123;</span><br><span class="line">    updateTitle(e)&#123;   //声明这个函数</span><br><span class="line">      this.title = e;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  components:&#123;</span><br><span class="line">   &quot;app-header&quot;:Header,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：子组件通过events给父组件发送消息，实际上就是子组件把自己的数据发送到父组件。</strong></p>
+<h2 id="方法二、-emit-on"><a href="#方法二、-emit-on" class="headerlink" title="方法二、$emit/$on"></a>方法二、<code>$emit</code>/<code>$on</code></h2><p><strong>这种方法通过一个空的Vue实例作为中央事件总线（事件中心），用它来触发事件和监听事件,巧妙而轻量地实现了任何组件间的通信，包括父子、兄弟、跨级</strong>。当我们的项目比较大时，可以选择更好的状态管理解决方案vuex。</p>
+<p>实现方式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">bus.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
+
+<p>在需要通信的组件中都引入<code>bus.js</code></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=<span class="string">"emit"</span>&gt;</span><br><span class="line">    &lt;button @click=<span class="string">"bus"</span>&gt;按钮&lt;<span class="regexp">/button&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>div&gt; </span><br><span class="line">&lt;<span class="regexp">/template &gt; </span></span><br><span class="line"><span class="regexp">import Bus from './</span>bus.js<span class="string">'</span></span><br><span class="line"><span class="string">export default &#123;</span></span><br><span class="line"><span class="string">  data() &#123;</span></span><br><span class="line"><span class="string">    return &#123;</span></span><br><span class="line"><span class="string">      message: '</span><span class="string">'</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;,</span></span><br><span class="line"><span class="string">  methods: &#123;</span></span><br><span class="line"><span class="string">    bus() &#123;</span></span><br><span class="line"><span class="string">      Bus.$emit('</span>msg<span class="string">', '</span>我要传给兄弟组件们，你收到没有<span class="string">')</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string">  &#125;</span></span><br><span class="line"><span class="string">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>在钩子函数中监听 msg 事件：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;div id=<span class="string">"on"</span>&gt;</span><br><span class="line">      &lt;p&gt;&#123;&#123;message&#125;&#125;&lt;<span class="regexp">/p&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">import Bus from './</span>bus.js<span class="string">'</span></span><br><span class="line"><span class="string">export default &#123;</span></span><br><span class="line"><span class="string">    data() &#123;</span></span><br><span class="line"><span class="string">      return &#123;</span></span><br><span class="line"><span class="string">        message:  '</span><span class="string">'</span></span><br><span class="line"><span class="string">      &#125;</span></span><br><span class="line"><span class="string">    &#125;,</span></span><br><span class="line"><span class="string">    mounted() &#123;　　　</span></span><br><span class="line"><span class="string">       let self = this</span></span><br><span class="line"><span class="string">       Bus.$on('</span>msg<span class="string">', (e) =&gt; &#123;</span></span><br><span class="line"><span class="string">         self.message = e</span></span><br><span class="line"><span class="string">         console.log(`传来的数据是：$&#123;e&#125;`)</span></span><br><span class="line"><span class="string">       &#125;)</span></span><br><span class="line"><span class="string">    &#125;</span></span><br><span class="line"><span class="string"> &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后 p 会显示来自 $emit 传来的信息。</p>
+<p>另外一个使用<code>Bus.js</code>来实现的非父子组件间的传值：地址：<a href="https://github.com/chenyinkai/blog/issues/28" target="_blank" rel="noopener">https://github.com/chenyinkai/blog/issues/28</a></p>
+<p>首先新建一个<code>bus.js</code>，使用一个空的Vue实例作为事件总线。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bus.js</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'vue'</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vue()</span><br></pre></td></tr></table></figure>
+
+<p>再创建两个组件，兄弟关系：</p>
+<p><code>a</code> 组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">a.vue</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;aa&quot;&gt;</span><br><span class="line">	&#123;&#123;msg&#125;&#125;</span><br><span class="line">	&lt;button @click=&quot;toBus&quot;&gt;子组件传给兄弟组件&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Bus from &quot;../bus&quot;;// 引入bus.js</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;aa&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      msg: &quot;this is aa component&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    toBus() &#123;</span><br><span class="line">      Bus.$emit(&quot;on&quot;, &quot;data from aa component&quot;);// 发送 `on` 事件</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>b</code> 组件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">b.vue</span><br><span class="line"></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;bb&quot;&gt;</span><br><span class="line">      &#123;&#123;msg&#125;&#125;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Bus from &quot;../bus&quot;;// 引入bus.js</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &quot;bb&quot;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      msg: &quot;this is bb component&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  mounted() &#123;</span><br><span class="line">    Bus.$on(&quot;on&quot;, msg =&gt; &#123; // 监听 `on` 事件</span><br><span class="line">      this.msg = msg;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>最后将 <code>a</code> , <code>b</code> 组件展示出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;hello&quot;&gt;</span><br><span class="line">    &lt;A&gt;&lt;/A&gt;</span><br><span class="line">    &lt;B&gt;&lt;/B&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import A from &apos;./a.vue&apos;</span><br><span class="line">import B from &apos;./b.vue&apos;</span><br><span class="line">export default &#123;</span><br><span class="line">  name: &apos;HelloWorld&apos;,</span><br><span class="line">  components:&#123;</span><br><span class="line">    A,</span><br><span class="line">    B</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+
+<p>此时点击 <code>a</code> 组件中的按钮，就会发现 <code>b</code> 中的 <code>msg</code> 变成了 <code>data from aa component</code></p>
+<h2 id="方法三：vuex"><a href="#方法三：vuex" class="headerlink" title="方法三：vuex"></a>方法三：vuex</h2><p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf70ef8eb1?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
+<h3 id="1-简要介绍Vuex原理"><a href="#1-简要介绍Vuex原理" class="headerlink" title="1.简要介绍Vuex原理"></a>1.简要介绍Vuex原理</h3><p>Vuex实现了一个单向数据流，在全局拥有一个State存放数据，当组件要更改State中的数据时，必须通过Mutation进行，Mutation同时提供了订阅者模式供外部插件调用获取State数据的更新。而当所有异步操作(常见于调用后端接口异步获取更新数据)或批量的同步操作需要走Action，但Action也是无法直接修改State的，还是需要通过Mutation来修改State的数据。最后，根据State的变化，渲染到视图上。</p>
+<h3 id="2-简要介绍各模块在流程中的功能："><a href="#2-简要介绍各模块在流程中的功能：" class="headerlink" title="2.简要介绍各模块在流程中的功能："></a>2.简要介绍各模块在流程中的功能：</h3><ul>
+<li>Vue Components：Vue组件。HTML页面上，负责接收用户操作等交互行为，执行dispatch方法触发对应action进行回应。</li>
+<li>dispatch：操作行为触发方法，是唯一能执行action的方法。</li>
+<li>actions：<strong>操作行为处理模块,由组件中的$store.dispatch(‘action 名称’, data1)来触发。然后由commit()来触发mutation的调用 , 间接更新 state</strong>。负责处理Vue Components接收到的所有交互行为。包含同步/异步操作，支持多个同名方法，按照注册的顺序依次触发。向后台API请求的操作就在这个模块中进行，包括触发其他action以及提交mutation的操作。该模块提供了Promise的封装，以支持action的链式触发。</li>
+<li>commit：状态改变提交操作方法。对mutation进行提交，是唯一能执行mutation的方法。</li>
+<li>mutations：<strong>状态改变操作方法，由actions中的commit(‘mutation 名称’)来触发</strong>。是Vuex修改state的唯一推荐方法。该方法只能进行同步操作，且方法名只能全局唯一。操作之中会有一些hook暴露出来，以进行state的监控等。</li>
+<li>state：页面状态管理容器对象。集中存储Vue components中data对象的零散数据，全局唯一，以进行统一的状态管理。页面显示所需的数据从该对象中进行读取，利用Vue的细粒度数据响应机制来进行高效的状态更新。</li>
+<li>getters：state对象读取方法。图中没有单独列出该模块，应该被包含在了render中，Vue Components通过该方法读取全局state对象。</li>
+</ul>
+<h3 id="3-Vuex与localStorage"><a href="#3-Vuex与localStorage" class="headerlink" title="3.Vuex与localStorage"></a>3.Vuex与localStorage</h3><p>vuex 是 vue 的状态管理器，存储的数据是响应式的。但是并不会保存起来，刷新之后就回到了初始状态，<strong>具体做法应该在vuex里数据改变的时候把数据拷贝一份保存到localStorage里面，刷新之后，如果localStorage里有保存的数据，取出来再替换store里的state。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> defaultCity = <span class="string">"上海"</span></span><br><span class="line"><span class="keyword">try</span> &#123;   <span class="comment">// 用户关闭了本地存储功能，此时在外层加个try...catch</span></span><br><span class="line">  <span class="keyword">if</span> (!defaultCity)&#123;</span><br><span class="line">    defaultCity = <span class="built_in">JSON</span>.parse(<span class="built_in">window</span>.localStorage.getItem(<span class="string">'defaultCity'</span>))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;<span class="keyword">catch</span>(e)&#123;&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    city: defaultCity</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    changeCity(state, city) &#123;</span><br><span class="line">      state.city = city</span><br><span class="line">      <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="built_in">window</span>.localStorage.setItem(<span class="string">'defaultCity'</span>, <span class="built_in">JSON</span>.stringify(state.city));</span><br><span class="line">      <span class="comment">// 数据改变的时候把数据拷贝一份保存到localStorage里面</span></span><br><span class="line">      &#125; <span class="keyword">catch</span> (e) &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的是：由于vuex里，我们保存的状态，都是数组，而localStorage只支持字符串，所以需要用JSON转换：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.stringify(state.subscribeList);   <span class="comment">// array -&gt; string</span></span><br><span class="line"><span class="built_in">JSON</span>.parse(<span class="built_in">window</span>.localStorage.getItem(<span class="string">"subscribeList"</span>));    <span class="comment">// string -&gt; array</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="方法四、-attrs-listeners"><a href="#方法四、-attrs-listeners" class="headerlink" title="方法四、$attrs/$listeners"></a>方法四、<code>$attrs</code>/<code>$listeners</code></h2><h4 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h4><p>多级组件嵌套需要传递数据时，通常使用的方法是通过vuex。但如果仅仅是传递数据，而不做中间处理，使用 vuex 处理，未免有点大材小用。为此Vue2.4 版本提供了另一种方法—-<code>$attrs</code>/<code>$listeners</code></p>
+<ul>
+<li><code>$attrs</code>：包含了父作用域中不被 prop 所识别 (且获取) 的特性绑定 (class 和 style 除外)。当一个组件没有声明任何 prop 时，这里会包含所有父作用域的绑定 (class 和 style 除外)，并且可以通过 v-bind=”$attrs” 传入内部组件。通常配合 inheritAttrs 选项一起使用。</li>
+<li><code>$listeners</code>：包含了父作用域中的 (不含 .native 修饰器的) v-on 事件监听器。它可以通过 v-on=”$listeners” 传入内部组件</li>
+</ul>
+<p>接下来我们看个跨级通信的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// index.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;h2&gt;浪里行舟&lt;/h2&gt;</span><br><span class="line">    &lt;child-com1</span><br><span class="line">      :foo=&quot;foo&quot;</span><br><span class="line">      :boo=&quot;boo&quot;</span><br><span class="line">      :coo=&quot;coo&quot;</span><br><span class="line">      :doo=&quot;doo&quot;</span><br><span class="line">      title=&quot;前端工匠&quot;</span><br><span class="line">    &gt;&lt;/child-com1&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const childCom1 = () =&gt; import(&quot;./childCom1.vue&quot;);</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; childCom1 &#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      foo: &quot;Javascript&quot;,</span><br><span class="line">      boo: &quot;Html&quot;,</span><br><span class="line">      coo: &quot;CSS&quot;,</span><br><span class="line">      doo: &quot;Vue&quot;</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// childCom1.vue</span><br><span class="line">&lt;template class=&quot;border&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;p&gt;foo: &#123;&#123; foo &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;childCom1的$attrs: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;child-com2 v-bind=&quot;$attrs&quot;&gt;&lt;/child-com2&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const childCom2 = () =&gt; import(&quot;./childCom2.vue&quot;);</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    childCom2</span><br><span class="line">  &#125;,</span><br><span class="line">  inheritAttrs: false, // 可以关闭自动挂载到组件根元素上的没有在props声明的属性</span><br><span class="line">  props: &#123;</span><br><span class="line">    foo: String // foo作为props属性绑定</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    console.log(this.$attrs); // &#123; &quot;boo&quot;: &quot;Html&quot;, &quot;coo&quot;: &quot;CSS&quot;, &quot;doo&quot;: &quot;Vue&quot;, &quot;title&quot;: &quot;前端工匠&quot; &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">// childCom2.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;border&quot;&gt;</span><br><span class="line">    &lt;p&gt;boo: &#123;&#123; boo &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;p&gt;childCom2: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;</span><br><span class="line">    &lt;child-com3 v-bind=&quot;$attrs&quot;&gt;&lt;/child-com3&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">const childCom3 = () =&gt; import(&quot;./childCom3.vue&quot;);</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123;</span><br><span class="line">    childCom3</span><br><span class="line">  &#125;,</span><br><span class="line">  inheritAttrs: false,</span><br><span class="line">  props: &#123;</span><br><span class="line">    boo: String</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    console.log(this.$attrs); // &#123; &quot;coo&quot;: &quot;CSS&quot;, &quot;doo&quot;: &quot;Vue&quot;, &quot;title&quot;: &quot;前端工匠&quot; &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// childCom3.vue</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class=&quot;border&quot;&gt;</span><br><span class="line">    &lt;p&gt;childCom3: &#123;&#123; $attrs &#125;&#125;&lt;/p&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    coo: String,</span><br><span class="line">    title: String</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf77e44744?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
+<p>如上图所示<code>$attrs``$attrs``$listeners</code></p>
+<p>简单来说：<code>$attrs</code>与<code>$listeners</code> 是两个对象，<code>$attrs</code> 里存放的是父组件中绑定的非 Props 属性，<code>$listeners</code>里存放的是父组件中绑定的非原生事件。</p>
+<h2 id="方法五、provide-inject"><a href="#方法五、provide-inject" class="headerlink" title="方法五、provide/inject"></a>方法五、provide/inject</h2><h4 id="1-简介-1"><a href="#1-简介-1" class="headerlink" title="1.简介"></a>1.简介</h4><p>Vue2.2.0新增API,这对选项需要一起使用，<strong>以允许一个祖先组件向其所有子孙后代注入一个依赖，不论组件层次有多深，并在起上下游关系成立的时间里始终生效</strong>。一言而蔽之：祖先组件中通过provider来提供变量，然后在子孙组件中通过inject来注入变量。 <strong>provide / inject API 主要解决了跨级组件间的通信问题，不过它的使用场景，主要是子组件获取上级组件的状态，跨级组件间建立了一种主动提供与依赖注入的关系</strong>。</p>
+<h4 id="2-举个例子"><a href="#2-举个例子" class="headerlink" title="2.举个例子"></a>2.举个例子</h4><p>假设有两个组件： A.vue 和 B.vue，B 是 A 的子组件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A.vue</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  provide: &#123;</span><br><span class="line">    name: <span class="string">'浪里行舟'</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// B.vue</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  inject: [<span class="string">'name'</span>],</span><br><span class="line">  mounted () &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);  <span class="comment">// 浪里行舟</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，在 A.vue 里，我们设置了一个 <strong>provide: name</strong>，值为 浪里行舟，它的作用就是将 <strong>name</strong> 这个变量提供给它的所有子组件。而在 B.vue 中，通过 <code>inject</code> 注入了从 A 组件中提供的 <strong>name</strong> 变量，那么在组件 B 中，就可以直接通过 <strong>this.name</strong> 访问这个变量了，它的值也是 浪里行舟。这就是 provide / inject API 最核心的用法。</p>
+<p>需要注意的是：<strong>provide 和 inject 绑定并不是可响应的。这是刻意为之的。然而，如果你传入了一个可监听的对象，那么其对象的属性还是可响应的</strong>—-vue官方文档 所以，上面 A.vue 的 name 如果改变了，B.vue 的 this.name 是不会改变的，仍然是 浪里行舟。</p>
+<h4 id="3-provide与inject-怎么实现数据响应式"><a href="#3-provide与inject-怎么实现数据响应式" class="headerlink" title="3.provide与inject 怎么实现数据响应式"></a>3.provide与inject 怎么实现数据响应式</h4><p>一般来说，有两种办法：</p>
+<ul>
+<li>provide祖先组件的实例，然后在子孙组件中注入依赖，这样就可以在子孙组件中直接修改祖先组件的实例的属性，不过这种方法有个缺点就是这个实例上挂载很多没有必要的东西比如props，methods</li>
+<li>使用2.6最新API Vue.observable 优化响应式 provide(推荐)</li>
+</ul>
+<p>我们来看个例子：孙组件D、E和F获取A组件传递过来的color值，并能实现数据响应式变化，即A组件的color变化后，组件D、E、F会跟着变（核心代码如下：）</p>
+<p><img src="https://user-gold-cdn.xitu.io/2019/5/17/16ac35bf7131f3db?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="image"></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A 组件 </span></span><br><span class="line">&lt;div&gt;</span><br><span class="line">      &lt;h1&gt;A 组件&lt;<span class="regexp">/h1&gt;</span></span><br><span class="line"><span class="regexp">      &lt;button @click="() =&gt; changeColor()"&gt;改变color&lt;/</span>button&gt;</span><br><span class="line">      &lt;ChildrenB /&gt;</span><br><span class="line">      &lt;ChildrenC /&gt;</span><br><span class="line">&lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">......</span></span><br><span class="line"><span class="regexp">  data() &#123;</span></span><br><span class="line"><span class="regexp">    return &#123;</span></span><br><span class="line"><span class="regexp">      color: "blue"</span></span><br><span class="line"><span class="regexp">    &#125;;</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ provide() &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   return &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     theme: &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/       color: this.color /</span><span class="regexp">/这种方式绑定的数据并不是可响应的</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     &#125; /</span><span class="regexp">/ 即A组件的color变化后，组件D、E、F不会跟着变</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   &#125;;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ &#125;,</span></span><br><span class="line"><span class="regexp">  provide() &#123;</span></span><br><span class="line"><span class="regexp">    return &#123;</span></span><br><span class="line"><span class="regexp">      theme: this/</span><span class="regexp">/方法一：提供祖先组件的实例</span></span><br><span class="line"><span class="regexp">    &#125;;</span></span><br><span class="line"><span class="regexp">  &#125;,</span></span><br><span class="line"><span class="regexp">  methods: &#123;</span></span><br><span class="line"><span class="regexp">    changeColor(color) &#123;</span></span><br><span class="line"><span class="regexp">      if (color) &#123;</span></span><br><span class="line"><span class="regexp">        this.color = color;</span></span><br><span class="line"><span class="regexp">      &#125; else &#123;</span></span><br><span class="line"><span class="regexp">        this.color = this.color === "blue" ? "red" : "blue";</span></span><br><span class="line"><span class="regexp">      &#125;</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ 方法二:使用2.6最新API Vue.observable 优化响应式 provide</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ provide() &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   this.theme = Vue.observable(&#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     color: "blue"</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   &#125;);</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   return &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     theme: this.theme</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   &#125;;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ &#125;,</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ methods: &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   changeColor(color) &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     if (color) &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/       this.theme.color = color;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     &#125; else &#123;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/       this.theme.color = this.theme.color === "blue" ? "red" : "blue";</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/     &#125;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/   &#125;</span></span><br><span class="line"><span class="regexp">  /</span><span class="regexp">/ &#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// F 组件 </span></span><br><span class="line">&lt;template functional&gt;</span><br><span class="line">  &lt;div <span class="class"><span class="keyword">class</span></span>=<span class="string">"border2"</span>&gt;</span><br><span class="line">    &lt;h3 :style=<span class="string">"&#123; color: injections.theme.color &#125;"</span>&gt;F 组件&lt;<span class="regexp">/h3&gt;</span></span><br><span class="line"><span class="regexp">  &lt;/</span>div&gt;</span><br><span class="line">&lt;<span class="regexp">/template&gt;</span></span><br><span class="line"><span class="regexp">&lt;script&gt;</span></span><br><span class="line"><span class="regexp">export default &#123;</span></span><br><span class="line"><span class="regexp">  inject: &#123;</span></span><br><span class="line"><span class="regexp">    theme: &#123;</span></span><br><span class="line"><span class="regexp">      /</span><span class="regexp">/函数式组件取值不一样</span></span><br><span class="line"><span class="regexp">      default: () =&gt; (&#123;&#125;)</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;;</span></span><br><span class="line"><span class="regexp">&lt;/</span>script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>虽说provide 和 inject 主要为高阶插件/组件库提供用例，但如果你能在业务中熟练运用，可以达到事半功倍的效果！</p>
+<h2 id="方法六、-parent-children与-ref"><a href="#方法六、-parent-children与-ref" class="headerlink" title="方法六、$parent / $children与 ref"></a>方法六、<code>$parent</code> / <code>$children</code>与 <code>ref</code></h2><ul>
+<li><code>ref</code>：如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例</li>
+<li><code>$parent</code> / <code>$children</code>：访问父 / 子实例</li>
+</ul>
+<p>需要注意的是：这两种都是直接得到组件实例，使用后可以直接调用组件的方法或访问数据。我们先来看个用 <code>ref</code>来访问组件的例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// component-a 子组件</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  data () &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      title: <span class="string">'Vue.js'</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    sayHello () &#123;</span><br><span class="line">      <span class="built_in">window</span>.alert(<span class="string">'Hello'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 父组件</span></span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;component-a ref=<span class="string">"comA"</span>&gt;&lt;<span class="regexp">/component-a&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    mounted () &#123;</span><br><span class="line">      <span class="keyword">const</span> comA = <span class="keyword">this</span>.$refs.comA;</span><br><span class="line">      <span class="built_in">console</span>.log(comA.title);  <span class="comment">// Vue.js</span></span><br><span class="line">      comA.sayHello();  <span class="comment">// 弹窗</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>不过，<strong>这两种方法的弊端是，无法在跨级或兄弟间通信</strong>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// parent.vue</span><br><span class="line">&lt;component-a&gt;&lt;/component-a&gt;</span><br><span class="line">&lt;component-b&gt;&lt;/component-b&gt;</span><br><span class="line">&lt;component-b&gt;&lt;/component-b&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们想在 component-a 中，访问到引用它的页面中（这里就是 parent.vue）的两个 component-b 组件，那这种情况下，就得配置额外的插件或工具了，比如 Vuex 和 Bus 的解决方案。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>常见使用场景可以分为三类：</p>
+<ul>
+<li>父子通信： 父向子传递数据是通过 props，子向父是通过 events（<code>$emit</code>）；通过父链 / 子链也可以通信（<code>$parent</code> / <code>$children</code>）；ref 也可以访问组件实例；provide / inject API；<code>$attrs/$listeners</code></li>
+<li>兄弟通信： Bus；Vuex</li>
+<li>跨级通信： Bus；Vuex；provide / inject API、<code>$attrs/$listeners</code></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/Vue/" rel="tag"># Vue</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/26/post-js中优雅的小数取整/" rel="next" title="post js中优雅的小数取整">
+                  <i class="fa fa-chevron-left"></i> post js中优雅的小数取整
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/11/26/js数据类型之增删改查/" rel="prev" title="js数据类型之增删改查">
+                  js数据类型之增删改查 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Vue组件通信的六种方式"><span class="nav-number">1.</span> <span class="nav-text">Vue组件通信的六种方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一-props-emit"><span class="nav-number">1.2.</span> <span class="nav-text">方法一     props/$emit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-父组件向子组件传值"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.父组件向子组件传值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-子组件向父组件传值（通过事件形式）"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.子组件向父组件传值（通过事件形式）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二、-emit-on"><span class="nav-number">1.3.</span> <span class="nav-text">方法二、$emit/$on</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三：vuex"><span class="nav-number">1.4.</span> <span class="nav-text">方法三：vuex</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-简要介绍Vuex原理"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.简要介绍Vuex原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-简要介绍各模块在流程中的功能："><span class="nav-number">1.4.2.</span> <span class="nav-text">2.简要介绍各模块在流程中的功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Vuex与localStorage"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.Vuex与localStorage</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法四、-attrs-listeners"><span class="nav-number">1.5.</span> <span class="nav-text">方法四、$attrs/$listeners</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简介"><span class="nav-number">1.5.0.1.</span> <span class="nav-text">1.简介</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法五、provide-inject"><span class="nav-number">1.6.</span> <span class="nav-text">方法五、provide/inject</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-简介-1"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">1.简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-举个例子"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">2.举个例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-provide与inject-怎么实现数据响应式"><span class="nav-number">1.6.0.3.</span> <span class="nav-text">3.provide与inject 怎么实现数据响应式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法六、-parent-children与-ref"><span class="nav-number">1.7.</span> <span class="nav-text">方法六、$parent / $children与 ref</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.8.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

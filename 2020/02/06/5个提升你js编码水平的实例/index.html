@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="5个提升你js编码水平的实例判断数据类型首先来提问一个， typeof是否能正确判断类型？ 答案是：不可以，因为由于历史原因，在判断原始类型时，typeof null会等于object。而且对于对象来说，除了函数，都会转换成object。例子如下： 1234567typeof 1 // &apos;number&apos;typeof &quot;1&quot; // &apos;string&apos;typeof null //typeof [] //">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5个提升你js编码水平的实例">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2020/02/06/5个提升你js编码水平的实例/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="5个提升你js编码水平的实例判断数据类型首先来提问一个， typeof是否能正确判断类型？ 答案是：不可以，因为由于历史原因，在判断原始类型时，typeof null会等于object。而且对于对象来说，除了函数，都会转换成object。例子如下： 1234567typeof 1 // &apos;number&apos;typeof &quot;1&quot; // &apos;string&apos;typeof null //typeof [] //">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-08T11:36:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="5个提升你js编码水平的实例">
+<meta name="twitter:description" content="5个提升你js编码水平的实例判断数据类型首先来提问一个， typeof是否能正确判断类型？ 答案是：不可以，因为由于历史原因，在判断原始类型时，typeof null会等于object。而且对于对象来说，除了函数，都会转换成object。例子如下： 1234567typeof 1 // &apos;number&apos;typeof &quot;1&quot; // &apos;string&apos;typeof null //typeof [] //">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2020/02/06/5个提升你js编码水平的实例/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>5个提升你js编码水平的实例 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/02/06/5个提升你js编码水平的实例/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">5个提升你js编码水平的实例
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-02-06 18:16:50" itemprop="dateCreated datePublished" datetime="2020-02-06T18:16:50+08:00">2020-02-06</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-08 19:36:04" itemprop="dateModified" datetime="2020-02-08T19:36:04+08:00">2020-02-08</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="5个提升你js编码水平的实例"><a href="#5个提升你js编码水平的实例" class="headerlink" title="5个提升你js编码水平的实例"></a>5个提升你js编码水平的实例</h1><h2 id="判断数据类型"><a href="#判断数据类型" class="headerlink" title="判断数据类型"></a>判断数据类型</h2><p>首先来提问一个， <code>typeof</code>是否能正确判断类型？</p>
+<p>答案是：不可以，因为由于历史原因，在判断原始类型时，<code>typeof null</code>会等于<code>object</code>。而且对于对象来说，除了函数，都会转换成<code>object</code>。例子如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typeof</span> <span class="number">1</span> <span class="comment">// 'number'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="string">"1"</span> <span class="comment">// 'string'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="literal">null</span> <span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typeof</span> [] <span class="comment">// 'object'</span></span><br><span class="line"><span class="keyword">typeof</span> &#123;&#125; <span class="comment">// 'object'</span></span><br><span class="line"><span class="keyword">typeof</span> <span class="built_in">window</span>.alert <span class="comment">// 'function'</span></span><br></pre></td></tr></table></figure>
+
+<p>再来提问一个，<code>instanceof</code>是否能正确判断类型？</p>
+<p>答案是：还是不可以，虽然<code>instanceof</code>是通过原型链来判断的，但是对于对象来说，<code>Array</code>也会被转换成<code>Object</code>，而且也不能区分基本类型<code>string</code>和<code>boolean</code>。例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Func</span>(<span class="params"></span>) </span>&#123;&#125;</span><br><span class="line"><span class="keyword">const</span> func = <span class="keyword">new</span> Func()</span><br><span class="line"><span class="built_in">console</span>.log(func <span class="keyword">instanceof</span> Func) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">const</span> arr = []</span><br><span class="line">obj <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">arr <span class="keyword">instanceof</span> <span class="built_in">Object</span> <span class="comment">// true</span></span><br><span class="line">arr <span class="keyword">instanceof</span> <span class="built_in">Array</span> <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> str = <span class="string">"abc"</span></span><br><span class="line"><span class="keyword">const</span> str2 = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"abc"</span>)</span><br><span class="line">str <span class="keyword">instanceof</span> <span class="built_in">String</span> <span class="comment">// false</span></span><br><span class="line">str2 <span class="keyword">instanceof</span> <span class="built_in">String</span> <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
+
+<p>所以该怎么办呢？</p>
+<p>这时候我们可以使用：<code>Object.prototype.toString.call()</code></p>
+<p>所以为什么？</p>
+<p>因为每个对象都有一个<code>toString()</code>方法，当要将对象表示为文本值或以预期字符串的方式引用对象时，会自动调用该方法。默认情况下，从<code>Object</code>派生的每个对象都会继承<code>toString()</code>方法。如果此方法未在自定义对象中被覆盖，则<code>toString()</code>返回<code>[Object type]</code>，其中<code>type</code>是对象类型。所以就有以下例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="keyword">new</span> <span class="built_in">Date</span>()) <span class="comment">// [object Date]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="string">"1"</span>) <span class="comment">// [object String]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="number">1</span>) <span class="comment">// [object Numer]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">undefined</span>) <span class="comment">// [object Undefined]</span></span><br><span class="line"><span class="built_in">Object</span>.prototype.toString.call(<span class="literal">null</span>) <span class="comment">// [object Null]</span></span><br></pre></td></tr></table></figure>
+
+<p>所以综合上述知识点，我们可以封装出以下通用类型判断方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> type = <span class="function"><span class="keyword">function</span> (<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> toString = <span class="built_in">Object</span>.prototype.toString</span><br><span class="line">    <span class="keyword">var</span> dataType =</span><br><span class="line">        data <span class="keyword">instanceof</span> Element</span><br><span class="line">            ? <span class="string">"element"</span></span><br><span class="line">            : toString</span><br><span class="line">                .call(data)</span><br><span class="line">                .replace(<span class="regexp">/\[object\s(.+)]/</span>, <span class="string">'$1'</span>)</span><br><span class="line">                .toLowerCase()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> dataType</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(type(<span class="string">''</span>)) <span class="comment">// string</span></span><br></pre></td></tr></table></figure>
+
+<p>使用方法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type(<span class="string">"a"</span>) <span class="comment">// string</span></span><br><span class="line">type(<span class="number">1</span>) <span class="comment">// number</span></span><br><span class="line">type(<span class="built_in">window</span>) <span class="comment">// window</span></span><br><span class="line">type(<span class="built_in">document</span>.querySelector(<span class="string">"h1"</span>)) <span class="comment">// element</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="通用的数组-类数组对象封装"><a href="#通用的数组-类数组对象封装" class="headerlink" title="通用的数组/类数组对象封装"></a>通用的数组/类数组对象封装</h2><p>类数组对象介绍：<a href="https://segmentfault.com/a/1190000000415572" target="_blank" rel="noopener">https://segmentfault.com/a/1190000000415572</a></p>
+<p>如果我们使用 ES5/ES6+的数组 API，很容易就能够对数组进行各类的循环操作，但是如果我们要循环一个类数组对象呢？</p>
+<p>例如<code>NodeList</code>。直接循环是会报错的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelectorAll(<span class="string">"div"</span>).map(<span class="function"><span class="params">e</span> =&gt;</span> e) <span class="comment">// Uncaught TypeError: document.querySelectorAll(...).map is not a function</span></span><br></pre></td></tr></table></figure>
+
+<p>当然我们可以用扩展运算符：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[...document.querySelectorAll(<span class="string">"div"</span>)].map(<span class="function"><span class="params">e</span> =&gt;</span> e)</span><br></pre></td></tr></table></figure>
+
+<p>那如果我们不用扩展运算符呢？</p>
+<p>那么我们就可以利用<code>call</code>的特性，将<code>NodeList</code>里的元素一个一个的插入到数组中，例子如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> listMap = <span class="function"><span class="keyword">function</span>(<span class="params">array, type, fn</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> !fn ? array : <span class="built_in">Array</span>.prototype[type][<span class="string">"call"</span>](array, fn)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>使用方法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> divs = <span class="built_in">document</span>.querySelectorAll(<span class="string">"div"</span>);</span><br><span class="line">listMap(divs, <span class="string">"forEach"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(e)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="获取-dom-元素节点的偏移量"><a href="#获取-dom-元素节点的偏移量" class="headerlink" title="获取 dom 元素节点的偏移量"></a>获取 dom 元素节点的偏移量</h2><p>如果有用过<code>jQuery</code>的童鞋，就一定不会忘记<code>$(&#39;&#39;).offset()</code>这个 api 的强大功能，这个 api 可以轻易获取元素的偏移量，那么如果我们不用<code>jQuery</code>该怎么实现呢？</p>
+<p>我们先来看看例子：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getOffset = <span class="function"><span class="keyword">function</span>(<span class="params">el</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">var</span> scrollTop =</span><br><span class="line">        el.getBoundingClientRect().top +</span><br><span class="line">        <span class="built_in">document</span>.body.scrollTop +</span><br><span class="line">        <span class="built_in">document</span>.documentElement.scrollTop;</span><br><span class="line">      <span class="keyword">var</span> scrollLeft =</span><br><span class="line">        el.getBoundingClientRect().left +</span><br><span class="line">        <span class="built_in">document</span>.body.scrollLeft +</span><br><span class="line">        <span class="built_in">document</span>.documentElement.scrollLeft;</span><br><span class="line">      <span class="keyword">return</span> &#123;</span><br><span class="line">            top: scrollTop,</span><br><span class="line">            left: scrollLeft</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先我们先来看<code>getBoundingClientRect()</code>这个方法。</p>
+<p><code>getBoundingClientRect()</code>方法返回元素的大小及其相对于视口的位置。返回值是一个 <code>DOMRect</code> 对象，是与该元素相关的 CSS 边框集合 。</p>
+<p>然后就是<code>document.body.scrollTop</code> 跟 <code>document.documentElement.scrollTop</code>这两个是一个功能，只不过在不同的浏览器下会有一个始终为 0，所以做了以上的兼容性处理。所以当我们做拖拽功能的时候，就可以依赖上以上属性。</p>
+<p>使用方法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> el = <span class="built_in">document</span>.querySelector(<span class="string">".moveBox"</span>)</span><br><span class="line">getOffset(el) <span class="comment">// &#123;top: xxx, left: xxx&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>一个摇杆功能的实现</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"circle parent"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"circle child"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">html</span>,</span><br><span class="line"><span class="selector-tag">body</span>,</span><br><span class="line"><span class="selector-class">.circle</span> &#123;</span><br><span class="line">		<span class="attribute">margin</span>: <span class="number">0</span>;</span><br><span class="line">		<span class="attribute">padding</span>: <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-tag">html</span>,</span><br><span class="line"><span class="selector-tag">body</span> &#123;</span><br><span class="line">		<span class="attribute">width</span>: <span class="number">100%</span>;</span><br><span class="line">		<span class="attribute">height</span>: <span class="number">100%</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.circle</span> &#123;</span><br><span class="line">		<span class="attribute">border-radius</span>: <span class="number">50%</span>;</span><br><span class="line">		<span class="attribute">border</span>: <span class="number">1px</span> solid;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">		<span class="attribute">width</span>: <span class="number">140px</span>;</span><br><span class="line">		<span class="attribute">height</span>: <span class="number">140px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">		<span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">		<span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">		<span class="attribute">position</span>: absolute;</span><br><span class="line">		<span class="attribute">left</span>: <span class="number">0</span>;</span><br><span class="line">		<span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">		<span class="attribute">bottom</span>: <span class="number">0</span>;</span><br><span class="line">		<span class="attribute">right</span>: <span class="number">0</span>;</span><br><span class="line">		<span class="attribute">margin</span>: auto;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.child</span> &#123;</span><br><span class="line">		<span class="attribute">position</span>: relative;</span><br><span class="line">		<span class="attribute">width</span>: <span class="number">50px</span>;</span><br><span class="line">		<span class="attribute">height</span>: <span class="number">50px</span>;</span><br><span class="line">		<span class="attribute">left</span>: <span class="number">45px</span>;</span><br><span class="line">		<span class="attribute">top</span>: <span class="number">45px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">const</span> touchObj = &#123;</span><br><span class="line">		$parent: $(<span class="string">'.parent'</span>),</span><br><span class="line">		$target: $(<span class="string">'.child'</span>),</span><br><span class="line">		startX: <span class="number">0</span>,</span><br><span class="line">		startY: <span class="number">0</span>,</span><br><span class="line">		moveX: <span class="number">0</span>,</span><br><span class="line">		moveY: <span class="number">0</span>,</span><br><span class="line">		endX: <span class="number">0</span>,</span><br><span class="line">		endY: <span class="number">0</span>,</span><br><span class="line">		istouchStart: <span class="literal">false</span>,</span><br><span class="line">		boundary(&#123;</span><br><span class="line">				origin,</span><br><span class="line">				radius</span><br><span class="line">		&#125;) &#123;</span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						sin,</span><br><span class="line">						cos,</span><br><span class="line">						atan2</span><br><span class="line">				&#125; = <span class="built_in">Math</span></span><br><span class="line">				<span class="keyword">const</span> angle = atan2(origin.y, origin.x)</span><br><span class="line">				<span class="keyword">const</span> limitX = (cos(angle) + <span class="number">1</span>) * radius</span><br><span class="line">				<span class="keyword">const</span> limitY = (sin(angle) + <span class="number">1</span>) * radius</span><br><span class="line"></span><br><span class="line">				<span class="keyword">return</span> &#123;</span><br><span class="line">						limitX,</span><br><span class="line">						limitY</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		getPos(ev) &#123;</span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						changedTouches,</span><br><span class="line">						touches</span><br><span class="line">				&#125; = ev</span><br><span class="line">				<span class="keyword">let</span> posX</span><br><span class="line">				<span class="keyword">let</span> posY</span><br><span class="line">				<span class="keyword">if</span> (ev.type.indexOf(<span class="string">'mouse'</span>) &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">						posX = ev.pageX</span><br><span class="line">						posY = ev.pageY</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">						<span class="keyword">const</span> touchData = touches.length ? touches : changedTouches</span><br><span class="line">						<span class="keyword">const</span> [&#123;</span><br><span class="line">								pageX,</span><br><span class="line">								pageY</span><br><span class="line">						&#125;] = touchData</span><br><span class="line">						posX = pageX</span><br><span class="line">						posY = pageY</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">return</span> &#123;</span><br><span class="line">						x: posX,</span><br><span class="line">						y: posY</span><br><span class="line">				&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		start(ev) &#123;</span><br><span class="line">				touchObj.$parent = $(<span class="string">'.parent'</span>)</span><br><span class="line">				touchObj.$target = $(<span class="string">'.child'</span>)</span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						target</span><br><span class="line">				&#125; = ev</span><br><span class="line"></span><br><span class="line">				<span class="keyword">if</span> (touchObj.$target[<span class="number">0</span>] !== target) &#123;</span><br><span class="line">						<span class="keyword">return</span></span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">let</span> &#123;</span><br><span class="line">						getPos</span><br><span class="line">				&#125; = touchObj</span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						x,</span><br><span class="line">						y</span><br><span class="line">				&#125; = getPos(ev)</span><br><span class="line"></span><br><span class="line">				touchObj.startX = x</span><br><span class="line">				touchObj.startY = y</span><br><span class="line"></span><br><span class="line">				touchObj.istouchStart = <span class="literal">true</span></span><br><span class="line">		&#125;,</span><br><span class="line">		move(ev) &#123;</span><br><span class="line">				<span class="keyword">if</span> (!touchObj.istouchStart) &#123;</span><br><span class="line">						<span class="keyword">return</span></span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				<span class="keyword">let</span> &#123;</span><br><span class="line">						$parent,</span><br><span class="line">						$target,</span><br><span class="line">						boundary,</span><br><span class="line">						getPos</span><br><span class="line">				&#125; = touchObj</span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						x,</span><br><span class="line">						y</span><br><span class="line">				&#125; = getPos(ev)</span><br><span class="line"></span><br><span class="line">				touchObj.moveX = x</span><br><span class="line">				touchObj.moveY = y</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						top: $parentOffsetTop,</span><br><span class="line">						left: $parentOffsetLeft</span><br><span class="line">				&#125; = $parent.offset()</span><br><span class="line">				<span class="keyword">const</span> $parentWidth = <span class="built_in">parseFloat</span>($parent.css(<span class="string">'width'</span>))</span><br><span class="line">				<span class="keyword">const</span> $parentR = ($parentWidth / <span class="number">2</span>)</span><br><span class="line">				<span class="keyword">const</span> $parentY = ($parentOffsetTop + $parentR)</span><br><span class="line">				<span class="keyword">const</span> $parentX = ($parentOffsetLeft + $parentR)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						top: $targetOffsetTop,</span><br><span class="line">						left: $targetOffsetLeft</span><br><span class="line">				&#125; = $target.offset()</span><br><span class="line">				<span class="keyword">const</span> $targetWidth = <span class="built_in">parseFloat</span>($target.css(<span class="string">'width'</span>))</span><br><span class="line">				<span class="keyword">const</span> $targetR = ($targetWidth / <span class="number">2</span>)</span><br><span class="line">				<span class="keyword">const</span> $targetY = ($targetOffsetTop + $targetR)</span><br><span class="line">				<span class="keyword">const</span> $targetX = ($targetOffsetLeft + $targetR)</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> $radius = $parentR - $targetR</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> $SquareR =  $radius ** <span class="number">2</span></span><br><span class="line">				<span class="keyword">const</span> $SquareX = (touchObj.moveX - $parentX) ** <span class="number">2</span></span><br><span class="line">				<span class="keyword">const</span> $SquareY = (touchObj.moveY - $parentY) ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> $X = touchObj.moveX - $parentOffsetLeft - $targetR</span><br><span class="line">				<span class="keyword">const</span> $Y = touchObj.moveY - $parentOffsetTop - $targetR</span><br><span class="line"></span><br><span class="line">				<span class="keyword">let</span> $targetLeft = $X</span><br><span class="line">				<span class="keyword">let</span> $targetTop = $Y</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						limitX,</span><br><span class="line">						limitY</span><br><span class="line">				&#125; = boundary(&#123;</span><br><span class="line">						origin: &#123;</span><br><span class="line">								x: $X - $parentR + $targetR,</span><br><span class="line">								y: $Y - $parentR + $targetR</span><br><span class="line">						&#125;,</span><br><span class="line">						radius: $radius</span><br><span class="line">				&#125;)</span><br><span class="line"></span><br><span class="line">				<span class="comment">// 圆: 坐标 = (a, b), 半径 = r</span></span><br><span class="line">				<span class="comment">// 点P: 坐标 = (x1, y1)</span></span><br><span class="line">				<span class="comment">// 圆上: (x1 - a) ** 2 + (y - b) ** 2 = r ** 2</span></span><br><span class="line">				<span class="comment">// 圆外: (x1 - a) ** 2 + (y - b) ** 2 &gt; r ** 2</span></span><br><span class="line">				<span class="comment">// 圆内: (x1 - a) ** 2 + (y - b) ** 2 &lt; r ** 2</span></span><br><span class="line">				<span class="keyword">if</span> (($SquareX + $SquareY) &gt; $SquareR) &#123;</span><br><span class="line">						<span class="built_in">console</span>.log(<span class="string">'圆外'</span>)</span><br><span class="line">						$targetLeft = limitX</span><br><span class="line">						$targetTop = limitY</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">				$target.css(&#123;</span><br><span class="line">						left: $targetLeft + <span class="string">'px'</span>,</span><br><span class="line">						top: $targetTop + <span class="string">'px'</span></span><br><span class="line">				&#125;)</span><br><span class="line">		&#125;,</span><br><span class="line">		end(ev) &#123;</span><br><span class="line">				<span class="keyword">let</span> &#123;</span><br><span class="line">						getPos,</span><br><span class="line">						$target</span><br><span class="line">				&#125; = touchObj</span><br><span class="line"></span><br><span class="line">				<span class="keyword">const</span> &#123;</span><br><span class="line">						x,</span><br><span class="line">						y</span><br><span class="line">				&#125; = getPos(ev)</span><br><span class="line"></span><br><span class="line">				touchObj.endX = x</span><br><span class="line">				touchObj.endY = y</span><br><span class="line"></span><br><span class="line">				$target.css(&#123;</span><br><span class="line">						left: <span class="string">'45px'</span>,</span><br><span class="line">						top: <span class="string">'45px'</span></span><br><span class="line">				&#125;)</span><br><span class="line"></span><br><span class="line">				touchObj.istouchStart = <span class="literal">false</span></span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> startEvent = <span class="string">'mousedown'</span>, moveEvent = <span class="string">'mousemove'</span>, endEvent = <span class="string">'mouseup'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> init = <span class="function"><span class="params">ev</span> =&gt;</span> &#123;</span><br><span class="line">		<span class="string">'ontouchstart'</span> <span class="keyword">in</span> <span class="built_in">window</span> ? (</span><br><span class="line">				startEvent = <span class="string">'touchstart'</span>,</span><br><span class="line">				moveEvent = <span class="string">'touchmove'</span>,</span><br><span class="line">				endEvent = <span class="string">'touchend'</span></span><br><span class="line">		) : <span class="string">''</span></span><br><span class="line">		<span class="built_in">window</span>.addEventListener(startEvent, touchObj.start)</span><br><span class="line">		<span class="built_in">window</span>.addEventListener(moveEvent, touchObj.move)</span><br><span class="line">		<span class="built_in">window</span>.addEventListener(endEvent, touchObj.end)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'load'</span>, init)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Fade-特效"><a href="#Fade-特效" class="headerlink" title="Fade 特效"></a>Fade 特效</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Fade in</span></span><br><span class="line"><span class="keyword">var</span> fadeIn = <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.style.opacity = <span class="number">0</span></span><br><span class="line">    <span class="keyword">var</span> last = +<span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">    <span class="keyword">var</span> tick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        el.style.opacity = +el.style.opacity + (<span class="keyword">new</span> <span class="built_in">Date</span>() - last) / <span class="number">400</span></span><br><span class="line">        last = +<span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">        <span class="keyword">if</span> (+el.style.opacity &lt; <span class="number">1</span>) &#123;</span><br><span class="line">            requestAnimationFrame(tick)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    tick()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Fade out</span></span><br><span class="line"><span class="keyword">var</span> fadeOut = <span class="function"><span class="keyword">function</span> (<span class="params">el</span>) </span>&#123;</span><br><span class="line">    el.style.opacity = <span class="number">1</span></span><br><span class="line">    <span class="keyword">var</span> last = +<span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">    <span class="keyword">var</span> tick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        el.style.opacity = +el.style.opacity - (<span class="keyword">new</span> <span class="built_in">Date</span>() - last) / <span class="number">400</span></span><br><span class="line">        last = +<span class="keyword">new</span> <span class="built_in">Date</span>()</span><br><span class="line">        <span class="keyword">if</span> (+el.style.opacity &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            requestAnimationFrame(tick)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    tick()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述是淡入淡出效果的具体实现，这里是利用<code>requestAnimationFrame</code>对<code>opacity</code>通过递归的方式进行修改。</p>
+<p>其实这里需要提一个概念，就是<strong>时间分片</strong>。</p>
+<p>这是一个非常重要的概念，例如 <strong>React</strong> 的 <strong>Fiber</strong> 核心实现就是<strong>时间分片</strong>。它会将一个长任务切分成一个含有若干小任务的任务队列，然后一个接着一个的执行。</p>
+<p><code>requestAnimationFrame</code>就是这样一个 API，它可以根据系统来决定回调函数的执行时机，其实也就是在下一次重绘之前更新动画帧，因为有这样的机制，所以能防止丢帧。</p>
+<h2 id="利用队列的概念进行数据操作"><a href="#利用队列的概念进行数据操作" class="headerlink" title="利用队列的概念进行数据操作"></a>利用队列的概念进行数据操作</h2><p>队列（queue），是先进先出（FIFO, First-In-First-Out）的线性表。在具体应用中通常用链表或者数组来实现。队列只允许在后端（称为 rear）进行插入操作，在前端（称为 front）进行删除操作。</p>
+<p>虽然很多人觉得了解数据结构对前端作用不大，但是如果我们懂一些基础的概念，是否在编码时能够更加扩散我们的思维呢？我们看下面两个例子：</p>
+<h3 id="获取节点在该父节点下的坐标"><a href="#获取节点在该父节点下的坐标" class="headerlink" title="获取节点在该父节点下的坐标"></a>获取节点在该父节点下的坐标</h3><p>如果我们要操作原生 DOM，那么是绕不开获取节点在该父节点的下标的这个功能的，那么我们该如何实现呢？</p>
+<p>当然就是利用我们的循环啦，对子元素集合进行遍历，直到确定下标为止，代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> index = <span class="function"><span class="keyword">function</span>(<span class="params">el</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (!el) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">var</span> i = <span class="number">0</span></span><br><span class="line">      <span class="keyword">while</span> ((el = el.previousElementSibling)) &#123;</span><br><span class="line">        i++</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="清空子节点"><a href="#清空子节点" class="headerlink" title="清空子节点"></a>清空子节点</h3><p>如果我们要清空某个 DOM 节点的子节点，我们有以下的方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> empty = <span class="function"><span class="keyword">function</span>(<span class="params">el</span>) </span>&#123;</span><br><span class="line">      <span class="keyword">while</span> (el.firstChild) &#123;</span><br><span class="line">            el.removeChild(el.firstChild);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>上面只是提供一个思路，其实el.innerHTML = ‘’会更简洁。</strong></p>
+<h2 id="利用-reduce-进行数据优化"><a href="#利用-reduce-进行数据优化" class="headerlink" title="利用 reduce 进行数据优化"></a>利用 reduce 进行数据优化</h2><h3 id="数组去重"><a href="#数组去重" class="headerlink" title="数组去重"></a>数组去重</h3><p>没错，又是一个老生常谈的问题，数组去重，但是我们这次去除的不仅仅是单个的数据，而是拥有某个相同键值的对象集合。例如下面的例子，我们有以下的数据：</p>
+<h2 id="牛逼的-reduce"><a href="#牛逼的-reduce" class="headerlink" title="牛逼的 reduce"></a>牛逼的 reduce</h2><h3 id="数据去重"><a href="#数据去重" class="headerlink" title="数据去重"></a>数据去重</h3><p>首先我们来看看一个老生常谈的问题，我们假设有这样的一个对象：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> data = [</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Kris"</span>,</span><br><span class="line">            age: <span class="string">"24"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Andy"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Kitty"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Andy"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Kitty"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Andy"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">            name: <span class="string">"Kitty"</span>,</span><br><span class="line">            age: <span class="string">"25"</span></span><br><span class="line">      &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>现在我们要去重里面<code>name</code>重复的对象，这时候我们可以利用<code>reduce</code>，例子如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">onst dataReducer = <span class="function">(<span class="params">prev, cur, idx</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// let obj = &#123;&#125;</span></span><br><span class="line">    <span class="keyword">const</span> &#123; name &#125; = cur;</span><br><span class="line">    prev[name] = cur;</span><br><span class="line">    <span class="keyword">return</span> prev;</span><br><span class="line">    <span class="comment">// 这样利用初始时传进的对象来搜集即可，并且 prev 描述为 total 更容易理解</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> reducedData = data.reduce(dataReducer, &#123;&#125;);</span><br><span class="line"><span class="keyword">let</span> newData = <span class="built_in">Object</span>.values(reducedData);</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2020/01/25/JavaScript-中this的指向/" rel="next" title="JavaScript 中this的指向">
+                  <i class="fa fa-chevron-left"></i> JavaScript 中this的指向
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2020/02/08/eslint-使用/" rel="prev" title="eslint 使用">
+                  eslint 使用 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#5个提升你js编码水平的实例"><span class="nav-number">1.</span> <span class="nav-text">5个提升你js编码水平的实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#判断数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">判断数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通用的数组-类数组对象封装"><span class="nav-number">1.2.</span> <span class="nav-text">通用的数组/类数组对象封装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取-dom-元素节点的偏移量"><span class="nav-number">1.3.</span> <span class="nav-text">获取 dom 元素节点的偏移量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Fade-特效"><span class="nav-number">1.4.</span> <span class="nav-text">Fade 特效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用队列的概念进行数据操作"><span class="nav-number">1.5.</span> <span class="nav-text">利用队列的概念进行数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取节点在该父节点下的坐标"><span class="nav-number">1.5.1.</span> <span class="nav-text">获取节点在该父节点下的坐标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清空子节点"><span class="nav-number">1.5.2.</span> <span class="nav-text">清空子节点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用-reduce-进行数据优化"><span class="nav-number">1.6.</span> <span class="nav-text">利用 reduce 进行数据优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组去重"><span class="nav-number">1.6.1.</span> <span class="nav-text">数组去重</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#牛逼的-reduce"><span class="nav-number">1.7.</span> <span class="nav-text">牛逼的 reduce</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据去重"><span class="nav-number">1.7.1.</span> <span class="nav-text">数据去重</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

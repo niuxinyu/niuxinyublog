@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="原生JS 对某个 class 类名的添加、删除以及判断是否含有某个类名的操作为 &amp;lt;div&amp;gt; 添加class1document.getElementById(&apos;div&apos;).classList.add(&apos;自定义类名&apos;, &apos;第二个&apos;)  如果是通过类名获取的话 1document.getElementByClassName(&apos;div&apos;)[0].classList.add(&apos;自定义类名&apos;, &apos;">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生JS 对DOM 类名的操作">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/02/原生JS-对DOM-类名的操作/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="原生JS 对某个 class 类名的添加、删除以及判断是否含有某个类名的操作为 &amp;lt;div&amp;gt; 添加class1document.getElementById(&apos;div&apos;).classList.add(&apos;自定义类名&apos;, &apos;第二个&apos;)  如果是通过类名获取的话 1document.getElementByClassName(&apos;div&apos;)[0].classList.add(&apos;自定义类名&apos;, &apos;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-02T13:12:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生JS 对DOM 类名的操作">
+<meta name="twitter:description" content="原生JS 对某个 class 类名的添加、删除以及判断是否含有某个类名的操作为 &amp;lt;div&amp;gt; 添加class1document.getElementById(&apos;div&apos;).classList.add(&apos;自定义类名&apos;, &apos;第二个&apos;)  如果是通过类名获取的话 1document.getElementByClassName(&apos;div&apos;)[0].classList.add(&apos;自定义类名&apos;, &apos;">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/02/原生JS-对DOM-类名的操作/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>原生JS 对DOM 类名的操作 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/02/原生JS-对DOM-类名的操作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">原生JS 对DOM 类名的操作
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-02 20:56:46 / 修改时间：21:12:28" itemprop="dateCreated datePublished" datetime="2019-12-02T20:56:46+08:00">2019-12-02</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="原生JS-对某个-class-类名的添加、删除以及判断是否含有某个类名的操作"><a href="#原生JS-对某个-class-类名的添加、删除以及判断是否含有某个类名的操作" class="headerlink" title="原生JS 对某个 class 类名的添加、删除以及判断是否含有某个类名的操作"></a>原生JS 对某个 <code>class</code> 类名的添加、删除以及判断是否含有某个类名的操作</h1><h2 id="为-lt-div-gt-添加class"><a href="#为-lt-div-gt-添加class" class="headerlink" title="为 &lt;div&gt; 添加class"></a>为 <code>&lt;div&gt;</code> 添加class</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'div'</span>).classList.add(<span class="string">'自定义类名'</span>, <span class="string">'第二个'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果是通过类名获取的话</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementByClassName(<span class="string">'div'</span>)[<span class="number">0</span>].classList.add(<span class="string">'自定义类名'</span>, <span class="string">'第二个'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果是使用新增的 <code>querySelector</code> 的话</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.div'</span>).classList.add(<span class="string">'ttt'</span>, <span class="string">'ttt2'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="从-div-移除多个类"><a href="#从-div-移除多个类" class="headerlink" title="从 div 移除多个类"></a>从 div 移除多个类</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'div'</span>).classList.add(<span class="string">'自定义类名'</span>, <span class="string">'第二个'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.getElementByClassName(<span class="string">'div'</span>)[<span class="number">0</span>].classList.add(<span class="string">'自定义类名'</span>, <span class="string">'第二个'</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">'.div'</span>).classList.add(<span class="string">'ttt'</span>, <span class="string">'ttt2'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="检查是否包含某个-class-类名"><a href="#检查是否包含某个-class-类名" class="headerlink" title="检查是否包含某个 class 类名"></a>检查是否包含某个 class 类名</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">myDiv.classList.contains(<span class="string">'myCssClass'</span>); <span class="comment">//return true or false</span></span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/11/28/JS-口袋书-一些好的文章总结/" rel="next" title="JS 口袋书--一些好的文章总结">
+                  <i class="fa fa-chevron-left"></i> JS 口袋书--一些好的文章总结
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/02/正则表达式笔记/" rel="prev" title="正则表达式笔记">
+                  正则表达式笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#原生JS-对某个-class-类名的添加、删除以及判断是否含有某个类名的操作"><span class="nav-number">1.</span> <span class="nav-text">原生JS 对某个 class 类名的添加、删除以及判断是否含有某个类名的操作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#为-lt-div-gt-添加class"><span class="nav-number">1.1.</span> <span class="nav-text">为 &lt;div&gt; 添加class</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#从-div-移除多个类"><span class="nav-number">1.2.</span> <span class="nav-text">从 div 移除多个类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查是否包含某个-class-类名"><span class="nav-number">1.3.</span> <span class="nav-text">检查是否包含某个 class 类名</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

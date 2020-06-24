@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="前端常用的小技巧汇总深拷贝1234function deepClone(obj)&amp;#123;	 var _obj = JSON.stringify(obj),objClone = JSON.parse(_obj);	 return objClone&amp;#125;  案例 1234567891011121314151617181920212223function deepClone(obj)&amp;#123">
+<meta name="keywords" content="Note">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端小技巧">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/02/前端小技巧/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="前端常用的小技巧汇总深拷贝1234function deepClone(obj)&amp;#123;	 var _obj = JSON.stringify(obj),objClone = JSON.parse(_obj);	 return objClone&amp;#125;  案例 1234567891011121314151617181920212223function deepClone(obj)&amp;#123">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E6%B7%B1%E6%8B%B7%E8%B4%9D.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E5%89%8D%E7%AB%AF%E5%B0%8F%E6%8A%80%E5%B7%A7-%E7%AC%9B%E5%8D%A1%E5%B0%94%E4%B9%98%E7%A7%AF.jpg">
+<meta property="og:updated_time" content="2019-12-02T14:20:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端小技巧">
+<meta name="twitter:description" content="前端常用的小技巧汇总深拷贝1234function deepClone(obj)&amp;#123;	 var _obj = JSON.stringify(obj),objClone = JSON.parse(_obj);	 return objClone&amp;#125;  案例 1234567891011121314151617181920212223function deepClone(obj)&amp;#123">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E6%B7%B1%E6%8B%B7%E8%B4%9D.jpg">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/02/前端小技巧/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>前端小技巧 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/02/前端小技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">前端小技巧
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-02 22:12:24 / 修改时间：22:20:14" itemprop="dateCreated datePublished" datetime="2019-12-02T22:12:24+08:00">2019-12-02</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="前端常用的小技巧汇总"><a href="#前端常用的小技巧汇总" class="headerlink" title="前端常用的小技巧汇总"></a>前端常用的小技巧汇总</h1><h2 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	 <span class="keyword">var</span> _obj = <span class="built_in">JSON</span>.stringify(obj),objClone = <span class="built_in">JSON</span>.parse(_obj);</span><br><span class="line">	 <span class="keyword">return</span> objClone</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>案例</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">deepClone</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">	 <span class="keyword">var</span> _obj = <span class="built_in">JSON</span>.stringify(obj),objClone = <span class="built_in">JSON</span>.parse(_obj);</span><br><span class="line">	 <span class="keyword">return</span> objClone</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//可拷贝类型 true/false</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">	str:<span class="string">'a'</span>,<span class="comment">//true</span></span><br><span class="line">	number:<span class="number">1</span>,<span class="comment">//true</span></span><br><span class="line">	arr:[<span class="string">"1"</span>,<span class="string">"2"</span>],<span class="comment">//true</span></span><br><span class="line">	isTrue:<span class="literal">true</span>,<span class="comment">//true</span></span><br><span class="line">	<span class="built_in">isNaN</span>:<span class="literal">NaN</span>,<span class="comment">//fasle</span></span><br><span class="line">	isUndefined:<span class="literal">undefined</span>,<span class="comment">//fasle</span></span><br><span class="line">	func:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;,<span class="comment">//fasle</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> obj2 = deepClone(obj)</span><br><span class="line"></span><br><span class="line">obj2.name = <span class="string">"b"</span></span><br><span class="line">obj2.number = <span class="number">2</span></span><br><span class="line">obj2.arr[<span class="number">0</span>] = <span class="string">"10"</span></span><br><span class="line">obj2.isTrue = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(obj)</span><br><span class="line"><span class="built_in">console</span>.log(obj2)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E6%B7%B1%E6%8B%B7%E8%B4%9D.jpg" alt></p>
+<h2 id="清除火狐浏览器无图片时的边框"><a href="#清除火狐浏览器无图片时的边框" class="headerlink" title="清除火狐浏览器无图片时的边框"></a>清除火狐浏览器无图片时的边框</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">img[src=<span class="string">""</span>],<span class="attr">img</span>:not([src])&#123;</span><br><span class="line">    opacity:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="获取URL参数"><a href="#获取URL参数" class="headerlink" title="获取URL参数"></a>获取URL参数</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getUrlParam</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> reg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"(^|&amp;)"</span> + name + <span class="string">"=([^&amp;]*)(&amp;|$)"</span>);</span><br><span class="line">    <span class="keyword">var</span> r = <span class="built_in">window</span>.location.search.substr(<span class="number">1</span>).match(reg);</span><br><span class="line">    <span class="keyword">if</span> (r !== <span class="literal">null</span>) <span class="keyword">return</span> <span class="built_in">decodeURI</span>(r[<span class="number">2</span>]); <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="删除指定字符后的所有字符"><a href="#删除指定字符后的所有字符" class="headerlink" title="删除指定字符后的所有字符"></a>删除指定字符后的所有字符</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">"112233-abab"</span></span><br><span class="line"><span class="keyword">var</span> b = a.substring(<span class="number">0</span>,a.indexOf(<span class="string">'-'</span>))<span class="comment">//112233</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="在指定位置插入字符"><a href="#在指定位置插入字符" class="headerlink" title="在指定位置插入字符"></a>在指定位置插入字符</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">"201902"</span></span><br><span class="line"><span class="keyword">var</span> b = a.slice(<span class="number">0</span>,<span class="number">4</span>) + <span class="string">"-"</span> + a.slice(<span class="number">4</span>) <span class="comment">//"2019-02"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="删除字符串中的所有空格"><a href="#删除字符串中的所有空格" class="headerlink" title="删除字符串中的所有空格"></a>删除字符串中的所有空格</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="string">"6221 6223 3221 54200"</span></span><br><span class="line"><span class="keyword">var</span> b = a.replace(<span class="regexp">/\s*/g</span>,<span class="string">""</span>) <span class="comment">//"62216223322154200"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="校验手机号"><a href="#校验手机号" class="headerlink" title="校验手机号"></a>校验手机号</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> phone = <span class="string">"13622993358"</span></span><br><span class="line"><span class="keyword">if</span> (!(<span class="regexp">/^1[3456789]\d&#123;9&#125;$/</span>.test(phone)))&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"phone error"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="随机生成1-100数字"><a href="#随机生成1-100数字" class="headerlink" title="随机生成1-100数字"></a>随机生成1-100数字</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random()*<span class="number">100</span> +<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="复制指定文字到剪切板"><a href="#复制指定文字到剪切板" class="headerlink" title="复制指定文字到剪切板"></a>复制指定文字到剪切板</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">text,callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(<span class="built_in">document</span>.execCommand(<span class="string">'Copy'</span>))&#123;</span><br><span class="line">    <span class="comment">//创建input</span></span><br><span class="line">    <span class="keyword">var</span> inputZ = <span class="built_in">document</span>.createElement(<span class="string">'input'</span>);</span><br><span class="line">    <span class="comment">//添加Id,用于后续操作</span></span><br><span class="line">    inputZ.setAttribute(<span class="string">'id'</span>,<span class="string">'inputCopy'</span>);</span><br><span class="line">    <span class="comment">//获取传入的值</span></span><br><span class="line">    inputZ.value = text;</span><br><span class="line">    <span class="comment">//创建的input添加到body</span></span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(inputZ);</span><br><span class="line">    <span class="comment">//选中input中的值(使用前面的Id)</span></span><br><span class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'inputCopy'</span>).select();</span><br><span class="line">    <span class="comment">//把值复制下来</span></span><br><span class="line">    <span class="built_in">document</span>.execCommand(<span class="string">'Copy'</span>)</span><br><span class="line">    alert(<span class="string">'複製成功'</span>);</span><br><span class="line">    <span class="comment">//删除添加的input</span></span><br><span class="line">    <span class="built_in">document</span>.body.removeChild(inputZ);</span><br><span class="line">    <span class="comment">// 成功回調1</span></span><br><span class="line">    callback(<span class="number">1</span>);</span><br><span class="line">  &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    <span class="comment">// 失敗回調2</span></span><br><span class="line">    callback(<span class="number">2</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//必须在触发事件中调用(如点击事件)</span></span><br><span class="line">copy(<span class="string">"www.supersjz.cn"</span>,<span class="function"><span class="keyword">function</span>(<span class="params">type</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(type == <span class="number">1</span>)&#123;<span class="built_in">console</span>.log(<span class="string">"复制成功"</span>)&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="用callback做类似装饰器的功能-校验参数必填"><a href="#用callback做类似装饰器的功能-校验参数必填" class="headerlink" title="用callback做类似装饰器的功能(校验参数必填)"></a>用callback做类似装饰器的功能(校验参数必填)</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">filter</span>(<span class="params">callback</span>)</span>&#123;</span><br><span class="line">	<span class="comment">// 把所有校验都放在这个函数中</span></span><br><span class="line">	name = <span class="built_in">document</span>.getElementById(<span class="string">"name"</span>).value</span><br><span class="line">	<span class="keyword">if</span>(!name)&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">"请输入姓名"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	callback()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//保存的方法跟下一步的方法调用同个过滤器</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'save'</span>).onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">// 添加过滤器</span></span><br><span class="line">	filter(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">"校验通过，继续执行"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.getElementById(<span class="string">'next'</span>).onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="comment">// 添加过滤器</span></span><br><span class="line">	filter(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		<span class="built_in">console</span>.log(<span class="string">"校验通过，继续执行"</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="笛卡尔乘积-函ES6语法"><a href="#笛卡尔乘积-函ES6语法" class="headerlink" title="笛卡尔乘积(函ES6语法)"></a>笛卡尔乘积(函ES6语法)</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*	参数：</span></span><br><span class="line"><span class="comment">*	单维数组结构 ["红色","蓝色"]</span></span><br><span class="line"><span class="comment">*	多维数组结构 [["红色","蓝色"],["大号","小号"],["圆形","方形"]]</span></span><br><span class="line"><span class="comment">*/</span> </span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">descartes</span>(<span class="params">arr</span>) </span>&#123;</span><br><span class="line">	<span class="comment">// 判断是否多维数组结构</span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">typeof</span> arr[<span class="number">0</span>] == <span class="string">'object'</span>)&#123; </span><br><span class="line">    	<span class="keyword">return</span> [].reduce.call(arr, <span class="function"><span class="keyword">function</span> (<span class="params">col, set</span>) </span>&#123;</span><br><span class="line">	        <span class="keyword">let</span> res = [];</span><br><span class="line">	        col.forEach(<span class="function"><span class="params">c</span> =&gt;</span> &#123;</span><br><span class="line">	            <span class="keyword">set</span>.forEach(s =&gt; &#123;</span><br><span class="line">	                <span class="keyword">let</span> t = [].concat(<span class="built_in">Array</span>.isArray(c) ? c : [c]);</span><br><span class="line">	                t.push(s);</span><br><span class="line">	                res.push(t);</span><br><span class="line">	            &#125;)</span><br><span class="line">	        &#125;);</span><br><span class="line">	        <span class="keyword">return</span> res;</span><br><span class="line">	    &#125;);</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    	<span class="comment">// 单维数组直接返回</span></span><br><span class="line">    	<span class="keyword">return</span> arr;  </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> list = [[<span class="string">"红色"</span>,<span class="string">"蓝色"</span>],[<span class="string">"大号"</span>,<span class="string">"小号"</span>],[<span class="string">"圆形"</span>,<span class="string">"方形"</span>]]</span><br><span class="line"><span class="keyword">var</span> descartesList = descartes(list)</span><br><span class="line"><span class="built_in">console</span>.log(descartesList)</span><br></pre></td></tr></table></figure>
+
+<h2 id="笛卡尔乘积-原生JS"><a href="#笛卡尔乘积-原生JS" class="headerlink" title="笛卡尔乘积(原生JS)"></a>笛卡尔乘积(原生JS)</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">*	参数：</span></span><br><span class="line"><span class="comment">*	单维数组结构 ["红色","蓝色"]</span></span><br><span class="line"><span class="comment">*	多维数组结构 [["红色","蓝色"],["大号","小号"],["圆形","方形"]]</span></span><br><span class="line"><span class="comment">*/</span> </span><br><span class="line"><span class="comment">// 笛卡儿积组合</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">descartes</span>(<span class="params">list</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> point = &#123;&#125;;  </span><br><span class="line">	<span class="keyword">var</span> result = [];  </span><br><span class="line">	<span class="keyword">var</span> pIndex = <span class="literal">null</span>;  </span><br><span class="line">	<span class="keyword">var</span> tempCount = <span class="number">0</span>;  </span><br><span class="line">	<span class="keyword">var</span> temp  = [];  </span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">var</span> index <span class="keyword">in</span> list)&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="keyword">typeof</span> list[index] == <span class="string">'object'</span>)&#123;  </span><br><span class="line">			point[index] = &#123;<span class="string">'parent'</span>:pIndex,<span class="string">'count'</span></span><br><span class="line">			pIndex = index;  </span><br><span class="line">		&#125;  </span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="comment">//单维度数据结构直接返回</span></span><br><span class="line">	<span class="keyword">if</span>(pIndex == <span class="literal">null</span>)&#123;</span><br><span class="line">		<span class="keyword">return</span> list;  </span><br><span class="line">	&#125;  </span><br><span class="line">	<span class="comment">//动态生成笛卡尔积</span></span><br><span class="line">	<span class="keyword">while</span>(<span class="literal">true</span>)&#123;  </span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> index <span class="keyword">in</span> list)&#123;  </span><br><span class="line">			tempCount = point[index][<span class="string">'count'</span>];  </span><br><span class="line">			temp.push(list[index][tempCount]);  </span><br><span class="line">		&#125;</span><br><span class="line">		result.push(temp);</span><br><span class="line">		temp = [];</span><br><span class="line">		<span class="keyword">while</span>(<span class="literal">true</span>)&#123;</span><br><span class="line">			<span class="keyword">if</span>(point[index][<span class="string">'count'</span>]+<span class="number">1</span> &gt;= list[inde</span><br><span class="line">				point[index][<span class="string">'count'</span>] = <span class="number">0</span>;</span><br><span class="line">				pIndex = point[index][<span class="string">'parent'</span>];</span><br><span class="line">				<span class="keyword">if</span>(pIndex == <span class="literal">null</span>)&#123;</span><br><span class="line">					<span class="keyword">return</span> result;</span><br><span class="line">				&#125;</span><br><span class="line">				index = pIndex;</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				point[index][<span class="string">'count'</span>]++;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> list = [[<span class="string">"红色"</span>,<span class="string">"蓝色"</span>],[<span class="string">"大号"</span>,<span class="string">"小号"</span>],[<span class="string">"圆形"</span>,<span class="string">"方形"</span>]]</span><br><span class="line"><span class="keyword">var</span> descartesList = descartes(list)</span><br><span class="line"><span class="built_in">console</span>.log(descartesList)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E5%89%8D%E7%AB%AF%E5%B0%8F%E6%8A%80%E5%B7%A7-%E7%AC%9B%E5%8D%A1%E5%B0%94%E4%B9%98%E7%A7%AF.jpg" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/Note/" rel="tag"># Note</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/02/原生JS事件绑定-onclick和addEventListener/" rel="next" title="原生JS事件绑定 onclick和addEventListener">
+                  <i class="fa fa-chevron-left"></i> 原生JS事件绑定 onclick和addEventListener
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/02/原生JS-灵魂拷问/" rel="prev" title="原生JS 灵魂拷问">
+                  原生JS 灵魂拷问 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前端常用的小技巧汇总"><span class="nav-number">1.</span> <span class="nav-text">前端常用的小技巧汇总</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#深拷贝"><span class="nav-number">1.1.</span> <span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清除火狐浏览器无图片时的边框"><span class="nav-number">1.2.</span> <span class="nav-text">清除火狐浏览器无图片时的边框</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取URL参数"><span class="nav-number">1.3.</span> <span class="nav-text">获取URL参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除指定字符后的所有字符"><span class="nav-number">1.4.</span> <span class="nav-text">删除指定字符后的所有字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在指定位置插入字符"><span class="nav-number">1.5.</span> <span class="nav-text">在指定位置插入字符</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除字符串中的所有空格"><span class="nav-number">1.6.</span> <span class="nav-text">删除字符串中的所有空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#校验手机号"><span class="nav-number">1.7.</span> <span class="nav-text">校验手机号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机生成1-100数字"><span class="nav-number">1.8.</span> <span class="nav-text">随机生成1-100数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制指定文字到剪切板"><span class="nav-number">1.9.</span> <span class="nav-text">复制指定文字到剪切板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用callback做类似装饰器的功能-校验参数必填"><span class="nav-number">1.10.</span> <span class="nav-text">用callback做类似装饰器的功能(校验参数必填)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笛卡尔乘积-函ES6语法"><span class="nav-number">1.11.</span> <span class="nav-text">笛卡尔乘积(函ES6语法)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#笛卡尔乘积-原生JS"><span class="nav-number">1.12.</span> <span class="nav-text">笛卡尔乘积(原生JS)</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

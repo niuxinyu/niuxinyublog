@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="JavaScript设计模式与开发实战系列文章： 《JavaScript设计模式与开发实践》基础篇（1）—— this、call 和 apply 《JavaScript设计模式与开发实践》基础篇（2）—— 闭包和高阶函数 《JavaScript设计模式与开发实践》模式篇（1）—— 单例模式 《JavaScript设计模式与开发实践》模式篇（2）—— 策略模式 《JavaScript设计模式与开发实">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript设计模式与开发实战">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/09/JavaScript设计模式与开发实战/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="JavaScript设计模式与开发实战系列文章： 《JavaScript设计模式与开发实践》基础篇（1）—— this、call 和 apply 《JavaScript设计模式与开发实践》基础篇（2）—— 闭包和高阶函数 《JavaScript设计模式与开发实践》模式篇（1）—— 单例模式 《JavaScript设计模式与开发实践》模式篇（2）—— 策略模式 《JavaScript设计模式与开发实">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-12-09T14:10:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript设计模式与开发实战">
+<meta name="twitter:description" content="JavaScript设计模式与开发实战系列文章： 《JavaScript设计模式与开发实践》基础篇（1）—— this、call 和 apply 《JavaScript设计模式与开发实践》基础篇（2）—— 闭包和高阶函数 《JavaScript设计模式与开发实践》模式篇（1）—— 单例模式 《JavaScript设计模式与开发实践》模式篇（2）—— 策略模式 《JavaScript设计模式与开发实">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/09/JavaScript设计模式与开发实战/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>JavaScript设计模式与开发实战 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/09/JavaScript设计模式与开发实战/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">JavaScript设计模式与开发实战
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-09 22:09:44 / 修改时间：22:10:36" itemprop="dateCreated datePublished" datetime="2019-12-09T22:09:44+08:00">2019-12-09</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JavaScript设计模式与开发实战"><a href="#JavaScript设计模式与开发实战" class="headerlink" title="JavaScript设计模式与开发实战"></a>JavaScript设计模式与开发实战</h1><p><strong>系列文章：</strong></p>
+<p><a href="https://juejin.im/post/5c0d15a3f265da612e2876a2" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》基础篇（1）—— this、call 和 apply</a></p>
+<p><a href="https://juejin.im/post/5c0e670ce51d452e2c697955" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》基础篇（2）—— 闭包和高阶函数</a></p>
+<p><a href="https://juejin.im/post/5c0f5ca4f265da616d540801" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（1）—— 单例模式</a></p>
+<p><a href="https://juejin.im/post/5c0fc32ae51d455c9f4a3afc" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（2）—— 策略模式</a></p>
+<p><a href="https://juejin.im/post/5c10ff28518825778a56cb3e" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（3）—— 代理模式</a></p>
+<p><a href="https://juejin.im/post/5c11083de51d45702018aa47" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（4）—— 迭代器模式</a></p>
+<p><a href="https://juejin.im/post/5c1261526fb9a049b221c1d1" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（5）—— 观察者模式</a></p>
+<p><a href="https://juejin.im/post/5c1379cd6fb9a049c2325166" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（6）—— 命令模式</a></p>
+<p><a href="https://juejin.im/post/5c163d045188252704369430" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（7）—— 组合模式</a></p>
+<p><a href="https://juejin.im/post/5c179e446fb9a04a102f3317" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（8）—— 模板方法模式</a></p>
+<p><a href="https://juejin.im/post/5c1902e751882546150aef0c" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（9）—— 享元模式</a></p>
+<p><a href="https://juejin.im/post/5c1a37ca6fb9a049f8193cc8" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（10）—— 职责链模式</a></p>
+<p><a href="https://juejin.im/post/5c1ee1d66fb9a049ab0d9af6" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（11）—— 中介者模式</a></p>
+<p><a href="https://juejin.im/post/5c20f4566fb9a049b82a7a93" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（12）—— 装饰者模式</a></p>
+<p><a href="https://juejin.im/post/5c23725bf265da61764aedc7" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（13）—— 状态模式</a></p>
+<p><a href="https://juejin.im/post/5c237cb3518825444612dd2a" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》模式篇（14）—— 适配器模式</a></p>
+<p><a href="https://juejin.im/post/5c261e9fe51d4570f1455253" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》原则篇（1）—— 单一职责原则</a></p>
+<p><a href="https://juejin.im/post/5c282b8a51882538472091ba" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》原则篇（2）—— 最少知识原则</a></p>
+<p><a href="https://juejin.im/post/5c2e0c3f6fb9a049c30b5f2d" target="_blank" rel="noopener">《JavaScript设计模式与开发实践》原则篇（3）—— 开放-封闭原则</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/09/axios设置content-type/" rel="next" title="axios设置content-type">
+                  <i class="fa fa-chevron-left"></i> axios设置content-type
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/09/JavaScript字符串转换为数字的物种方式及陷阱/" rel="prev" title="JavaScript字符串转换为数字的物种方式及陷阱">
+                  JavaScript字符串转换为数字的物种方式及陷阱 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript设计模式与开发实战"><span class="nav-number">1.</span> <span class="nav-text">JavaScript设计模式与开发实战</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

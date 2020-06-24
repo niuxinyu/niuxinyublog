@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="JS 十个实用小技巧前言每一门语言都有一些奇技淫巧，JS也不例外，一直想总结这么篇文章，我包括一些新手，都会有这么一个疑问，每次面对一张空白的页面，不知从何下手，没有思路，高手有的是设计模式，但是在这里讲一些设计模式，我可能不够格，这些书籍都有可以自己去翻阅，我能给的就是，总结我写代码的时候，会优化的一些技巧 实用篇1.立即执行我为什么把立即执行放在第一个，因为一般做业务的时候都会有一个入口函数，">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS 十个实用小技巧">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/06/JS-十个实用小技巧/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="JS 十个实用小技巧前言每一门语言都有一些奇技淫巧，JS也不例外，一直想总结这么篇文章，我包括一些新手，都会有这么一个疑问，每次面对一张空白的页面，不知从何下手，没有思路，高手有的是设计模式，但是在这里讲一些设计模式，我可能不够格，这些书籍都有可以自己去翻阅，我能给的就是，总结我写代码的时候，会优化的一些技巧 实用篇1.立即执行我为什么把立即执行放在第一个，因为一般做业务的时候都会有一个入口函数，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/!!%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2boolean%E5%80%BC.webp">
+<meta property="og:updated_time" content="2019-12-09T14:39:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS 十个实用小技巧">
+<meta name="twitter:description" content="JS 十个实用小技巧前言每一门语言都有一些奇技淫巧，JS也不例外，一直想总结这么篇文章，我包括一些新手，都会有这么一个疑问，每次面对一张空白的页面，不知从何下手，没有思路，高手有的是设计模式，但是在这里讲一些设计模式，我可能不够格，这些书籍都有可以自己去翻阅，我能给的就是，总结我写代码的时候，会优化的一些技巧 实用篇1.立即执行我为什么把立即执行放在第一个，因为一般做业务的时候都会有一个入口函数，">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/!!%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2boolean%E5%80%BC.webp">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/06/JS-十个实用小技巧/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>JS 十个实用小技巧 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/06/JS-十个实用小技巧/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">JS 十个实用小技巧
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-06 22:30:37" itemprop="dateCreated datePublished" datetime="2019-12-06T22:30:37+08:00">2019-12-06</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-09 22:39:00" itemprop="dateModified" datetime="2019-12-09T22:39:00+08:00">2019-12-09</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JS-十个实用小技巧"><a href="#JS-十个实用小技巧" class="headerlink" title="JS 十个实用小技巧"></a>JS 十个实用小技巧</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>每一门语言都有一些奇技淫巧，JS也不例外，一直想总结这么篇文章，我包括一些新手，都会有这么一个疑问，每次面对一张空白的页面，不知从何下手，没有思路，高手有的是设计模式，但是在这里讲一些设计模式，我可能不够格，这些书籍都有可以自己去翻阅，我能给的就是，总结我写代码的时候，会优化的一些技巧</p>
+<h2 id="实用篇"><a href="#实用篇" class="headerlink" title="实用篇"></a>实用篇</h2><h3 id="1-立即执行"><a href="#1-立即执行" class="headerlink" title="1.立即执行"></a>1.立即执行</h3><p>我为什么把立即执行放在第一个，因为一般做业务的时候都会有一个入口函数，比如一下这种格式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line">init()</span><br></pre></td></tr></table></figure>
+
+<p>我一开始也跟上面这样写，但是后来看了《你所不知道的javaScript》，我是这么写的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">init</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+
+<p>立即执行的好处：<br>作用域隔离,因为init这个函数名是没有必要在全局作用域中展示的</p>
+<h3 id="2-常量解耦"><a href="#2-常量解耦" class="headerlink" title="2.常量解耦"></a>2.常量解耦</h3><p>这个技巧我在业务中也是经常使用的，没学会之前是这么写的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">12345678901</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是学会之后，是这样的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> TEL = <span class="number">12345678901</span></span><br><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(TEL)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可能这里有人会问，你这不是多此一举，而且还添加了一个全局常量，但是事实是这样的，好处如下：</p>
+<ul>
+<li>当多处引用这个常量的时候，当你修改的时候，只要修改一处代码即可</li>
+<li>这样写出来的代码更具语义话，举个例子，有些请求回调中ERROR常量一般为1，摆在那别人很难看懂</li>
+</ul>
+<h3 id="3-递归的解耦"><a href="#3-递归的解耦" class="headerlink" title="3.递归的解耦"></a>3.递归的解耦</h3><p>这个方法在红宝书中有写到，我不知道常不常用，如有错误，请纠正我，因为我递归一直在用，面试写算法题也在用，没学会之前的写法</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    a();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>学会之后，我的递归一般是这么写的</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//...</span></span><br><span class="line">    argument.callee();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解耦的好处：<br>修改函数名即可，不影响里面的代码<br>补充：<br>评论里指出的很正确，在严格模式下不能使用，我去mdn的官网翻了api文档，贴图如下：</p>
+<p>![](<a href="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/JS" target="_blank" rel="noopener">https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/JS</a> 十个实用小技巧.webp)</p>
+<h3 id="4-整数的转换之加法篇"><a href="#4-整数的转换之加法篇" class="headerlink" title="4.整数的转换之加法篇"></a>4.整数的转换之加法篇</h3><p>你可能以前看到过parseInt和parseFloat这两个方法来转换成number类型的整数型和浮点型，其实，一开始我也是用这么笨的方法的，为什么说笨呢，举个例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">'123'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> <span class="built_in">parseInt</span>(str));    <span class="comment">//number</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来是加号操作符</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">'123'</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">typeof</span> +str);    <span class="comment">//number</span></span><br></pre></td></tr></table></figure>
+
+<p>好处就不多说了吧，你打字打得累死，不如加号来的快，而且加号实现方式还优雅</p>
+<h3 id="5-短路操作"><a href="#5-短路操作" class="headerlink" title="5.短路操作"></a>5.短路操作</h3><p>没学会这个方法之前我的代码是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!foo)&#123;</span><br><span class="line">   foo = bar</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是我学会短路操作之后的是这样的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo = foo || bar</span><br></pre></td></tr></table></figure>
+
+<p>好处：</p>
+<ol>
+<li>代码量减少</li>
+<li>书写优雅</li>
+</ol>
+<p>缺点：<br>代码可读性降低</p>
+<p>短路原理：<br>在js中&amp;&amp;和||这两个操作符有一个特性，比如&amp;&amp;前后有两个表达式，前者为false，后者不会执行，||会反过来</p>
+<p>补充：评论里面有人建议用!!代表true，用!代表false，这一点认可，这样操作是有好处的，!!代表强制转化成true，这样做的目的就是保证值只能在true/false中取，而非其它值。最近在看vue源码，细想一下，尤神也有对这点的应用</p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/!!%E5%BC%BA%E5%88%B6%E8%BD%AC%E6%8D%A2boolean%E5%80%BC.webp" alt></p>
+<h3 id="6-条件表达式"><a href="#6-条件表达式" class="headerlink" title="6.条件表达式"></a>6.条件表达式</h3><p>条件表达式或许在每门语言中都会用到，你没学会之前你会这么写</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(a === <span class="literal">true</span>)&#123;</span><br><span class="line">   b = c;</span><br><span class="line">&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">    b = d;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是你学会之后，你会这么写</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> b = a ? c : d</span><br></pre></td></tr></table></figure>
+
+<p>好处：<br>1.减少代码量<br>2.代码优雅</p>
+<p>缺点：<br>代码可读性降低</p>
+<h3 id="7-跳过"><a href="#7-跳过" class="headerlink" title="7.跳过"></a>7.跳过</h3><h3 id="8-优雅的向下取整"><a href="#8-优雅的向下取整" class="headerlink" title="8.优雅的向下取整"></a>8.优雅的向下取整</h3><p>向下取整有很多种方式，做常用的，是调用Math的方法，如下图的例子</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">1.23</span></span><br><span class="line"><span class="keyword">let</span> num1 = <span class="built_in">Math</span>.floor(num);</span><br><span class="line"><span class="built_in">console</span>.log(num1); <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+
+<p>但是下面有一种更加优雅的方式</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num = <span class="number">1.23</span></span><br><span class="line"><span class="keyword">let</span> num1 = num | <span class="number">0</span>;</span><br><span class="line"><span class="built_in">console</span>.log(num1)  <span class="comment">// 1</span></span><br></pre></td></tr></table></figure>
+
+<p>这种方式更加简洁，这种方式的原理是来源于js的位运算，这边的 | 不是逻辑或，是按或运算</p>
+<ul>
+<li>注意点：<ul>
+<li>Math.floor(NaN)返回的是NaN，但是或零返回的是0；</li>
+<li>Math.floor(Infinity)返回的是Infinity，但是或零返回的是0；</li>
+</ul>
+</li>
+</ul>
+<p>补充:评论中补充了一个～～也可以向下取整，确实更加优雅，推荐，关于这个原理有兴趣的朋友可以自己去看一下，～是取反操作符，我试了一下1.234取反是-2，在取反就是1，不过以上注意点变了</p>
+<ul>
+<li>~~NaN等于0，这个原理就是js会先调用Number，把NaN转化成false，false取反就是-1，在取反就是0。</li>
+</ul>
+<h3 id="9-单声明的形式"><a href="#9-单声明的形式" class="headerlink" title="9.单声明的形式"></a>9.单声明的形式</h3><p>在编程中，最好养成一个习惯，一个函数的参数，声明在函数的顶部，然后用这个声明操作符来完成，例如：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="number">0</span>,</span><br><span class="line">     b = <span class="number">0</span>,</span><br><span class="line">     c = <span class="number">0</span>,</span><br><span class="line">     d = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样的好处有：</p>
+<ul>
+<li>变量名不散乱，比较容易寻找</li>
+<li>少代码量</li>
+<li>防止你声明变量的时候出错</li>
+</ul>
+<h3 id="10-绑定this"><a href="#10-绑定this" class="headerlink" title="10.绑定this"></a>10.绑定this</h3><p>这个怎么解释呢？其实es6箭头函数已经解决了，我也当一个技巧跟大家絮叨絮叨，我们在设计整个js代码怎么书写的时候，常常会把一块功能相同的代码放到一块，看看下面的例子，你就懂了</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">bindEvent</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">let</span> _this = <span class="keyword">this</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">a</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可以在a中使用_this;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">b</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">//可以在b中使用_this;</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="11-快速的将-false-或者-true-字符串转换为-Boolean"><a href="#11-快速的将-false-或者-true-字符串转换为-Boolean" class="headerlink" title="11.快速的将 false 或者 true 字符串转换为 Boolean"></a>11.快速的将 <code>false</code> 或者 <code>true</code> 字符串转换为 <code>Boolean</code></h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">JSON</span>.parse(<span class="string">'false'</span>)</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/06/ϸ˵-Array-prototype-slice-call/" rel="next" title="细说 Array.prototype.slice.call">
+                  <i class="fa fa-chevron-left"></i> 细说 Array.prototype.slice.call
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/06/Vue-项目开发完全指南/" rel="prev" title="Vue 项目开发完全指南">
+                  Vue 项目开发完全指南 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JS-十个实用小技巧"><span class="nav-number">1.</span> <span class="nav-text">JS 十个实用小技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实用篇"><span class="nav-number">1.2.</span> <span class="nav-text">实用篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-立即执行"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.立即执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-常量解耦"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.常量解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-递归的解耦"><span class="nav-number">1.2.3.</span> <span class="nav-text">3.递归的解耦</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-整数的转换之加法篇"><span class="nav-number">1.2.4.</span> <span class="nav-text">4.整数的转换之加法篇</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-短路操作"><span class="nav-number">1.2.5.</span> <span class="nav-text">5.短路操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-条件表达式"><span class="nav-number">1.2.6.</span> <span class="nav-text">6.条件表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-跳过"><span class="nav-number">1.2.7.</span> <span class="nav-text">7.跳过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-优雅的向下取整"><span class="nav-number">1.2.8.</span> <span class="nav-text">8.优雅的向下取整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-单声明的形式"><span class="nav-number">1.2.9.</span> <span class="nav-text">9.单声明的形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-绑定this"><span class="nav-number">1.2.10.</span> <span class="nav-text">10.绑定this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-快速的将-false-或者-true-字符串转换为-Boolean"><span class="nav-number">1.2.11.</span> <span class="nav-text">11.快速的将 false 或者 true 字符串转换为 Boolean</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

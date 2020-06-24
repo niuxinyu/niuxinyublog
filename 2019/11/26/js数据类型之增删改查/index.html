@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="JS数据类型复杂类型学习之增删改查七种数据类型number、string、bool、symbol、undefined、null、Object 总结四基两空一对象 五个 falsy值undefined、null、0、NaN、’ ‘(空字符串) falsy 相当于是 false 但是不是false的值 对象 Object （第七种数据类型，唯一一个复杂数据类型）定义：  无序的数据集合 键值对的集合">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js数据类型之增删改查">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/11/26/js数据类型之增删改查/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="JS数据类型复杂类型学习之增删改查七种数据类型number、string、bool、symbol、undefined、null、Object 总结四基两空一对象 五个 falsy值undefined、null、0、NaN、’ ‘(空字符串) falsy 相当于是 false 但是不是false的值 对象 Object （第七种数据类型，唯一一个复杂数据类型）定义：  无序的数据集合 键值对的集合">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-11-26T13:40:10.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="js数据类型之增删改查">
+<meta name="twitter:description" content="JS数据类型复杂类型学习之增删改查七种数据类型number、string、bool、symbol、undefined、null、Object 总结四基两空一对象 五个 falsy值undefined、null、0、NaN、’ ‘(空字符串) falsy 相当于是 false 但是不是false的值 对象 Object （第七种数据类型，唯一一个复杂数据类型）定义：  无序的数据集合 键值对的集合">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/11/26/js数据类型之增删改查/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>js数据类型之增删改查 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/11/26/js数据类型之增删改查/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">js数据类型之增删改查
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-11-26 21:37:12 / 修改时间：21:40:10" itemprop="dateCreated datePublished" datetime="2019-11-26T21:37:12+08:00">2019-11-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="JS数据类型复杂类型学习之增删改查"><a href="#JS数据类型复杂类型学习之增删改查" class="headerlink" title="JS数据类型复杂类型学习之增删改查"></a>JS数据类型复杂类型学习之增删改查</h1><h2 id="七种数据类型"><a href="#七种数据类型" class="headerlink" title="七种数据类型"></a>七种数据类型</h2><p>number、string、bool、symbol、undefined、null、Object</p>
+<p>总结四基两空一对象</p>
+<h2 id="五个-falsy值"><a href="#五个-falsy值" class="headerlink" title="五个 falsy值"></a>五个 falsy值</h2><p>undefined、null、0、NaN、’ ‘(空字符串)</p>
+<p>falsy 相当于是 false 但是不是false的值</p>
+<h2 id="对象-Object-（第七种数据类型，唯一一个复杂数据类型）"><a href="#对象-Object-（第七种数据类型，唯一一个复杂数据类型）" class="headerlink" title="对象 Object （第七种数据类型，唯一一个复杂数据类型）"></a>对象 Object （第七种数据类型，唯一一个复杂数据类型）</h2><p>定义：</p>
+<ul>
+<li>无序的数据集合</li>
+<li>键值对的集合</li>
+</ul>
+<p>写法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123; <span class="string">'name'</span>: <span class="string">'rose'</span> , <span class="string">'age'</span>: <span class="string">'18'</span> &#125;</span><br><span class="line"><span class="keyword">let</span> obj = <span class="keyword">new</span> object ( &#123; <span class="string">'name'</span>: <span class="string">'rose'</span>  &#125; )  <span class="comment">//这是正规写法，第一种是简单写法</span></span><br><span class="line"><span class="built_in">console</span>.log = ( &#123; <span class="string">'name'</span>: <span class="string">'rose'</span> , <span class="string">'age'</span>: <span class="string">'18'</span> &#125; )  <span class="comment">//未命名对象，</span></span><br></pre></td></tr></table></figure>
+
+<p>细节：</p>
+<ul>
+<li>键名是字符串，不是标识符，可以包含任意字符</li>
+<li>引号可以省略，省略之后就只能写标识符</li>
+<li>就算引号省略了，键名也还是字符串（重点）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">属性名：每个 key 都是对象的属性名</span><br><span class="line">属性值：每个 value 都是对象的属性值</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">实践1</span><br><span class="line"></span><br><span class="line">Object.key(obj);</span><br><span class="line">可以得到 obj 的key</span><br><span class="line"></span><br><span class="line">所有的属性名会自动变成字符串</span><br><span class="line"></span><br><span class="line">Object.keys(obj);</span><br><span class="line">可以得到 obj 所有的key</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">实践2</span><br><span class="line"></span><br><span class="line">变量做属性名</span><br><span class="line"></span><br><span class="line">语法</span><br><span class="line">let p1 = &apos;name&apos;</span><br><span class="line">let obj = &#123; p1:&apos;rose&apos; &#125;这样写，属性名为字符串&apos;p1&apos;</span><br><span class="line">let obj = &#123; [p1]:&apos;rose&apos; &#125;这样写，属性名为字符串&apos;name&apos;</span><br><span class="line"></span><br><span class="line">对比</span><br><span class="line">不加 [] 的属性名会自动变成字符串</span><br><span class="line">加了 [] 的属性名会当做变量求值</span><br><span class="line">值如果不是字符串，会自动变成字符串</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">超纲知识</span><br><span class="line">以后学习“迭代”用的还上</span><br></pre></td></tr></table></figure>
+
+<p>原型</p>
+<ul>
+<li>所有的对象都有原型<ul>
+<li>原型中存储着对象的共有属性</li>
+<li>比如 obj 的原型就是一个对象；</li>
+<li><code>obj.__proto__</code> 存着这个对象的地址</li>
+<li>这个对象里有 toString / valueOf / constructor 等属性</li>
+</ul>
+</li>
+<li>对象的原型也是对象<ul>
+<li>所以对象的原型也是原型</li>
+<li>obj = {} 的原型即为所有对象的原型</li>
+<li>这个原型包含所有对象的共有属性，是对象的根</li>
+<li>这个原型也有原型，是 null</li>
+</ul>
+</li>
+</ul>
+<h2 id="对象的-增、删、改、查"><a href="#对象的-增、删、改、查" class="headerlink" title="对象的 增、删、改、查"></a>对象的 增、删、改、查</h2><p><strong>删除属性</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> obj.xxx 或 <span class="keyword">delete</span> obj[<span class="string">'xxx'</span>]</span><br><span class="line"><span class="number">1</span>、即可删除 obj 的 xxx 属性</span><br><span class="line"><span class="number">2</span>、请区分“属性值为<span class="literal">undefined</span>”和 “不含属性名”</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">不含属性名</span><br><span class="line"><span class="string">'xxx'</span> <span class="keyword">in</span> obj === <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">含有属性名，但是值为<span class="literal">undefined</span></span><br><span class="line"><span class="string">'xxx'</span> <span class="keyword">in</span> obj &amp;&amp; obj.xxx === <span class="literal">undefined</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">注意 obj.xxx === <span class="literal">undefined</span> ,不能判定 <span class="string">'xxx'</span> 是否为 obj 的属性</span><br><span class="line">示例</span><br><span class="line"><span class="keyword">var</span> obj = &#123;&#125;</span><br><span class="line"><span class="keyword">var</span> obj2 = &#123; <span class="attr">x</span>: <span class="literal">undefined</span> &#125;</span><br><span class="line">obj x === <span class="literal">undefined</span> <span class="comment">//得到 true</span></span><br><span class="line">obj2 x  === <span class="literal">undefined</span> <span class="comment">//得到 true</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">实践<span class="number">1</span></span><br><span class="line"><span class="keyword">var</span> obj = &#123;<span class="attr">name</span>:<span class="string">'rose'</span>,<span class="attr">age</span>:<span class="string">'18'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>、obj.name = <span class="literal">undefined</span></span><br><span class="line"><span class="number">2</span>、<span class="keyword">delete</span> obj.name <span class="comment">//也可以这样 delete obj['name']</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>和<span class="number">2</span>的区别</span><br><span class="line">一号只删除属性值，属性名还在，属性值为<span class="literal">undefined</span>；</span><br><span class="line">二号完全删除属性值和属性名。</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看属性（也是读属性）</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">查看自身所有属性</span><br><span class="line"><span class="built_in">Object</span>.keys(obj);</span><br><span class="line">可以得到 obj 所有的key</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.values(obj);</span><br><span class="line">可以得到 obj 所有的值</span><br><span class="line"></span><br><span class="line"><span class="built_in">Object</span>.entries(obj);</span><br><span class="line">可以得到 obj 所有的 key 和值</span><br><span class="line"></span><br><span class="line">查看自身加共有属性</span><br><span class="line"><span class="built_in">console</span>.dir(obj)</span><br><span class="line">或者自己依次使用 <span class="built_in">Object</span>.keys 打印出 obj.__proto__</span><br><span class="line"></span><br><span class="line">判断一个属性是自身的还是共有的</span><br><span class="line">obj.hasOwnProperty(<span class="string">'toString'</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">查看一个属性</span><br><span class="line"></span><br><span class="line">两种方法查看属性</span><br><span class="line"><span class="number">1</span>、中括号语法： obj[<span class="string">'key'</span>]</span><br><span class="line"><span class="number">2</span>、点语法： obj.key</span><br><span class="line"><span class="number">3</span>、坑新人语法： obj[key] <span class="comment">//变量 key 值一般不为 'key'</span></span><br><span class="line"></span><br><span class="line">重点：</span><br><span class="line"><span class="number">1</span>、新手优先使用中括号语法，点语法容易误导你，让你以为 key 不是字符串</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改或增加属性（写属性）</strong></p>
+<ul>
+<li>直接赋值</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;<span class="attr">name</span>:<span class="string">'rose'</span>&#125; <span class="comment">// name 是字符串</span></span><br><span class="line">obj.name = <span class="string">'rose'</span> <span class="comment">// name 是字符串</span></span><br><span class="line">obj[<span class="string">'name'</span>] = <span class="string">'rose'</span></span><br><span class="line">&lt;&lt;obj[name] = <span class="string">'rose'</span> <span class="comment">//错误的，因为 name 的值是不确定的&gt;&gt;</span></span><br><span class="line"></span><br><span class="line">obj [<span class="string">'na'</span> + <span class="string">'me'</span>] = <span class="string">'rose'</span></span><br><span class="line"><span class="keyword">let</span> key = <span class="string">'name'</span>;obj[key] = <span class="string">'rose'</span></span><br><span class="line">&lt;&lt;<span class="keyword">let</span> key = <span class="string">'name'</span>;obj.key = <span class="string">'rose'</span> <span class="comment">//错，因为obj.key 等价 obj['key']&gt;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>批量赋值</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.assign(obj,&#123;<span class="attr">age</span>:<span class="string">'18'</span>, <span class="attr">gender</span>: <span class="string">'man'</span> &#125;)</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改或者增加共有属性</strong></p>
+<ul>
+<li>无法通过自身修改或者增加共有属性</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;&#125;；obj2 = &#123;&#125; <span class="comment">// 共有 toString</span></span><br><span class="line">obj.toString = <span class="string">'xxx'</span> <span class="comment">//只会改 obj 的自身属性</span></span><br><span class="line">obj2.toString <span class="comment">//还在原型上</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>强制修改或者增加原型上的属性</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、obj.__proto__.toString = <span class="string">'xxx'</span> <span class="comment">//不推荐使用__proto__</span></span><br><span class="line"><span class="number">2</span>、<span class="built_in">Object</span>.protoye.toString = <span class="string">'xxx'</span></span><br><span class="line"><span class="number">3</span>、一般来说，不要修改原型，会引发很多问题</span><br></pre></td></tr></table></figure>
+
+<p><strong>修改隐藏属性</strong></p>
+<ul>
+<li>不推荐使用 <code>__proto__</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;<span class="attr">name</span>: <span class="string">'rose'</span>&#125;</span><br><span class="line"><span class="keyword">let</span> obj2 = &#123;<span class="attr">name</span>: <span class="string">'jack'</span>&#125;</span><br><span class="line"><span class="keyword">let</span> common = &#123;<span class="attr">kind</span>: <span class="string">'human'</span>&#125;</span><br><span class="line">obj.__proto__ = common</span><br><span class="line">obj2.__proto__ = common</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>推荐使用<code>Object.create</code></li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = <span class="built_in">Object</span>.create(common)</span><br><span class="line">obj.name = <span class="string">'rose'</span></span><br><span class="line"><span class="keyword">let</span> obj2 = <span class="built_in">Object</span>.create(common)</span><br><span class="line">obj2.name = <span class="string">'jack'</span></span><br><span class="line"></span><br><span class="line">规范</span><br><span class="line">要改的话一开始就改，别后来再改</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>删</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>、<span class="keyword">delete</span> obj[<span class="string">'xxx'</span>]</span><br><span class="line"><span class="number">2</span>、<span class="string">'name'</span> <span class="keyword">in</span> obj <span class="comment">// false</span></span><br><span class="line"><span class="number">3</span>、obj.hasOwnporperty(<span class="string">'name'</span>) <span class="comment">//false</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>和<span class="number">3</span>的区别：</span><br><span class="line">查看 <span class="string">'xxx'</span> 这个属性是自身的还是原型的；</span><br><span class="line">第二种可以证明 <span class="string">'name'</span> 是否在 obj 中，在返回 <span class="literal">true</span> 、不在返回 <span class="literal">false</span>；</span><br><span class="line">但是无法证明实在自身属性还是原型属性里面的；</span><br><span class="line">第三种直接证明是否是自身拥有，只有一种 <span class="literal">false</span> ，自身不存在。</span><br></pre></td></tr></table></figure>
+
+<p><strong>查</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.keys(obj)</span><br><span class="line"><span class="built_in">console</span>.dir(obj)</span><br><span class="line">obj[<span class="string">'name'</span>]</span><br><span class="line">obj.name <span class="comment">//这里的 name 是字符串</span></span><br><span class="line">obj[name] <span class="comment">//这里的 name 是变量</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>改</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">改自身 obj[<span class="string">'name'</span>] = <span class="string">'jack'</span></span><br><span class="line">批量改自身 <span class="built_in">Object</span>.assign(obj,&#123;<span class="attr">age</span>:<span class="string">'18'</span>,...&#125;)</span><br><span class="line">改共有属性 obj.__proto__[<span class="string">'toString'</span>] = <span class="string">'xxx'</span></span><br><span class="line">改共有属性 object.prototype[<span class="string">'toString'</span>] = <span class="string">'xxx'</span></span><br><span class="line">该原型 obj.__proto__ = common</span><br><span class="line">该原型 <span class="keyword">let</span> obj = object.create = common</span><br><span class="line"></span><br><span class="line">重点</span><br><span class="line">所有 __proto__ 代码都是强烈不推荐的使用的</span><br></pre></td></tr></table></figure>
+
+<p><strong>增</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">基本上和“改”一样，已有的属性就是改，没有的属性就是增加</span><br></pre></td></tr></table></figure>
+
+<p>[原文地址](JS数据类型复杂类型学习之增删改查 - Alejandro的文章 - 知乎<br><a href="https://zhuanlan.zhihu.com/p/86563057" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/86563057</a>)</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/31/post-Vue组件通信的六种方式/" rel="next" title="post Vue组件通信的六种方式">
+                  <i class="fa fa-chevron-left"></i> post Vue组件通信的六种方式
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/11/26/应该知道的一些ES6基础知识/" rel="prev" title="应该知道的一些ES6基础知识">
+                  应该知道的一些ES6基础知识 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JS数据类型复杂类型学习之增删改查"><span class="nav-number">1.</span> <span class="nav-text">JS数据类型复杂类型学习之增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#七种数据类型"><span class="nav-number">1.1.</span> <span class="nav-text">七种数据类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五个-falsy值"><span class="nav-number">1.2.</span> <span class="nav-text">五个 falsy值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象-Object-（第七种数据类型，唯一一个复杂数据类型）"><span class="nav-number">1.3.</span> <span class="nav-text">对象 Object （第七种数据类型，唯一一个复杂数据类型）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象的-增、删、改、查"><span class="nav-number">1.4.</span> <span class="nav-text">对象的 增、删、改、查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

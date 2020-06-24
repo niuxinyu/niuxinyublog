@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="flex 布局写在前边网页布局，是前端入门的时候必学、必须熟练的一门技术，学到什么程度算是入门了呢？随便给你一个网站，你就可能快速的分析出网页的结构，然后搭建出模型，这是前端网页布局入门的最基本要求。 作为一个前端初学者，在学习的时候可能会用到一些盒模型传统的布局方式（display + position + float），很多小伙伴用着用着就觉得这种传统布局写一些样式比较麻烦、不方便，比如垂直居">
+<meta name="keywords" content="CSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flex 布局">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/08/flex-布局/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="flex 布局写在前边网页布局，是前端入门的时候必学、必须熟练的一门技术，学到什么程度算是入门了呢？随便给你一个网站，你就可能快速的分析出网页的结构，然后搭建出模型，这是前端网页布局入门的最基本要求。 作为一个前端初学者，在学习的时候可能会用到一些盒模型传统的布局方式（display + position + float），很多小伙伴用着用着就觉得这种传统布局写一些样式比较麻烦、不方便，比如垂直居">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E8%AE%A4%E8%AF%86flex%E5%B8%83%E5%B1%80.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-2.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-3.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-4.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-5.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3--6.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-7.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B7%A6%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%8F%B3%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B1%85%E4%B8%AD.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%B8%A4%E7%AB%AF%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%B8%A4%E7%AB%AF%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E8%B5%B7%E7%82%B9%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E7%BB%88%E7%82%B9%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E4%B8%AD%E7%82%B9%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E9%A1%B9%E7%9B%AE%E7%AC%AC%E4%B8%80%E8%A1%8C%E5%9F%BA%E7%BA%BF%E5%AF%B9%E9%BD%90.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%8D%A0%E6%BB%A1%E6%95%B4%E4%B8%AA%E5%AE%B9%E5%99%A8%E7%9A%84%E9%AB%98%E5%BA%A6.webp">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex-shrink%E6%8C%87%E5%AE%9A%E9%A1%B9%E7%9B%AE%E5%A4%A7%E5%B0%8F.webp">
+<meta property="og:updated_time" content="2019-12-09T13:32:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="flex 布局">
+<meta name="twitter:description" content="flex 布局写在前边网页布局，是前端入门的时候必学、必须熟练的一门技术，学到什么程度算是入门了呢？随便给你一个网站，你就可能快速的分析出网页的结构，然后搭建出模型，这是前端网页布局入门的最基本要求。 作为一个前端初学者，在学习的时候可能会用到一些盒模型传统的布局方式（display + position + float），很多小伙伴用着用着就觉得这种传统布局写一些样式比较麻烦、不方便，比如垂直居">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80.webp">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/08/flex-布局/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>flex 布局 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/08/flex-布局/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">flex 布局
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-08 21:44:43" itemprop="dateCreated datePublished" datetime="2019-12-08T21:44:43+08:00">2019-12-08</time>
+            </span>
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-09 21:32:44" itemprop="dateModified" datetime="2019-12-09T21:32:44+08:00">2019-12-09</time>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="flex-布局"><a href="#flex-布局" class="headerlink" title="flex 布局"></a>flex 布局</h1><h3 id="写在前边"><a href="#写在前边" class="headerlink" title="写在前边"></a>写在前边</h3><p>网页布局，是前端入门的时候必学、必须熟练的一门技术，学到什么程度算是入门了呢？随便给你一个网站，你就可能快速的分析出网页的结构，然后搭建出模型，这是前端网页布局入门的最基本要求。</p>
+<p>作为一个前端初学者，在学习的时候可能会用到一些盒模型传统的布局方式（display + position + float），很多小伙伴用着用着就觉得这种传统布局写一些样式比较麻烦、不方便，比如垂直居中的传统实现方式如。</p>
+<p><strong>第一种实现方式：</strong></p>
+<blockquote>
+<p>原本外容器没有设置高度的时候会紧贴内元素，但是设置容器内的上下内边距相同的数值时，此时就实现了垂直居中。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80.webp" alt></p>
+<p><strong>第二种实现方式：</strong></p>
+<blockquote>
+<p>使用 Vertical-align 属性实现垂直居中。</p>
+</blockquote>
+<p>但是这个属性往往初学者容易弄混，不知道何时才使用，有时元素设置这个属性并生效，这是怎么回事呢？也是初学者往往最头疼的一个问题，这个属性涉及到的内容不是一篇两篇文章写完的，这篇我们不多涉及到。</p>
+<p><strong>第三种实现方式：</strong></p>
+<blockquote>
+<p>　使用 line-height 设置父容器行高的方式进行垂直居中，但是只适用单行文本。</p>
+</blockquote>
+<p>其实垂直居中网页布局中传统实现方式很多种，但是这么多种不同情况下进行选择太麻烦了，我们有没有规定一个方式就能无论是行内元素还是块元素就能实现垂直居中呢？</p>
+<p>我们尝试今天要分享的 Flex 试一下垂直居中实现如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.wrapper &#123;</span><br><span class="line">    display: felx;</span><br><span class="line">    flex-direction: row;</span><br><span class="line">    align-items: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 只需在外容器的 CSS 中设置这两个属性就可以轻松实现垂直居中。</p>
+<p>完整代码实现如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'wrapper'</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'item'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'item'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'item'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.wrapper</span> &#123;</span></span><br><span class="line">        width: 95px;</span><br><span class="line">        height: 100px;</span><br><span class="line">        border: 1px solid red;</span><br><span class="line">        display: felx;</span><br><span class="line">        flex-direction: row;</span><br><span class="line">        align-items: center;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="css">    <span class="selector-class">.item</span> &#123;</span></span><br><span class="line">        width: 25px;</span><br><span class="line">        height: 25px;</span><br><span class="line"><span class="css">        <span class="selector-tag">background</span>: <span class="selector-id">#f53c03</span>;</span></span><br><span class="line">        margin-left: 5px;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>是不是第二种非常的方便？其实就是一句垂直居中代码，align-items: center;</p>
+<p>那么今天小鹿就来分享一种新布局方式，可能对于刚学习前端的小伙伴来说是种新的，但是作为一些进阶者，这种布局经常在项目中被灵活使用，得到了很多开发者的喜爱，用着用着就爱上了这种布局的方式 —— Flex布局。</p>
+<p>看完这篇文章，小鹿也会通过生动有趣的动画，让你爱上 Flex 布局。</p>
+<h3 id="思维导图"><a href="#思维导图" class="headerlink" title="思维导图"></a>思维导图</h3><p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E6%80%9D%E7%BB%B4%E5%AF%BC%E5%9B%BE.webp" alt></p>
+<h3 id="1、什么是-Flex-布局？"><a href="#1、什么是-Flex-布局？" class="headerlink" title="1、什么是 Flex 布局？"></a>1、什么是 Flex 布局？</h3><p>Flex 布局又为弹性布局，所谓弹性，就很大的提供了页面布局的灵活性。</p>
+<p>我们可以把一个容器（div、span等），设置它的 CSS 的 display 属性为 flex 之后，我们就可以使用 Flex 的布局方式了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">'wrapper'</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css">    <span class="selector-class">.wrapper</span> &#123;</span></span><br><span class="line">        display: flex;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>PS：一旦容器设置display: flex布局之后，我们使用的传统布局中的float、vertical-align、clear等属性就完全失效了。但是我们可以通过 Flex 设置的属性去进行布局。</p>
+</blockquote>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3.webp" alt></p>
+<h3 id="2、认识-Flex-布局"><a href="#2、认识-Flex-布局" class="headerlink" title="2、认识 Flex 布局"></a>2、认识 Flex 布局</h3><p>因为我们再用传统布局的时候，对齐元素进行垂直居中，代码特别的麻烦，为了更好的解决这个问题，Flex 布局就规定设置横、纵两个方向，我们无论在水平排列还是垂直排列的时候，这样写起来更方便了。</p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E8%AE%A4%E8%AF%86flex%E5%B8%83%E5%B1%80.webp" alt></p>
+<p>而且 Flex 布局设置了三个位置，左边、中间、右边，而且都有对应的属性，就可以很轻松的设置元素的位置了。</p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-2.webp" alt></p>
+<p>光说不练假把式，我们就开始动手写代码实践一下，跟着小鹿一起打开编译器。</p>
+<h3 id="3、容器的基本属性"><a href="#3、容器的基本属性" class="headerlink" title="3、容器的基本属性"></a>3、容器的基本属性</h3><h4 id="3-1-flex-direction"><a href="#3-1-flex-direction" class="headerlink" title="3.1 flex-direction"></a>3.1 flex-direction</h4><p>这个属性主要用来调节布局元素的方向的，比如你想纵向排列。如下：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">flex-direction</span>: <span class="selector-tag">column</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-3.webp" alt></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">flex-direction</span>: <span class="selector-tag">row</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-4.webp" alt></p>
+<p>常用的就是上边这两个，其他两个相反方向的排列方式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">flex-direction</span>: <span class="selector-tag">column-reverse</span>;</span><br><span class="line"><span class="selector-tag">flex-direction</span>: <span class="selector-tag">row-reverse</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-flex-wrap"><a href="#3-2-flex-wrap" class="headerlink" title="3.2 flex-wrap"></a>3.2 flex-wrap</h4><p>这个作为换行属性，如果当元素一行摆放不开了，我们需要选择如何换行？不换行还是换行，还是换行到第一行的上方呢？</p>
+<p><strong>(1)nowrap不换行</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-5.webp" alt></p>
+<p><strong>(2)wrap换行</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3--6.webp" alt></p>
+<p><strong>(3)wrap-reverse换到第一行</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B8%83%E5%B1%80%E5%9B%BE%E8%A7%A3-7.webp" alt></p>
+<p>我们通过上边的属性很容易实现的。</p>
+<h4 id="3-3-justify-content"><a href="#3-3-justify-content" class="headerlink" title="3.3 justify-content"></a>3.3 justify-content</h4><p>之前我们传统布局的水平居中有这几种方式：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 块级元素水平居中</span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>: auto;</span><br><span class="line">&#125;</span><br><span class="line">// 文字水平居中</span><br><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">text-align</span>: center;</span><br><span class="line">&#125;</span><br><span class="line">// 绝对定位</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>但是在 Flex 布局几种水平位置的布局。这样用起来让页面的布局更加的灵活、多变。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>(1)flex-start(默认) ：左对齐</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B7%A6%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(2)flex-end：右对齐</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%8F%B3%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(3)center：居中</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%B1%85%E4%B8%AD.webp" alt></p>
+<p><strong>(4)space-between：两端对齐，项目之间的间隔都相等</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%B8%A4%E7%AB%AF%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(5)space-around：每个项目两侧的间隔相等。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%B8%A4%E7%AB%AF%E5%AF%B9%E9%BD%90.webp" alt></p>
+<h4 id="3-4-align-items"><a href="#3-4-align-items" class="headerlink" title="3.4 align-items"></a>3.4 align-items</h4><p>既然有水平居中，那么就有垂直居中，垂直居中上边我们也说过，传统的布局比较麻烦，所以我们要见识一下 Flex 布局的强大之处。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">    <span class="attribute">align-items</span>: flex-start | flex-end | center | baseline | stretch</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过这个align-items属性值，很轻松的实现垂直居中。</p>
+<p><strong>(1)flex-start：交叉轴的起点对齐。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E8%B5%B7%E7%82%B9%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(2)flex-end：交叉轴的终点对齐。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E7%BB%88%E7%82%B9%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(3)center：交叉轴的中点对齐。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E4%BA%A4%E5%8F%89%E8%BD%B4%E4%B8%AD%E7%82%B9%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(4)baseline：项目的第一行文字的基线对齐。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E9%A1%B9%E7%9B%AE%E7%AC%AC%E4%B8%80%E8%A1%8C%E5%9F%BA%E7%BA%BF%E5%AF%B9%E9%BD%90.webp" alt></p>
+<p><strong>(5)stretch：如果项目未设置高度或设为auto，将占满整个容器的高度。</strong></p>
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex%E5%8D%A0%E6%BB%A1%E6%95%B4%E4%B8%AA%E5%AE%B9%E5%99%A8%E7%9A%84%E9%AB%98%E5%BA%A6.webp" alt></p>
+<h3 id="4、容器内单个元素属性"><a href="#4、容器内单个元素属性" class="headerlink" title="4、容器内单个元素属性"></a>4、容器内单个元素属性</h3><p>我们上边是针对外容器的一些属性设置，我们下边的一些属性是针对于容器内元素的一些属性设置。让我们呢一个个来看一下最常用的。</p>
+<h4 id="4-1-flex-grow"><a href="#4-1-flex-grow" class="headerlink" title="4.1 flex-grow"></a>4.1 flex-grow</h4><p>该属性主要用来定义元素的放大比例，它的默认值是 0。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">    <span class="attribute">flex-grow</span>: &lt;number&gt; // 默认为<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>![](<a href="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex" target="_blank" rel="noopener">https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex</a> grow属性.webp)</p>
+<blockquote>
+<p>如果容器内的所有元素都设置为 1，则平分剩余的空间；如果其中一个设置为 2，则按比例平分剩余的空间。</p>
+</blockquote>
+<h4 id="4-2-flex-shrink"><a href="#4-2-flex-shrink" class="headerlink" title="4.2 flex-shrink"></a>4.2 flex-shrink</h4><p>该属性主要用来定义元素的缩小比例，默认值为 1。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">    <span class="attribute">flex-shrink</span>: &lt;number&gt; 默认为<span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/flex-shrink%E6%8C%87%E5%AE%9A%E9%A1%B9%E7%9B%AE%E5%A4%A7%E5%B0%8F.webp" alt></p>
+<h4 id="4-3-flex-basis"><a href="#4-3-flex-basis" class="headerlink" title="4.3 flex-basis"></a>4.3 flex-basis</h4><p>浏览器会根据该属性进行对主轴计算是否有多余的空间。默认值为 auto。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">    <span class="attribute">flex-basis</span>: &lt;length&gt; | auto // 默认为auto</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-4-flex"><a href="#4-4-flex" class="headerlink" title="4.4 flex"></a>4.4 flex</h4><p>该属性是以上三个属性的缩写形式，默认值为0 1 auto。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">    <span class="attribute">flex</span>: none | [&lt;flex-grop&gt; &lt;flex-shrink&gt; &lt;flex-basis&gt;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有两个其他的快捷属性，auto（1 1 auto） 和none（0 0 auto），浏览器会根据其推算相关的数值。</p>
+<p><a href="https://juejin.im/post/5dda62cff265da7df03fca6f" target="_blank" rel="noopener">原文地址</a></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/CSS/" rel="tag"># CSS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/08/如何写一个像axios那样优秀的请求库/" rel="next" title="如何写一个像axios那样优秀的请求库">
+                  <i class="fa fa-chevron-left"></i> 如何写一个像axios那样优秀的请求库
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/09/axios请求头设置传输编码格式/" rel="prev" title="axios请求头设置传输编码格式">
+                  axios请求头设置传输编码格式 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flex-布局"><span class="nav-number">1.</span> <span class="nav-text">flex 布局</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#写在前边"><span class="nav-number">1.0.1.</span> <span class="nav-text">写在前边</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思维导图"><span class="nav-number">1.0.2.</span> <span class="nav-text">思维导图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1、什么是-Flex-布局？"><span class="nav-number">1.0.3.</span> <span class="nav-text">1、什么是 Flex 布局？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、认识-Flex-布局"><span class="nav-number">1.0.4.</span> <span class="nav-text">2、认识 Flex 布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、容器的基本属性"><span class="nav-number">1.0.5.</span> <span class="nav-text">3、容器的基本属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1-flex-direction"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">3.1 flex-direction</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-flex-wrap"><span class="nav-number">1.0.5.2.</span> <span class="nav-text">3.2 flex-wrap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-justify-content"><span class="nav-number">1.0.5.3.</span> <span class="nav-text">3.3 justify-content</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-4-align-items"><span class="nav-number">1.0.5.4.</span> <span class="nav-text">3.4 align-items</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、容器内单个元素属性"><span class="nav-number">1.0.6.</span> <span class="nav-text">4、容器内单个元素属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1-flex-grow"><span class="nav-number">1.0.6.1.</span> <span class="nav-text">4.1 flex-grow</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-flex-shrink"><span class="nav-number">1.0.6.2.</span> <span class="nav-text">4.2 flex-shrink</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-flex-basis"><span class="nav-number">1.0.6.3.</span> <span class="nav-text">4.3 flex-basis</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-4-flex"><span class="nav-number">1.0.6.4.</span> <span class="nav-text">4.4 flex</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

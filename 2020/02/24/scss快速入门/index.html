@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="scss快速入门在使用scss之前，我们要知道Sass、Scss有什么不同？SCSS 是 Sass 3 引入新的语法，其语法完全兼容 CSS3，并且继承了 Sass 的强大功能。也就是说，任何标准的 CSS3 样式表都是具有相同语义的有效的 SCSS 文件，官方解释。 传统的css文件缺失变量等概念，导致需要书写的重复的代码很多。我写JS的习惯是遇见重复的代码就要思考是否可以抽出来写成一个可复用的">
+<meta name="keywords" content="Css">
+<meta property="og:type" content="article">
+<meta property="og:title" content="scss快速入门">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2020/02/24/scss快速入门/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="scss快速入门在使用scss之前，我们要知道Sass、Scss有什么不同？SCSS 是 Sass 3 引入新的语法，其语法完全兼容 CSS3，并且继承了 Sass 的强大功能。也就是说，任何标准的 CSS3 样式表都是具有相同语义的有效的 SCSS 文件，官方解释。 传统的css文件缺失变量等概念，导致需要书写的重复的代码很多。我写JS的习惯是遇见重复的代码就要思考是否可以抽出来写成一个可复用的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-02-24T13:49:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="scss快速入门">
+<meta name="twitter:description" content="scss快速入门在使用scss之前，我们要知道Sass、Scss有什么不同？SCSS 是 Sass 3 引入新的语法，其语法完全兼容 CSS3，并且继承了 Sass 的强大功能。也就是说，任何标准的 CSS3 样式表都是具有相同语义的有效的 SCSS 文件，官方解释。 传统的css文件缺失变量等概念，导致需要书写的重复的代码很多。我写JS的习惯是遇见重复的代码就要思考是否可以抽出来写成一个可复用的">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2020/02/24/scss快速入门/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>scss快速入门 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/02/24/scss快速入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">scss快速入门
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-02-24 21:30:38 / 修改时间：21:49:34" itemprop="dateCreated datePublished" datetime="2020-02-24T21:30:38+08:00">2020-02-24</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="scss快速入门"><a href="#scss快速入门" class="headerlink" title="scss快速入门"></a>scss快速入门</h1><h2 id="在使用scss之前，我们要知道Sass、Scss有什么不同？"><a href="#在使用scss之前，我们要知道Sass、Scss有什么不同？" class="headerlink" title="在使用scss之前，我们要知道Sass、Scss有什么不同？"></a>在使用scss之前，我们要知道Sass、Scss有什么不同？</h2><p>SCSS 是 Sass 3 引入新的语法，其语法完全兼容 CSS3，并且继承了 Sass 的强大功能。也就是说，任何标准的 CSS3 样式表都是具有相同语义的有效的 SCSS 文件，<a href="http://sass.bootcss.com/docs/scss-for-sass-users/" target="_blank" rel="noopener">官方解释</a>。</p>
+<p>传统的css文件缺失变量等概念，导致需要书写的重复的代码很多。我写JS的习惯是遇见重复的代码就要思考是否可以抽出来写成一个可复用的方法，但css中不存在变量函数等概念，这时我发现的一个css的预编译利器——scss。</p>
+<p>scss具有简单易上手等特点，下面开始编写第一个scss文件。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>写在最前面：有小伙伴可能不太会部署前端环境，这里我将代码上传到<a href="https://github.com/lizijie123/2019Study/tree/master/note/scss" target="_blank" rel="noopener">github</a>中，有需要的小伙伴可以把代码下载下来对照着看SCSS代码与编译后的CSS代码。</p>
+<p>scss需要经过编译为css才能被浏览器识别，我这里只做一个小demo所以不上vue-cli，直接使用webpack进行编译。</p>
+<p>首先安装css-loader、style-loader、node-sass、sass-loader。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install css-loader style-loader --save-dev</span><br><span class="line">npm install node-sass sass-loader --save-dev</span><br></pre></td></tr></table></figure>
+
+<p>然后在webpack.config.js配置文件中添加对应的loader,完整的配置图如下。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">"path"</span>);</span><br><span class="line"><span class="keyword">const</span> &#123;VueLoaderPlugin&#125; = <span class="built_in">require</span>(<span class="string">'vue-loader'</span>);</span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    entry: <span class="string">'./webapp/App.js'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        filename: <span class="string">'App.js'</span>,</span><br><span class="line">        path: path.resolve(__dirname, <span class="string">'./dist'</span>)</span><br><span class="line">    &#125;,</span><br><span class="line">	<span class="built_in">module</span>: &#123;</span><br><span class="line">		rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.scss/</span>,</span><br><span class="line">                use: [<span class="string">'style-loader'</span>, <span class="string">'css-loader'</span>,<span class="string">'sass-loader'</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">			&#123;</span><br><span class="line">				test: <span class="regexp">/\.vue$/</span>,</span><br><span class="line">				use: <span class="string">'vue-loader'</span></span><br><span class="line">			&#125;</span><br><span class="line">		]</span><br><span class="line">	&#125;,</span><br><span class="line">	plugins: [</span><br><span class="line">		<span class="keyword">new</span> VueLoaderPlugin()</span><br><span class="line">	],</span><br><span class="line">	mode: <span class="string">"production"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>创建一个App.scss文件，接着在入口文件中引入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'./App.scss'</span>;</span><br></pre></td></tr></table></figure>
+
+<p>后面我们将在App.scss中编写scss代码。</p>
+<h2 id="正式开始"><a href="#正式开始" class="headerlink" title="正式开始"></a>正式开始</h2><h3 id="1-使用变量"><a href="#1-使用变量" class="headerlink" title="1.使用变量"></a>1.使用变量</h3><p>SCSS中的变量以$开头。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$border-color</span>:<span class="number">#aaa</span>; <span class="comment">//声明变量</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line"><span class="variable">$border-width</span>:<span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="variable">$border-width</span> solid <span class="variable">$border-color</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中定义了两个变量，其中$border-color在大括号之外称为全局变量，顾名思义任何地方都可以使用，$border-width是在.container之内声明的，是一个局部变量，只有.container内部才能使用。</p>
+<p>编译后的CSS</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    border:1px solid #aaa; //使用变量</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把SCSS看做一个模板引擎，编译的过程中用变量的值去替代变量所占据的位置。</p>
+<p>tips:SCSS中变量名使用中划线或下划线都是指向同一变量的，上文中定义了一个变量$border-color，这时再定义一个变量$border_color:#ccc,他们指向同一个变量，.container的值会被第二次定义的变量覆盖。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$border-color</span>:<span class="number">#aaa</span>; <span class="comment">//声明变量</span></span><br><span class="line"><span class="variable">$border_color</span>:<span class="number">#ccc</span>;</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="variable">$border-width</span>:<span class="number">1px</span>;</span><br><span class="line">    <span class="attribute">border</span>:<span class="variable">$border-width</span> solid <span class="variable">$border-color</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br><span class="line">编译后的CSS</span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#ccc</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个例子中我们要知道</p>
+<p>（1）变量名使用中划线或下划线都是指向同一变量的。</p>
+<p>（2）后定义的变量声明会被忽略，但赋值会被执行，这一点和ES5中var声明变量是一样的。</p>
+<h3 id="2-嵌套规则"><a href="#2-嵌套规则" class="headerlink" title="2.嵌套规则"></a>2.嵌套规则</h3><p>我们先来看一个例子。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*css*/</span></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="attribute">list-style</span>:none;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>:block;</span><br><span class="line">    <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">    <span class="attribute">clear</span>:both;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">float</span>:left;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span>&gt;<span class="selector-tag">a</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>:inline-block;</span><br><span class="line">    <span class="attribute">padding</span>:<span class="number">6px</span> <span class="number">12px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这是一个让列表元素横向排列的例子，我们在这个例子中写了很多重复的代码，.container写了很多遍，下面我将用SCSS简写上面的例子。</p>
+<h4 id="2-1嵌套选择器"><a href="#2-1嵌套选择器" class="headerlink" title="2.1嵌套选择器"></a>2.1嵌套选择器</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*scss*/</span></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="attribute">list-style</span>:none;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-tag">li</span> &#123;</span><br><span class="line">        <span class="attribute">float</span><span class="selector-pseudo">:left</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-tag">li</span>&gt;<span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>:inline-block;</span><br><span class="line">        <span class="attribute">padding</span>:<span class="number">6px</span> <span class="number">12px</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    <span class="attribute">display</span>:block;</span><br><span class="line">    <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">    <span class="attribute">clear</span>:both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里我们可以将公共的父元素提取出来。</p>
+<h4 id="2-2嵌套中的父级选择器"><a href="#2-2嵌套中的父级选择器" class="headerlink" title="2.2嵌套中的父级选择器"></a>2.2嵌套中的父级选择器</h4><p>SCSS提供了一个选择器可以选中当前元素的父元素，使用&amp;表示，下面用父级选择器继续简化代码。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*scss*/</span></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="attribute">list-style</span>:none;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-tag">li</span> &#123;</span><br><span class="line">        <span class="attribute">float</span><span class="selector-pseudo">:left</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-tag">li</span>&gt;<span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>:inline-block;</span><br><span class="line">        <span class="attribute">padding</span>:<span class="number">6px</span> <span class="number">12px</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &amp;<span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>:block;</span><br><span class="line">        <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">        <span class="attribute">clear</span>:both;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>父级选择器中需要注意，只能在嵌套内部使用父级选择器，否则SCSS找不到父级元素会直接报错。 在各种伪类选择器中，父级选择器是十分常用的。</p>
+<h4 id="2-3嵌套组合选择器"><a href="#2-3嵌套组合选择器" class="headerlink" title="2.3嵌套组合选择器"></a>2.3嵌套组合选择器</h4><p>在嵌套规则中可以写任何css代码，包括群组选择器（,），子代选择器（&gt;），同层相邻组合选择器（+）、同层全体组合选择器（~）等等，下面继续将自带选择器简化掉。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*scss*/</span></span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="attribute">list-style</span>:none;</span><br><span class="line">    </span><br><span class="line">    <span class="selector-tag">li</span> &#123;</span><br><span class="line">        <span class="attribute">float</span><span class="selector-pseudo">:left</span>;</span><br><span class="line">        </span><br><span class="line">        &gt;<span class="selector-tag">a</span> &#123;</span><br><span class="line">            <span class="attribute">display</span>:inline-block;</span><br><span class="line">            <span class="attribute">padding</span>:<span class="number">6px</span> <span class="number">12px</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    &amp;<span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>:block;</span><br><span class="line">        <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">        <span class="attribute">clear</span>:both;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>子代选择器可以写在外层选择器右边（如下述例子）也可以写在内层选择器左边（如上述例子）。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">li</span> &gt;&#123; </span><br><span class="line">    <span class="selector-tag">a</span> &#123;</span><br><span class="line">        <span class="attribute">display</span>:inline-block;</span><br><span class="line">        <span class="attribute">padding</span>:<span class="number">6px</span> <span class="number">12px</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写在外层选择器右边时要特别注意，他会作用于所有嵌套的选择器上，尽量不要采用这类写法，我认为扩展性不强，也容易出错。</p>
+<h4 id="2-4嵌套属性"><a href="#2-4嵌套属性" class="headerlink" title="2.4嵌套属性"></a>2.4嵌套属性</h4><p>先看一个例子</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*css*/</span></span><br><span class="line"><span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="attribute">border-left</span>:<span class="number">0</span>;</span><br><span class="line">    <span class="attribute">border-right</span>:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个例子中我们只需要两条边框，使用SCSS重写一遍。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*scss*/</span></span><br><span class="line"><span class="selector-tag">li</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span> &#123;</span><br><span class="line">        left:<span class="number">0</span>;</span><br><span class="line">        <span class="attribute">right</span>:<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>scss识别一个属性以分号结尾时则判断为一个属性，以大括号结尾时则判断为一个嵌套属性，规则是将外部的属性以及内部的属性通过中划线连接起来形成一个新的属性。</p>
+<h3 id="3-导入SCSS文件"><a href="#3-导入SCSS文件" class="headerlink" title="3.导入SCSS文件"></a>3.导入SCSS文件</h3><p>大型项目中css文件往往不止一个，css提供了@import命令在css内部引入另一个css文件，浏览器只有在执行到@import语句后才会去加载对应的css文件，导致页面性能变差，故基本不使用。SCSS中的@import命令跟原生的不太一样，后续会讲解到。</p>
+<h4 id="3-1导入变量的优先级问题-变量默认值"><a href="#3-1导入变量的优先级问题-变量默认值" class="headerlink" title="3.1导入变量的优先级问题-变量默认值"></a>3.1导入变量的优先级问题-变量默认值</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*App1.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#aaa</span>; <span class="comment">//声明变量</span></span><br><span class="line"><span class="keyword">@import</span> App2.scss;  <span class="comment">//引入另一个SCSS文件</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">$border-color</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*App2.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#ccc</span>; <span class="comment">//声明变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*生成的css文件*/</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#ccc</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这可能并不是我们想要的，有时候我们希望引入的某些样式不更改原有的样式，这时我们可以使用变量默认值。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*App1.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#aaa</span>; <span class="comment">//声明变量</span></span><br><span class="line"><span class="keyword">@import</span> App2.scss;  <span class="comment">//引入另一个SCSS文件</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">$border-color</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*App2.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#ccc</span> !default; <span class="comment">//声明变量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*生成的css文件*/</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>导入的文件App2.scss只在文件中不存在$border-color时起作用，若App1.scss中已经存在了$border-color变量，则App2.scss中的$border-color不生效。</p>
+<p>!default只能使用于变量中。</p>
+<h4 id="3-2嵌套导入"><a href="#3-2嵌套导入" class="headerlink" title="3.2嵌套导入"></a>3.2嵌套导入</h4><p>上一个例子中我们是在全局中导入的App2.scss，现在我们在为App2.scss添加一些内容，并在局部中导入。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*App1.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#aaa</span>; <span class="comment">//声明变量</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="keyword">@import</span> App2.scss;  <span class="comment">//引入另一个SCSS文件</span></span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="variable">$border-color</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*App2.scss*/</span></span><br><span class="line"><span class="variable">$border-color</span>:<span class="number">#ccc</span> !default; <span class="comment">//声明变量</span></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*生成的css文件*/</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>; <span class="comment">//使用变量</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container</span> <span class="selector-tag">p</span> &#123;</span><br><span class="line">    <span class="attribute">margin</span>:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看得出来，就是将App2.scss中的所有内容直接写入到App1.scss的.container选择器中。</p>
+<h4 id="3-3-使用原生-import"><a href="#3-3-使用原生-import" class="headerlink" title="3.3 使用原生@import"></a>3.3 使用原生@import</h4><p>前面我们说到基本不使用原生@import，但某些情况下我们不得不使用原生@import时了，SCSS也为我们处理了这种情况，直接导入css文件即可。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">'App.css'</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-注释"><a href="#4-注释" class="headerlink" title="4.注释"></a>4.注释</h3><p>SCSS中的注释有两种</p>
+<p>（1）/<em>注释</em>/:这种注释会被保留到编译后的css文件中。</p>
+<p>（2）//注释:这种注释不会被保留到编译后生成的css文件中。</p>
+<h3 id="5-混合器（函数）"><a href="#5-混合器（函数）" class="headerlink" title="5.混合器（函数）"></a>5.混合器（函数）</h3><h4 id="5-1声明一个函数"><a href="#5-1声明一个函数" class="headerlink" title="5.1声明一个函数"></a>5.1声明一个函数</h4><p>使用@mixin指令声明一个函数，看一下自己的css文件，有重复的代码片段都可以考虑使用混合器将他们提取出来复用。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> border-radius&#123;</span><br><span class="line">    -moz-<span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">    -webkit-<span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">    <span class="attribute">color</span>:red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>混合器作用域内的属性都是return的值，除此之外，还可以为函数传参数。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> get-border-radius(<span class="variable">$border-radius</span>,<span class="variable">$color</span>)&#123;</span><br><span class="line">    -moz-<span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    -webkit-<span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    <span class="attribute">color</span>:<span class="variable">$color</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以设置混合器的默认值。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@mixin</span> get-border-radius(<span class="variable">$border-radius</span>:<span class="number">5px</span>,<span class="variable">$color</span>:red)&#123;</span><br><span class="line">    -moz-<span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    -webkit-<span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    <span class="attribute">border-radius</span>: <span class="variable">$border-radius</span>;</span><br><span class="line">    <span class="attribute">color</span>:<span class="variable">$color</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2使用函数"><a href="#5-2使用函数" class="headerlink" title="5.2使用函数"></a>5.2使用函数</h4><p>使用函数的关键字为@include</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="keyword">@include</span> get-border-radius;         <span class="comment">//不传参则为默认值5px</span></span><br><span class="line">    <span class="keyword">@include</span> get-border-radius(<span class="number">10px</span>,blue);   <span class="comment">//传参</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*多个参数时，传参指定参数的名字，可以不用考虑传入的顺序*/</span></span><br><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">    <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">    <span class="keyword">@include</span> get-border-radius;         <span class="comment">//不传参则为默认值5px</span></span><br><span class="line">    <span class="keyword">@include</span> get-border-radius(<span class="variable">$color</span>:blue,<span class="variable">$border-radius</span>:<span class="number">10px</span>);   <span class="comment">//传参</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可能会想到，直接将混合器写成一个class不就行了，但是写成一个class的时候是需要在html文件中使用的，而使用混合器并不需要在html文件中使用class既可达到复用的效果。</p>
+<p>tips:混合器中可以写一切scss代码。</p>
+<h3 id="6-继承"><a href="#6-继承" class="headerlink" title="6.继承"></a>6.继承</h3><p>继承是面向对象语言的一大特点，可以大大降低代码量。</p>
+<h4 id="6-1定义被继承的样式"><a href="#6-1定义被继承的样式" class="headerlink" title="6.1定义被继承的样式"></a>6.1定义被继承的样式</h4><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%<span class="attribute">border-style</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>:<span class="number">1px</span> solid <span class="number">#aaa</span>;</span><br><span class="line">  -moz-<span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">  -webkit-<span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">5px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用%定义一个被继承的样式，类似静态语言中的抽象类，他本身不起作用，只用于被其他人继承。</p>
+<h4 id="6-2继承样式"><a href="#6-2继承样式" class="headerlink" title="6.2继承样式"></a>6.2继承样式</h4><p>通过关键字@extend即可完成继承。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="keyword">@extend</span> %border-style;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述例子中看不出混合器与继承之间的区别，那么下一个例子可以看出继承与混合器之间的区别。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">	<span class="keyword">@extend</span> %border-style;</span><br><span class="line">	<span class="attribute">color</span>:red;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.container1</span> &#123;   <span class="comment">//继承另一个选择器</span></span><br><span class="line">	<span class="keyword">@extend</span> .container;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-小结"><a href="#7-小结" class="headerlink" title="7.小结"></a>7.小结</h3><p>通过本文的介绍，相信大家已经对SCSS有了一定的认知，但是光看是学不会的，我建议各位小伙伴要有强上的精神，先强行使用到目前正在做的项目中，熟悉一段时间，自然可以写出优质的SCSS代码。</p>
+<h3 id="8-其他"><a href="#8-其他" class="headerlink" title="8.其他"></a>8.其他</h3><h4 id="8-1操作符"><a href="#8-1操作符" class="headerlink" title="8.1操作符"></a>8.1操作符</h4><p>SCSS提供了标准的算术运算符，例如+、-、*、/、%。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*SCSS*/</span></span><br><span class="line"><span class="attribute">width</span>: <span class="number">600px</span> / <span class="number">960px</span> * <span class="number">100%</span>;</span><br><span class="line"><span class="comment">/*编译后的CSS*/</span></span><br><span class="line"><span class="attribute">width</span>: <span class="number">62.5%</span>;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/Css/" rel="tag"># Css</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2020/02/23/30道vue面试题由浅入深/" rel="next" title="30道vue面试题由浅入深">
+                  <i class="fa fa-chevron-left"></i> 30道vue面试题由浅入深
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2020/03/02/Vue-中-强制组件重新渲染的正确方法/" rel="prev" title="Vue 中 强制组件重新渲染的正确方法">
+                  Vue 中 强制组件重新渲染的正确方法 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#scss快速入门"><span class="nav-number">1.</span> <span class="nav-text">scss快速入门</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在使用scss之前，我们要知道Sass、Scss有什么不同？"><span class="nav-number">1.1.</span> <span class="nav-text">在使用scss之前，我们要知道Sass、Scss有什么不同？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正式开始"><span class="nav-number">1.3.</span> <span class="nav-text">正式开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用变量"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.使用变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-嵌套规则"><span class="nav-number">1.3.2.</span> <span class="nav-text">2.嵌套规则</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1嵌套选择器"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">2.1嵌套选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2嵌套中的父级选择器"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">2.2嵌套中的父级选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3嵌套组合选择器"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">2.3嵌套组合选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4嵌套属性"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">2.4嵌套属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-导入SCSS文件"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.导入SCSS文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-1导入变量的优先级问题-变量默认值"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">3.1导入变量的优先级问题-变量默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2嵌套导入"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">3.2嵌套导入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-使用原生-import"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">3.3 使用原生@import</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-注释"><span class="nav-number">1.3.4.</span> <span class="nav-text">4.注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-混合器（函数）"><span class="nav-number">1.3.5.</span> <span class="nav-text">5.混合器（函数）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#5-1声明一个函数"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">5.1声明一个函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-2使用函数"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">5.2使用函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-继承"><span class="nav-number">1.3.6.</span> <span class="nav-text">6.继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-1定义被继承的样式"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">6.1定义被继承的样式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-2继承样式"><span class="nav-number">1.3.6.2.</span> <span class="nav-text">6.2继承样式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-小结"><span class="nav-number">1.3.7.</span> <span class="nav-text">7.小结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-其他"><span class="nav-number">1.3.8.</span> <span class="nav-text">8.其他</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#8-1操作符"><span class="nav-number">1.3.8.1.</span> <span class="nav-text">8.1操作符</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

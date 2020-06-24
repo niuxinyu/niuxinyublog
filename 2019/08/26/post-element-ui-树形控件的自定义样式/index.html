@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="针对element-ui的树形控件的自定义样式对于样式的自定义，参考的文章是：https://blog.csdn.net/qq_36437172/article/details/86307048 其中自定义树形控件默认图标之后的图标可以使用下边的方法： 123456&amp;lt;el-tree&amp;gt;    &amp;lt;span class=&quot;slot-t-node&quot; slot-scope=&quot;&amp;#123;">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="post element-ui 树形控件的自定义样式">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-element-ui-树形控件的自定义样式/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="针对element-ui的树形控件的自定义样式对于样式的自定义，参考的文章是：https://blog.csdn.net/qq_36437172/article/details/86307048 其中自定义树形控件默认图标之后的图标可以使用下边的方法： 123456&amp;lt;el-tree&amp;gt;    &amp;lt;span class=&quot;slot-t-node&quot; slot-scope=&quot;&amp;#123;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-element-ui-树形控件的自定义样式/images%5C1565937063033.png">
+<meta property="og:updated_time" content="2019-08-26T14:20:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="post element-ui 树形控件的自定义样式">
+<meta name="twitter:description" content="针对element-ui的树形控件的自定义样式对于样式的自定义，参考的文章是：https://blog.csdn.net/qq_36437172/article/details/86307048 其中自定义树形控件默认图标之后的图标可以使用下边的方法： 123456&amp;lt;el-tree&amp;gt;    &amp;lt;span class=&quot;slot-t-node&quot; slot-scope=&quot;&amp;#123;">
+<meta name="twitter:image" content="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-element-ui-树形控件的自定义样式/images%5C1565937063033.png">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/08/26/post-element-ui-树形控件的自定义样式/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>post element-ui 树形控件的自定义样式 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-element-ui-树形控件的自定义样式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">post element-ui 树形控件的自定义样式
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 22:09:15 / 修改时间：22:20:00" itemprop="dateCreated datePublished" datetime="2019-08-26T22:09:15+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="针对element-ui的树形控件的自定义样式"><a href="#针对element-ui的树形控件的自定义样式" class="headerlink" title="针对element-ui的树形控件的自定义样式"></a>针对element-ui的树形控件的自定义样式</h1><p><strong>对于样式的自定义，参考的文章是</strong>：<a href="https://blog.csdn.net/qq_36437172/article/details/86307048" target="_blank" rel="noopener">https://blog.csdn.net/qq_36437172/article/details/86307048</a></p>
+<p>其中自定义树形控件默认图标之后的图标可以使用下边的方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;el-tree&gt;</span><br><span class="line">    &lt;span <span class="class"><span class="keyword">class</span></span>=<span class="string">"slot-t-node"</span> slot-scope=<span class="string">"&#123; node, data &#125;"</span>&gt;</span><br><span class="line">        &lt;i :<span class="class"><span class="keyword">class</span></span>=<span class="string">"&#123; 'fa fa-folder': !node.expanded, 'fa fa-folder-open':node.expanded&#125;"</span> style=<span class="string">"color: #fcd568;"</span> /&gt;</span><br><span class="line">        &lt;span&gt;&#123;&#123; node.label &#125;&#125;&lt;<span class="regexp">/span&gt;</span></span><br><span class="line"><span class="regexp">    &lt;/</span>span&gt;</span><br><span class="line">&lt;<span class="regexp">/el-tree&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这是自定义图标的一种方式，<a href="https://element.eleme.cn/#/zh-CN/component/tree" target="_blank" rel="noopener">官网</a>提供了两种 render 和 slot 来添加自定义节点内容，可以在节点区添加按钮或图标等。</p>
+<p>对于上边的代码：node.expanded是节点展开状态。</p>
+<p>在这里就可以自定义设置图标的各种样式。</p>
+<p><strong>修改默认的三角图标</strong></p>
+<p>tree控件使用的时候默认是带三角图标的</p>
+<p><img src="images%5C1565937063033.png" alt="1565937063033"></p>
+<p>可以通过<code>icon-class</code>来自定义这个图标，有一个需求是，需要在前边显示+，当点击展开的时候，切换为-，目前想到的方法是用css直接去写样式，相对比较好操作，首先对tree的自定义图标这么写：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">el-tree</span></span></span><br><span class="line"><span class="tag"><span class="attr">icon-class</span>=<span class="string">"plus plus_"</span>        </span></span><br><span class="line"><span class="tag">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">el-tree</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中plus是对应的加号+的样式，plus_对应的是减号-的样式，然后在外部的css文件中定义这俩个类的样式，为什么要在外部定义，因为如果在组建内部定义的话，由于scoped的限制，样式不会生效</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">外部的<span class="selector-tag">css</span>文件</span><br><span class="line"><span class="selector-class">.plus</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">color</span>: <span class="number">#ccc</span>;</span><br><span class="line">  <span class="attribute">transition</span>: color .<span class="number">25s</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.plus</span><span class="selector-pseudo">::before</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">80px</span>;</span><br><span class="line">  <span class="attribute">margin-left</span>: -<span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">margin-top</span>: -<span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">border-top</span>: <span class="number">10px</span> solid;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.plus</span><span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">	<span class="attribute">content</span>: <span class="string">''</span>;</span><br><span class="line">     <span class="attribute">position</span>: absolute;</span><br><span class="line">     <span class="attribute">left</span>: <span class="number">50%</span>;</span><br><span class="line">     <span class="attribute">top</span>: <span class="number">50%</span>;</span><br><span class="line">     <span class="attribute">height</span>: <span class="number">80px</span>;</span><br><span class="line">     <span class="attribute">margin-left</span>: -<span class="number">5px</span>;</span><br><span class="line">     <span class="attribute">margin-top</span>: -<span class="number">40px</span>;</span><br><span class="line">     <span class="attribute">border-left</span>: <span class="number">10px</span> solid;</span><br><span class="line">&#125;</span><br><span class="line">其中的具体的样式在根据实际的需求进行更改，之后只需要再设置以下节点展开状态的样式</span><br><span class="line"><span class="selector-class">.expanded</span><span class="selector-class">.plus_</span><span class="selector-pseudo">:before</span> &#123;</span><br><span class="line">    <span class="attribute">content</span>:<span class="string">""</span>;</span><br><span class="line">    <span class="attribute">height</span>:<span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">还需要取消<span class="selector-tag">tree</span>控件的默认的图标旋转样式</span><br><span class="line"><span class="selector-class">.el-tree-node__expand-icon</span><span class="selector-class">.expanded</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">rotate</span>(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在使用了树形控件的组件内部引入该样式文件，便可以生效。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/Vue/" rel="tag"># Vue</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/26/post-关于更改checkbox的样式的问题/" rel="next" title="post 关于更改checkbox的样式的问题">
+                  <i class="fa fa-chevron-left"></i> post 关于更改checkbox的样式的问题
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/08/26/post-cookie的添加、查询及删除/" rel="prev" title="post cookie的添加、查询及删除">
+                  post cookie的添加、查询及删除 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#针对element-ui的树形控件的自定义样式"><span class="nav-number">1.</span> <span class="nav-text">针对element-ui的树形控件的自定义样式</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

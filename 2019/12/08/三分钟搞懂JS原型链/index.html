@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Muse',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="三分钟搞懂JS原型链前戏  写的比较短了，三分钟看完应该是没问题（嗯。。）。 当然最好再花半小时思考理解一下。  正文构造函数与原型与大部分面向对象语言不同，JavaScript中并没有引入类（class）的概念，但JavaScript仍然大量地使用了对象，为了保证对象之间的联系，JavaScript引入了原型与原型链的概念。 在Java中，声明一个实例的写法是这样的： 1ClassName ob">
+<meta name="keywords" content="JS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三分钟搞懂JS原型链">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2019/12/08/三分钟搞懂JS原型链/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="三分钟搞懂JS原型链前戏  写的比较短了，三分钟看完应该是没问题（嗯。。）。 当然最好再花半小时思考理解一下。  正文构造函数与原型与大部分面向对象语言不同，JavaScript中并没有引入类（class）的概念，但JavaScript仍然大量地使用了对象，为了保证对象之间的联系，JavaScript引入了原型与原型链的概念。 在Java中，声明一个实例的写法是这样的： 1ClassName ob">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E4%B8%89%E5%88%86%E9%92%9F%E6%90%9E%E6%87%82js%E5%8E%9F%E5%9E%8B%E9%93%BE.webp">
+<meta property="og:updated_time" content="2019-12-08T13:31:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="三分钟搞懂JS原型链">
+<meta name="twitter:description" content="三分钟搞懂JS原型链前戏  写的比较短了，三分钟看完应该是没问题（嗯。。）。 当然最好再花半小时思考理解一下。  正文构造函数与原型与大部分面向对象语言不同，JavaScript中并没有引入类（class）的概念，但JavaScript仍然大量地使用了对象，为了保证对象之间的联系，JavaScript引入了原型与原型链的概念。 在Java中，声明一个实例的写法是这样的： 1ClassName ob">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E4%B8%89%E5%88%86%E9%92%9F%E6%90%9E%E6%87%82js%E5%8E%9F%E5%9E%8B%E9%93%BE.webp">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2019/12/08/三分钟搞懂JS原型链/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>三分钟搞懂JS原型链 | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+    
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/12/08/三分钟搞懂JS原型链/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">三分钟搞懂JS原型链
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-08 21:23:42 / 修改时间：21:31:20" itemprop="dateCreated datePublished" datetime="2019-12-08T21:23:42+08:00">2019-12-08</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="三分钟搞懂JS原型链"><a href="#三分钟搞懂JS原型链" class="headerlink" title="三分钟搞懂JS原型链"></a>三分钟搞懂JS原型链</h1><h2 id="前戏"><a href="#前戏" class="headerlink" title="前戏"></a>前戏</h2><p><img src="https://raw.githubusercontent.com/niuxinyu/typoraimg/master/img/%E4%B8%89%E5%88%86%E9%92%9F%E6%90%9E%E6%87%82js%E5%8E%9F%E5%9E%8B%E9%93%BE.webp" alt></p>
+<ul>
+<li>写的比较短了，三分钟看完应该是没问题（嗯。。）。</li>
+<li>当然最好再花半小时思考理解一下。</li>
+</ul>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h3 id="构造函数与原型"><a href="#构造函数与原型" class="headerlink" title="构造函数与原型"></a>构造函数与原型</h3><p>与大部分面向对象语言不同，JavaScript中并没有引入类（class）的概念，但JavaScript仍然大量地使用了对象，为了保证对象之间的联系，JavaScript引入了原型与原型链的概念。</p>
+<p>在Java中，声明一个实例的写法是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ClassName obj = <span class="keyword">new</span> ClassName()</span><br></pre></td></tr></table></figure>
+
+<p>为了保证JavaScript“看起来像Java”，JavaScript中也加入了new操作符：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> FunctionName()</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，与Java不同的是，JavaScript中的new操作符后面跟的并非类名而是函数名，JavaScript并非通过类而是直接通过构造函数来创建实例。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name, color</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.color = color</span><br><span class="line">    <span class="keyword">this</span>.bark = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'wangwang~'</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> dog1 = <span class="keyword">new</span> Dog(<span class="string">'dog1'</span>, <span class="string">'black'</span>)</span><br><span class="line"><span class="keyword">const</span> dog2 = <span class="keyword">new</span> Dog(<span class="string">'dog2'</span>, <span class="string">'white'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上述代码就是声明一个构造函数并通过构造函数创建实例的过程，这样看起来似乎有点面向对象的样子了，但实际上这种方法还存在一个很大的问题。</p>
+<p>在上面的代码中，有两个实例被创建，它们有自己的名字、颜色，但它们的bark方法是一样的，而通过构造函数创建实例的时候，每创建一个实例，都需要重新创建这个方法，再把它添加到新的实例中。这无疑造成了很大的浪费，既然实例的方法都是一样的，为什么不把这个方法单独放到一个地方，并让所有的实例都可以访问到呢。</p>
+<p>这里就需要用到<strong>原型（prototype）</strong>：</p>
+<ul>
+<li>每一个构造函数都拥有一个prototype属性，这个属性指向一个对象，也就是原型对象。当使用这个构造函数创建实例的时候，prototype属性指向的原型对象就成为实例的原型对象。</li>
+<li>原型对象默认拥有一个constructor属性，指向指向它的那个构造函数（也就是说构造函数和原型对象是互相指向的关系）。</li>
+<li>每个对象都拥有一个隐藏的属性[[prototype]]，指向它的原型对象，这个属性可以通过 <code>Object.getPrototypeOf(obj)</code> 或 <code>obj.__proto__</code> 来访问。</li>
+<li>实际上，构造函数的prototype属性与它创建的实例对象的[[prototype]]属性指向的是同一个对象，即 <code>对象.__proto__ === 函数.prototype</code> 。</li>
+<li>如上文所述，原型对象就是用来存放实例中共有的那部分属性。</li>
+<li>在JavaScript中，所有的对象都是由它的原型对象继承而来，反之，所有的对象都可以作为原型对象存在。</li>
+<li>访问对象的属性时，JavaScript会首先在对象自身的属性内查找，若没有找到，则会跳转到该对象的原型对象中查找。</li>
+</ul>
+<hr>
+<p>那么可以将上述代码稍微做些修改，这里把bark方法放入Dog构造函数的原型中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name, color</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.color = color</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog.prototype.bark = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'wangwang~'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着再次通过这个构造函数创建实例并调用它的bark方法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dog1 = <span class="keyword">new</span> Dog(<span class="string">'dog1'</span>, <span class="string">'black'</span>)</span><br><span class="line">dog1.bark()  <span class="comment">//'wangwang~'</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到bark方法能够正常被调用。这时再创建另一个实例并重写它的bark方法，然后再次分别调用两个实例的bark方法并观察结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> dog2 = <span class="keyword">new</span> Dog(<span class="string">'dog2'</span>, <span class="string">'white'</span>)</span><br><span class="line">dog2.bark() = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'miaomiaomiao???'</span>)</span><br><span class="line">&#125;</span><br><span class="line">dog1.bark()  <span class="comment">//'wangwang~'</span></span><br><span class="line">dog2.bark()  <span class="comment">//'miaomiaomiao???'</span></span><br></pre></td></tr></table></figure>
+
+<p>这里dog2重写bark方法并没有对dog1造成影响，因为它重写bark方法的操作实际上是为自己添加了一个新的方法使原型中的bark方法被覆盖了，而并非直接修改了原型中的方法。若想要修改原型中的方法，需要通过构造函数的prototype属性：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Dog.prototype.bark = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'haha~'</span>)</span><br><span class="line">&#125;</span><br><span class="line">dog1.bark()  <span class="comment">//'haha~'</span></span><br><span class="line">dog2.bark()  <span class="comment">//'haha~'</span></span><br></pre></td></tr></table></figure>
+
+<p>这样看起来就没什么问题了，将实例中共有的属性放到原型对象中，让所有实例共享这部分属性。如果想要统一修改所有实例继承的属性，只需要直接修改原型对象中的属性即可。而且每个实例仍然可以重写原型中已经存在的属性来覆盖这个属性，并且不会影响到其他的实例。</p>
+<h3 id="原型链与继承"><a href="#原型链与继承" class="headerlink" title="原型链与继承"></a>原型链与继承</h3><p>上文提到，JavaScript中所有的对象都是由它的原型对象继承而来。而原型对象自身也是一个对象，它也有自己的原型对象，这样层层上溯，就形成了一个类似链表的结构，这就是<strong>原型链（prototype chain）</strong>。</p>
+<p>所有原型链的终点都是Object函数的prototype属性，因为在JavaScript中的对象都默认由Object()构造。Objec.prototype指向的原型对象同样拥有原型，不过它的原型是null，而null则没有原型。</p>
+<p>通过原型链就可以在JavaScript中实现继承，JavaScript中的继承相当灵活，有多种继承的实现方法，这里只介绍一种最常用的继承方法也就是<strong>组合继承</strong>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dog</span>(<span class="params">name, color</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name</span><br><span class="line">    <span class="keyword">this</span>.color = color</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Dog.prototype.bark = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'wangwang~'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Husky</span>(<span class="params">name, color, weight</span>) </span>&#123;</span><br><span class="line">    Dog.call(<span class="keyword">this</span>, name, color)</span><br><span class="line">    <span class="keyword">this</span>.weight = weight</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Husky.prototype = <span class="keyword">new</span> Dog()</span><br></pre></td></tr></table></figure>
+
+<p>这里声明了一个新的构造函数Husky，通过call方法继承Dog中的属性（call方法的作用可以简单理解为将Dog中的属性添加到Husky中，因为还涉及到其他的知识点所以不多赘述），并添加了一个weight属性。然后用Dog函数创建了一个实例作为Husky的原型对象赋值给Husky.prototype以继承方法。这样，通过Husky函数创建的实例就拥有了Dog中的属性和方法。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>如果想要深入了解关于JavaScript中的对象和原型链的话，无脑推荐红宝书（《JavaScript高级程序设计（第3版）》）吧，第六章关于原型链有相当详细的讲解。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/JS/" rel="tag"># JS</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/06/Vue-项目开发完全指南/" rel="next" title="Vue 项目开发完全指南">
+                  <i class="fa fa-chevron-left"></i> Vue 项目开发完全指南
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2019/12/08/如何写一个像axios那样优秀的请求库/" rel="prev" title="如何写一个像axios那样优秀的请求库">
+                  如何写一个像axios那样优秀的请求库 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#三分钟搞懂JS原型链"><span class="nav-number">1.</span> <span class="nav-text">三分钟搞懂JS原型链</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前戏"><span class="nav-number">1.1.</span> <span class="nav-text">前戏</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">1.2.</span> <span class="nav-text">正文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构造函数与原型"><span class="nav-number">1.2.1.</span> <span class="nav-text">构造函数与原型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原型链与继承"><span class="nav-number">1.2.2.</span> <span class="nav-text">原型链与继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">1.2.3.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/muse.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
