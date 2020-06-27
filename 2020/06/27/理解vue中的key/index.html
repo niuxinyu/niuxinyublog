@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/niuxinyublog/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/niuxinyublog/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/niuxinyublog/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/niuxinyublog/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/niuxinyublog/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/niuxinyublog/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/niuxinyublog/',
+    scheme: 'Gemini',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="如何理解vue中的key？就目前所了解的情况，key的作用有以下这些。  v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染 响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染  场景一大同小异司空见惯，场景二是下面这样的： 12345678&amp;lt;div :key=&amp;quot;rerender&amp;quot;&amp;gt;">
+<meta name="keywords" content="Vue">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解vue中的key">
+<meta property="og:url" content="https://niuxinyu.github.io/niuxinyublog/2020/06/27/理解vue中的key/index.html">
+<meta property="og:site_name" content="niu的blog">
+<meta property="og:description" content="如何理解vue中的key？就目前所了解的情况，key的作用有以下这些。  v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染 响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染  场景一大同小异司空见惯，场景二是下面这样的： 12345678&amp;lt;div :key=&amp;quot;rerender&amp;quot;&amp;gt;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2020-06-27T14:29:20.186Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解vue中的key">
+<meta name="twitter:description" content="如何理解vue中的key？就目前所了解的情况，key的作用有以下这些。  v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染 响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染  场景一大同小异司空见惯，场景二是下面这样的： 12345678&amp;lt;div :key=&amp;quot;rerender&amp;quot;&amp;gt;">
+  <link rel="canonical" href="https://niuxinyu.github.io/niuxinyublog/2020/06/27/理解vue中的key/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>理解vue中的key | niu的blog</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/niuxinyublog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">niu的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/niuxinyublog/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/niuxinyublog/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/06/27/理解vue中的key/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">理解vue中的key
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-27 17:47:06 / 修改时间：22:29:20" itemprop="dateCreated datePublished" datetime="2020-06-27T17:47:06+08:00">2020-06-27</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="如何理解vue中的key？"><a href="#如何理解vue中的key？" class="headerlink" title="如何理解vue中的key？"></a>如何理解vue中的key？</h1><p>就目前所了解的情况，key的作用有以下这些。</p>
+<ul>
+<li>v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染</li>
+<li>响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染</li>
+</ul>
+<p>场景一大同小异司空见惯，场景二是下面这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div :key=&quot;rerender&quot;&gt;</span><br><span class="line">    &lt;span&gt;Hello Vue.js !&lt;/span&gt;</span><br><span class="line">    &lt;complexComponent :propObj=&quot;propObj&quot; :propArr=&quot;propArr&quot; &gt;&lt;/complexComponent&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">refresh()&#123;</span><br><span class="line">    this.rerender = + new Date();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>那么vue中key的相关知识点到底是怎样的呢？</p>
+<ul>
+<li>官方API知识点</li>
+<li>上面2个使用场景背后的原理是什么？</li>
+<li>除key外，还有其它强制更新DOM的方法吗？</li>
+</ul>
+<h3 id="官方API知识点"><a href="#官方API知识点" class="headerlink" title="官方API知识点"></a>官方API知识点</h3><ul>
+<li>在Vue.js中，key是6个特殊属性key, ref, is, slot, slot-scope, scope其中之一。</li>
+<li>key的值可以是number，也可以是string。</li>
+<li>key主要作用于Vue的virtual DOM算法，在diff new nodes list和old nodes list时，作为识别VNode的一个线索。</li>
+<li>如果不用key，Vue会用一种算法：最小化element的移动，并且会尝试尽最大程度在同适当的地方对相同类型的element，做patch或者reuse。</li>
+<li>如果使用了key，Vue会根据keys的顺序记录element，<strong>曾经拥有了key的element如果不再出现的话，会被直接remove或者destoryed。</strong></li>
+<li>拥有同一个parent的children必须有unique keys。重复的key的导致render error。</li>
+</ul>
+<h4 id="最常用的用法一：v-for"><a href="#最常用的用法一：v-for" class="headerlink" title="最常用的用法一：v-for"></a>最常用的用法一：v-for</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">    &lt;li v-for=&quot;item in items&quot; :key=&quot;item.id&quot;&gt;...&lt;/li&gt;</span><br><span class="line">&lt;/ul&gt;</span><br></pre></td></tr></table></figure>
+
+<h4 id="最常用的用法二：强制替换element或者component"><a href="#最常用的用法二：强制替换element或者component" class="headerlink" title="最常用的用法二：强制替换element或者component"></a>最常用的用法二：强制替换element或者component</h4><ul>
+<li>触发组件的lifecycle</li>
+<li>触发transition</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;transition&gt;</span><br><span class="line">  &lt;span :key=&quot;text&quot;&gt;&#123;&#123; text &#125;&#125;&lt;/span&gt;</span><br><span class="line">&lt;/transition&gt;</span><br></pre></td></tr></table></figure>
+
+<p>text发生变化时，<code>&lt;span&gt;</code>会被replaced，而不会patched，因此transition会被触发。 我的理解： <strong>text变化时，span的key发生了变化，也就是说曾经拥有了旧key的span不再出现了，当拥有新值的text作为key时，拥有了新key的span出现了，那么旧key span会被移除，旧transition也会移除，新key span触发渲染，新transition触发。</strong></p>
+<h3 id="上面2个使用场景背后的原理是什么？"><a href="#上面2个使用场景背后的原理是什么？" class="headerlink" title="上面2个使用场景背后的原理是什么？"></a>上面2个使用场景背后的原理是什么？</h3><p>结合官方API的知识点，现在再来回顾文章开头提出的场景。</p>
+<h4 id="场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染"><a href="#场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染" class="headerlink" title="场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染"></a>场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染</h4><p>答案：</p>
+<ul>
+<li>如果不用key，Vue会用一种算法：最小化element的移动，并且会尝试尽最大程度在同适当的地方对相同类型的element，做patch或者reuse。</li>
+<li>如果使用了key，Vue会根据keys的顺序记录element，<strong>曾经拥有了key的element如果不再出现的话，会被直接remove或者destoryed。</strong></li>
+</ul>
+<h4 id="场景二：响应式系统没有监听到的数据，用-new-Date-生成的时间戳作为key，手动强制触发重新渲染"><a href="#场景二：响应式系统没有监听到的数据，用-new-Date-生成的时间戳作为key，手动强制触发重新渲染" class="headerlink" title="场景二：响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染"></a>场景二：响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div :key=&quot;rerender&quot;&gt;</span><br><span class="line">    &lt;span&gt;Hello Vue.js !&lt;/span&gt;</span><br><span class="line">    &lt;complexComponent :propObj=&quot;propObj&quot; :propArr=&quot;propArr&quot; &gt;&lt;/complexComponent&gt;</span><br><span class="line">&lt;/div&gt;</span><br><span class="line"></span><br><span class="line">refresh()&#123;</span><br><span class="line">    this.rerender = + new Date();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>答案：</p>
+<ul>
+<li>如果使用了key，Vue会根据keys的顺序记录element，<strong>曾经拥有了key的element如果不再出现的话，会被直接remove或者destoryed。</strong></li>
+<li>refresh方法调用后，包含了span和complexComponent的div的key发生了变化，也就是说曾经拥有了旧key的div不再出现了，当拥有新值的rerender作为key时，拥有了新key的div出现了，那么旧key div会被移除，旧span和complexComponent也会移除，新key div触发渲染，新span，<strong>带着父组件新propObj和propArr的新complexComponent渲染。</strong></li>
+</ul>
+<p>思考：</p>
+<ol>
+<li>为什么要叫propObj和propArr？</li>
+<li><strong>带着父组件新propObj和propArr的新complexComponent渲染。</strong> 为什么要加粗？</li>
+</ol>
+<p>由于Vue.js的obj和arr存在无法检测到数据变化的情况，obj是属性的新增和删除（原因是新增和删除都没有触发setter，watcher未告诉外界更新），arr则是数组内元素重新赋值或者修改length属性（原因是没有使用改变数组本身的方法，没有触发数组原型链拦截器，watcher未告诉外界更新）。 所以！通过赋予新key的方式，移除旧key div，渲染新key div，propObj和propArr在complexComponent组件内会重新触发一次生命周期，做一次重新渲染。<strong>此时父组件的propObj和propArr js变量其实已经获取到新值了，只是没有触发DOM也好，VNode也好的重新渲染。</strong>需要通过刷新key去force update，说到forceUpdate，可以通过$forceUpdate()去手动强制更新DOM。</p>
+<h3 id="除key外，还有其它强制更新DOM的方法吗？"><a href="#除key外，还有其它强制更新DOM的方法吗？" class="headerlink" title="除key外，还有其它强制更新DOM的方法吗？"></a>除key外，还有其它强制更新DOM的方法吗？</h3><p>场景：父组件修改传递给子组件的数据，数组数据的更新没有按照this.$set去更新。该怎么办？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.productImages.forEach(<span class="function">(<span class="params">product</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">if</span> (product.productId <span class="keyword">in</span> <span class="keyword">this</span>.productsState) &#123;</span><br><span class="line">    product.status = <span class="keyword">this</span>.productsState[product.productId];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p><strong>不使用this.$set去赋值数据的不能rerender的原因是什么？</strong> 在Vue.js中，对Array的变化侦测是通过拦截原型的方式实现的。也就通过对push，pop，shift，unshift，splice，sort，reverse，fill，copyWithin去改变数组自身内容的方法做拦截，从而响应。而<code>product.status = this.productsState[product.productId];</code>没有触发任何改变数组自身的被监听的方法，因此不会rerender。</p>
+<ul>
+<li>刷新组件的key</li>
+<li>$forceUpdate方法</li>
+</ul>
+<h4 id="刷新组件的key"><a href="#刷新组件的key" class="headerlink" title="刷新组件的key"></a>刷新组件的key</h4><h5 id="1-这个key加在什么地方比较好？"><a href="#1-这个key加在什么地方比较好？" class="headerlink" title="1.这个key加在什么地方比较好？"></a>1.这个key加在什么地方比较好？</h5><p>加在this.productImages的父元素上就好。 若不涉及数据传递，也可以直接加在需要更新的element上。</p>
+<h5 id="2-用什么做key值？"><a href="#2-用什么做key值？" class="headerlink" title="2.用什么做key值？"></a>2.用什么做key值？</h5><p>现在是粗暴的+new Date()时间戳做key值的。 也可以用双向绑定的值作为key值，保证新旧key值不同就行。</p>
+<h5 id="3-key的原理是什么？"><a href="#3-key的原理是什么？" class="headerlink" title="3.key的原理是什么？"></a>3.key的原理是什么？</h5><p>vue.js的虚拟DOM算法，在更新vNode时，需要从旧vNode列表中查找与新vNode节点相同的vNode进行更新，如果这个过程设置了属性key，过程就会快很多。 其他具体见上文。</p>
+<h4 id="forceUpdate方法"><a href="#forceUpdate方法" class="headerlink" title="$forceUpdate方法"></a>$forceUpdate方法</h4><p><strong>只能在父组件调用这个方法，手动通知vue实例重新渲染。</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $forceUpdate源码</span></span><br><span class="line">Vue.prototype.$forceUpdate = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> vm: Component = <span class="keyword">this</span></span><br><span class="line">  <span class="keyword">if</span> (vm._watcher) &#123;</span><br><span class="line">    vm._watcher.update()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// update源码</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Subscriber interface.</span></span><br><span class="line"><span class="comment"> * Will be called when a dependency changes.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">update () &#123;</span><br><span class="line">  <span class="comment">/* istanbul ignore else */</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.lazy) &#123;</span><br><span class="line">    <span class="keyword">this</span>.dirty = <span class="literal">true</span></span><br><span class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">this</span>.sync) &#123;</span><br><span class="line">    <span class="keyword">this</span>.run()</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    queueWatcher(<span class="keyword">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="1-forceUpdate可以更新的原理分析"><a href="#1-forceUpdate可以更新的原理分析" class="headerlink" title="1.$forceUpdate可以更新的原理分析"></a>1.$forceUpdate可以更新的原理分析</h5><p><code>product.status = this.productsState[product.productId];</code>以后，<strong>其实此时dep已经发生变化了</strong>，但是Vue.js数组响应式的实现由于是拦截原型链方法的方式，没有检测到这个变化，所以不会自动rerender，没有触发update。因此我们<strong>通过$forceUpdate的方式，调用包含dep的watcher上的update方法，从而做到rerender</strong>。</p>
+<h5 id="2-可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？"><a href="#2-可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？" class="headerlink" title="2.可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？"></a>2.可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？</h5><p>不可以。 因为dep是父组件的watcher和dep，并不是子组件，是父组件的this.productImages没有被检测到并实时更新，并不是子组件的问题。</p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/niuxinyublog/tags/Vue/" rel="tag"># Vue</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/niuxinyublog/2020/06/27/iview中的axios的封装方式/" rel="next" title="iview中的axios的封装方式">
+                  <i class="fa fa-chevron-left"></i> iview中的axios的封装方式
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/niuxinyublog/2020/06/27/transform属性的若干问题/" rel="prev" title="transform属性的若干问题">
+                  transform属性的若干问题 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#如何理解vue中的key？"><span class="nav-number">1.</span> <span class="nav-text">如何理解vue中的key？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官方API知识点"><span class="nav-number">1.0.1.</span> <span class="nav-text">官方API知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#最常用的用法一：v-for"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">最常用的用法一：v-for</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最常用的用法二：强制替换element或者component"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">最常用的用法二：强制替换element或者component</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上面2个使用场景背后的原理是什么？"><span class="nav-number">1.0.2.</span> <span class="nav-text">上面2个使用场景背后的原理是什么？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">场景一：v-for遍历时，用id，uuid之类作为key，唯一标识节点加速虚拟DOM渲染</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#场景二：响应式系统没有监听到的数据，用-new-Date-生成的时间戳作为key，手动强制触发重新渲染"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">场景二：响应式系统没有监听到的数据，用+new Date()生成的时间戳作为key，手动强制触发重新渲染</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#除key外，还有其它强制更新DOM的方法吗？"><span class="nav-number">1.0.3.</span> <span class="nav-text">除key外，还有其它强制更新DOM的方法吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#刷新组件的key"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">刷新组件的key</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-这个key加在什么地方比较好？"><span class="nav-number">1.0.3.1.1.</span> <span class="nav-text">1.这个key加在什么地方比较好？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-用什么做key值？"><span class="nav-number">1.0.3.1.2.</span> <span class="nav-text">2.用什么做key值？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-key的原理是什么？"><span class="nav-number">1.0.3.1.3.</span> <span class="nav-text">3.key的原理是什么？</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#forceUpdate方法"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">$forceUpdate方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-forceUpdate可以更新的原理分析"><span class="nav-number">1.0.3.2.1.</span> <span class="nav-text">1.$forceUpdate可以更新的原理分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？"><span class="nav-number">1.0.3.2.2.</span> <span class="nav-text">2.可以在子组件监听事件，父组件发送事件然后只刷新子组件吗？</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Niu</p>
+  <div class="site-description" itemprop="description">文章</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/niuxinyublog/archives/">
+        
+          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span>
+        
+      </div>
+    
+  </nav>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Niu</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/niuxinyublog/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/niuxinyublog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/niuxinyublog/js/utils.js?v=7.4.0"></script><script src="/niuxinyublog/js/motion.js?v=7.4.0"></script>
+<script src="/niuxinyublog/js/schemes/pisces.js?v=7.4.0"></script>
+
+<script src="/niuxinyublog/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
