@@ -30,7 +30,7 @@
     exturl: false,
     sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
     copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
     bookmark: {"enable":false,"color":"#222","save":"auto"},
     fancybox: false,
     mediumzoom: false,
@@ -188,6 +188,266 @@
           <div id="content" class="content">
             
   <div id="posts" class="posts-expand">
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-正则验证手机号/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/niuxinyublog/2019/08/26/post-正则验证手机号/" class="post-title-link" itemprop="url">post 正则验证手机号</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 21:59:31 / 修改时间：22:00:02" itemprop="dateCreated datePublished" datetime="2019-08-26T21:59:31+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="判断手机号"><a href="#判断手机号" class="headerlink" title="判断手机号"></a>判断手机号</h1><p><a href="http://caibaojian.com/regexp-example.html" target="_blank" rel="noopener">可见该网址</a></p>
+<p>手机号正则表达式：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkPhone</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">    <span class="keyword">var</span> phone = <span class="built_in">document</span>.getElementById(<span class="string">'phone'</span>).value;</span><br><span class="line">    <span class="keyword">if</span>(!(<span class="regexp">/^1[3456789]\d&#123;9&#125;$/</span>.test(phone)))&#123; </span><br><span class="line">        alert(<span class="string">"手机号码有误，请重填"</span>);  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">checkPhone</span>(<span class="params"></span>)</span>&#123; </span><br><span class="line">    <span class="keyword">var</span> phone = <span class="built_in">document</span>.getElementById(<span class="string">'phone'</span>).value;</span><br><span class="line">    <span class="keyword">if</span>(!(<span class="regexp">/^1(3|4|5|6|7|8|9)\d&#123;9&#125;$/</span>.test(phone)))&#123; </span><br><span class="line">        alert(<span class="string">"手机号码有误，请重填"</span>);  </span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>; </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>### </p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-正则-邮箱验证/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/niuxinyublog/2019/08/26/post-正则-邮箱验证/" class="post-title-link" itemprop="url">post 正则 邮箱验证</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 21:58:27 / 修改时间：22:00:16" itemprop="dateCreated datePublished" datetime="2019-08-26T21:58:27+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="正则表达式判断邮箱"><a href="#正则表达式判断邮箱" class="headerlink" title="正则表达式判断邮箱"></a>正则表达式判断邮箱</h1><p>js 正则表达式验证邮箱：</p>
+<h4 id="方案1-常用"><a href="#方案1-常用" class="headerlink" title="方案1 (常用)"></a>方案1 (常用)</h4><p><strong>规则定义如下：</strong></p>
+<p>以大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]开头，并需要重复一次至多次[+]。中间必须包括@符号。@之后需要连接大写字母[A-Z]、小写字母[a-z]、数字[0-9]、下滑线[_]、减号[-]及点号[.]，并需要重复一次至多次[+]。结尾必须是点号[.]连接2至4位的大小写字母[A-Za-z]{2,4}。</p>
+<p><strong>利用以上规则给出如下正则表达式：</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,4&#125;)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖@42du.cn'</span>) = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>方案1是最常用的邮件正则表达式验证方案，也适合大多数的应用场景。从以上测试可以看出，该表达式不支持.online及.store结尾的域名。<br>如需兼容这类域名（大于4位），调整正则结尾｛2,4｝的限制部分即可（例：{2,8}）。另一个问题是邮件用户名不能包括中文。</p>
+<h4 id="方案2-（修订方案1）"><a href="#方案2-（修订方案1）" class="headerlink" title="方案2 （修订方案1）"></a>方案2 （修订方案1）</h4><p>规则补充如下：</p>
+<p>用户名可以包括中文[\u4e00-\u9fa5],域名结尾最长可为8位{2,8}。更新后的正则表达式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,8&#125;)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖@42du.cn'</span>) = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure>
+
+<h4 id="方案3-（安全）"><a href="#方案3-（安全）" class="headerlink" title="方案3 （安全）"></a>方案3 （安全）</h4><p>在手机验证码出现之前，差不多邮箱验证是保证用户唯一性的唯一条件。而临时邮箱（也称10分钟邮箱或一次性邮箱）的出现，<br>则使得邮箱验证及帐户激活这种机制失去了意义。而临时邮箱的地址是不可枚举的，我们只能才采取白名单的方式，只允许有限的邮箱域名通过验证。</p>
+<p>根据方案1的补充如下规则：</p>
+<p>邮箱域名只能是163.com，qq.com或者42du.cn。<br>给出正则表达式如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@(163.com|qq.com|42du.cn)$/</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试结果：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">pattern.test(<span class="string">'cn42du@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@sina.com.cn'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3.it@163.com'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3_-.@42du.cn'</span>) = <span class="literal">true</span>;</span><br><span class="line">pattern.test(<span class="string">'ifat3@42du.online'</span>) = <span class="literal">false</span>;</span><br><span class="line">pattern.test(<span class="string">'毛三胖dd@42du.cn'</span>) = <span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+<p>方案3验证虽然能保证安全性，但是如果白名单太长会造成模式字符串太长。这时可以将邮箱域名白名单写成数组，利用正则表达式做初步验证，用白名单做域名的二次验证。<br>现给出邮箱验证函数如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> isEmail = <span class="function"><span class="keyword">function</span> (<span class="params">val</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> pattern = <span class="regexp">/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]&#123;2,4&#125;)$/</span>;</span><br><span class="line">    <span class="keyword">var</span> domains= [<span class="string">"qq.com"</span>,<span class="string">"163.com"</span>,<span class="string">"vip.163.com"</span>,<span class="string">"263.net"</span>,<span class="string">"yeah.net"</span>,<span class="string">"sohu.com"</span>,<span class="string">"sina.cn"</span>,<span class="string">"sina.com"</span>,<span class="string">"eyou.com"</span>,<span class="string">"gmail.com"</span>,<span class="string">"hotmail.com"</span>,<span class="string">"42du.cn"</span>];</span><br><span class="line">    <span class="keyword">if</span>(pattern.test(val)) &#123;</span><br><span class="line">        <span class="keyword">var</span> domain = val.substring(val.indexOf(<span class="string">"@"</span>)+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i&lt; domains.length; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(domain == domains[i]) &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输出 true</span></span><br><span class="line">isEmail(<span class="string">"cn42du@163.com"</span>);</span><br></pre></td></tr></table></figure>
+
+<p>上述isEmail()函数列举了常用的11种邮箱域名，大家可以根据需要适当补充或删减。</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2019/08/26/post-Vue路由问题/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/niuxinyublog/2019/08/26/post-Vue路由问题/" class="post-title-link" itemprop="url">post Vue路由问题</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-26 21:55:01 / 修改时间：22:00:24" itemprop="dateCreated datePublished" datetime="2019-08-26T21:55:01+08:00">2019-08-26</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="关于vue的路由的问题"><a href="#关于vue的路由的问题" class="headerlink" title="关于vue的路由的问题"></a>关于vue的路由的问题</h3><p>引入路由的时候，注意不要在route.js文件中直接引入，最好是src目录下单独创建一个routes文件夹，之后在里边分别创建可能需要的路由文件夹和对应的路由文件，其中路由文件的写法是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">export default &#123;</span><br><span class="line">	path:路由路径，</span><br><span class="line">	name: 可以给路由起个名字,</span><br><span class="line">	component: () =&gt; import(&quot;@/需要引入的组件的路径&quot;),</span><br><span class="line">	其中@符号代表的是src目录</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>写完之后，在router.js文件中引入即可，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import 刚才写的路由文件 form 路径</span><br></pre></td></tr></table></figure>
+
+<p>之后在routers{}下注册后就可以使用了</p>
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
         <article itemscope itemtype="http://schema.org/Article">
   
   
@@ -559,7 +819,7 @@
         
           <a href="/niuxinyublog/archives/">
         
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
