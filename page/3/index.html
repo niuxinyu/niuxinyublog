@@ -193,6 +193,85 @@
   
   
   <div class="post-block home">
+    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/06/27/iview中的axios的封装方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Niu">
+      <meta itemprop="description" content="文章">
+      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="niu的blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+            
+            <a href="/niuxinyublog/2020/06/27/iview中的axios的封装方式/" class="post-title-link" itemprop="url">iview中的axios的封装方式</a>
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              
+                
+              
+
+              <time title="创建时间：2020-06-27 17:37:37 / 修改时间：22:29:11" itemprop="dateCreated datePublished" datetime="2020-06-27T17:37:37+08:00">2020-06-27</time>
+            </span>
+          
+            
+
+            
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="学习-iview-admin-后台模版总结的-axios-的封装方式"><a href="#学习-iview-admin-后台模版总结的-axios-的封装方式" class="headerlink" title="学习 iview admin 后台模版总结的 axios 的封装方式"></a>学习 iview admin 后台模版总结的 axios 的封装方式</h1><h2 id="在-libs-文件夹内创建一个-axios-js-文件"><a href="#在-libs-文件夹内创建一个-axios-js-文件" class="headerlink" title="在 libs 文件夹内创建一个 axios.js 文件"></a>在 <code>libs</code> 文件夹内创建一个 <code>axios.js</code> 文件</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">    <span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">HttpRequest</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 将定义的baseUrl设置为 axios 的默认请求地址</span></span><br><span class="line">        <span class="keyword">constructor</span> (baseUrl = baseURL) &#123;</span><br><span class="line">            <span class="keyword">this</span>.baseUrl = baseUrl</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 为axios设置baseUrl， 请求头， 超时时间等</span></span><br><span class="line">        getInsideConfig() &#123;</span><br><span class="line">            <span class="keyword">const</span> config = &#123;</span><br><span class="line">                baseURL: <span class="keyword">this</span>.baseUrl,</span><br><span class="line">                headers: &#123;</span><br><span class="line">                    <span class="comment">// 在这里配置请求头</span></span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> config</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 拦截器</span></span><br><span class="line">        interceptors(instance, url) &#123;</span><br><span class="line">            <span class="comment">// 请求拦截</span></span><br><span class="line">            instance.interceptors.request.use(<span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> config</span><br><span class="line">            &#125;, error =&gt; &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error)</span><br><span class="line">            &#125;)</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 响应拦截</span></span><br><span class="line">            instance.interceptors.response.use(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">                <span class="comment">// 这里可以对res也就是请求回的数据进行一些操作，下边举出例子，具体需要看与后端的接口定义</span></span><br><span class="line">                <span class="keyword">const</span> &#123;data, status&#125; = res</span><br><span class="line">                <span class="keyword">return</span> &#123;data, status&#125;</span><br><span class="line">            &#125;, error =&gt; &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="built_in">Promise</span>.reject(error)</span><br><span class="line">            &#125;)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 自定义请求事件方法</span></span><br><span class="line">            request(options) &#123;</span><br><span class="line">                <span class="keyword">const</span> instance = axios.create()</span><br><span class="line">                options = <span class="built_in">Object</span>.assign(<span class="keyword">this</span>.getInsideConfig(), options)</span><br><span class="line">                <span class="keyword">this</span>.interceptors(instance, options.url)</span><br><span class="line">                <span class="keyword">return</span> instance(options)</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> HttpRequest</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>同级目录下创建一个 <code>api.request.js</code> ，其中对  <code>axios</code> 类进行调用</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> HttpRequest <span class="keyword">from</span> <span class="string">'@/libs/axios'</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'@/config'</span> <span class="comment">// 得到请求的基础路径</span></span><br><span class="line"><span class="keyword">const</span> baseUrl = progress.env.NODE_ENV === <span class="string">'development'</span> ? config.baseUrl.dev : config.baseUrl.pro</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> axios = <span class="keyword">new</span> HttpRequest(baseUrl)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> axios</span><br></pre></td></tr></table></figure>
+
+<h2 id="接口调用"><a href="#接口调用" class="headerlink" title="接口调用"></a>接口调用</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'@/libs/axios.request'</span></span><br><span class="line"><span class="keyword">import</span> Qs <span class="keyword">from</span> <span class="string">'qs'</span> <span class="comment">// 转换传递参数的类型，具体参考另外一篇笔记 `qs.string和qs.parse 的区别`</span></span><br><span class="line"><span class="keyword">import</span> config <span class="keyword">from</span> <span class="string">'config'</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> BASE_PATH = config.BASE_PATH</span><br><span class="line"><span class="keyword">const</span> stringify = Qs.stringify</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用示例</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> test = <span class="function"><span class="params">params</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> axios.request(&#123;</span><br><span class="line">        url: <span class="string">`<span class="subst">$&#123;BASE_PATH&#125;</span>/test`</span>,</span><br><span class="line">        method: <span class="string">'post'</span>,</span><br><span class="line">        data:stringify(...params)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+          <div class="post-eof"></div>
+        
+      </footer>
+  </div>
+  
+  
+  
+  </article>
+
+    
+        <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block home">
     <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/06/27/发布订阅模式简单实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1830,94 +1909,6 @@
   </article>
 
     
-        <article itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block home">
-    <link itemprop="mainEntityOfPage" href="https://niuxinyu.github.io/niuxinyublog/niuxinyublog/2020/02/18/uni-app-开发遇到的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Niu">
-      <meta itemprop="description" content="文章">
-      <meta itemprop="image" content="/niuxinyublog/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="niu的blog">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-            
-            <a href="/niuxinyublog/2020/02/18/uni-app-开发遇到的问题/" class="post-title-link" itemprop="url">uni-app 开发遇到的问题</a>
-          
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              
-                
-              
-
-              <time title="创建时间：2020-02-18 21:02:20 / 修改时间：21:04:50" itemprop="dateCreated datePublished" datetime="2020-02-18T21:02:20+08:00">2020-02-18</time>
-            </span>
-          
-            
-
-            
-          
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="uni-app-开发遇到的问题"><a href="#uni-app-开发遇到的问题" class="headerlink" title="uni-app 开发遇到的问题"></a>uni-app 开发遇到的问题</h1><p>uni-app 去除顶部的状态栏之后导致的沉浸式全屏，可以通过设置几个全局的css变量来解决</p>
-<h2 id="App去除导航栏后改变状态栏样式"><a href="#App去除导航栏后改变状态栏样式" class="headerlink" title="App去除导航栏后改变状态栏样式"></a>App去除导航栏后改变状态栏样式</h2><p>App因为默认为沉浸式，去除<code>导航栏</code>后，页面顶部会直通到<code>状态栏</code>的区域，可能出现如下需求：</p>
-<ul>
-<li>改变状态栏文字颜色：设置该页面的 <code>navigationBarTextStyle</code> 属性，可取值为 black/white。如果想单独设置颜色，App端可使用<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fwww.html5plus.org%2Fdoc%2Fzh_cn%2Fnavigator.html%23plus.navigator.setStatusBarStyle" target="_blank" rel="noopener">plus.navigator.setStatusBarStyle</a>设置。部分低端Android手机（4.4）自身不支持设置状态栏前景色。</li>
-<li>改变状态栏背景颜色：通过绘制一个占位的view固定放在状态栏位置，设置此view的背景颜色，即可达到想要的效果，uni-app提供了一个状态栏高度的css变量，具体参考：<a href="https://links.jianshu.com/go?to=http%3A%2F%2Funiapp.dcloud.io%2Fframe%3Fid%3Dcss%E5%8F%98%E9%87%8F" target="_blank" rel="noopener">uni-app内置的CSS变量</a>。</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;view&gt;</span><br><span class="line">        &lt;!-- #ifdef APP-PLUS --&gt;  </span><br><span class="line">        &lt;view class=&quot;status_bar&quot;&gt;  </span><br><span class="line">            &lt;view class=&quot;top_view&quot;&gt;&lt;/view&gt;  </span><br><span class="line">        &lt;/view&gt;  </span><br><span class="line">        &lt;!-- #endif --&gt; </span><br><span class="line">        &lt;view&gt;  </span><br><span class="line">            </span><br><span class="line">        &lt;/view&gt; </span><br><span class="line">    &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style&gt;</span><br><span class="line">.status_bar &#123;  </span><br><span class="line">    height: var(--status-bar-height);  </span><br><span class="line">    width: 100%;  </span><br><span class="line">    background-color: #F8F8F8;  </span><br><span class="line">&#125;  </span><br><span class="line">.top_view &#123;  </span><br><span class="line">    height: var(--status-bar-height);  </span><br><span class="line">    width: 100%;  </span><br><span class="line">    position: fixed;  </span><br><span class="line">    background-color: #F8F8F8;  </span><br><span class="line">    top: 0;  </span><br><span class="line">    z-index: 999;  </span><br><span class="line">&#125; </span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>var(–status-bar-height) 此变量在微信小程序环境为固定 25px，在 5+App 里为手机实际状态栏高度。</li>
-<li>当设置 “navigationStyle”:”custom” 取消原生导航栏后，由于窗体为沉浸式，占据了状态栏位置。此时可以使用一个高度为 var(–status-bar-height) 的 view 放在页面顶部，避免页面内容出现在状态栏。（实战过程中此方案仍不能解决页面内容出现在状态栏的问题）</li>
-</ul>
-<p><strong>设置css变量后解决页面顶部会直通到状态栏的区域的问题</strong>：设置了css变量后，手机顶部状态栏区域还是会被页面内容覆盖，可使用<code>plus.navigator.getStatusbarHeight()</code>来动态计算系统状态栏的高度barHeight，然后设置页面主view的样式<code>:style=&quot;{&#39;margin-top&#39;:barHeight+&#39;px&#39;}&quot;，</code>来解决。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">    &lt;view class=&quot;uni-flex uni-column&quot; style=&quot;height: 100%;&quot;&gt;</span><br><span class="line">        &lt;!-- #ifdef APP-PLUS --&gt;  </span><br><span class="line">        &lt;view class=&quot;status_bar&quot;&gt;  </span><br><span class="line">            &lt;view class=&quot;top_view&quot;&gt;&lt;/view&gt; </span><br><span class="line">        &lt;/view&gt;  </span><br><span class="line">        &lt;!-- #endif --&gt; </span><br><span class="line">        </span><br><span class="line">        &lt;view class=&quot;uni-flex uni-row jk-bg-blue uni-center&quot; style=&quot;height: 12%;&quot; :style=&quot;&#123;&apos;margin-top&apos;:barHeight+&apos;px&apos;&#125;&quot;&gt;</span><br><span class="line">            &lt;view class=&quot;flex-sub jk-header uni-flex uni-column justify-start&quot; @tap=&quot;test1&quot;&gt;</span><br><span class="line">                &lt;text class=&quot;text-white cuIcon-scan&quot;&gt;&lt;/text&gt;</span><br><span class="line">                &lt;text&gt;扫码&lt;/text&gt;</span><br><span class="line">            &lt;/view&gt;</span><br><span class="line">            &lt;view class=&quot;flex-treble jk-header uni-flex uni-column justify-center&quot; @tap=&quot;test2&quot;&gt;</span><br><span class="line">                &lt;text class=&quot;text-white cuIcon-rank&quot;&gt;&lt;/text&gt;</span><br><span class="line">                &lt;text&gt;统计&lt;/text&gt;</span><br><span class="line">            &lt;/view&gt;</span><br><span class="line">            &lt;view class=&quot;flex-sub jk-header uni-flex uni-column justify-end&quot; @click=&quot;test3&quot;&gt;</span><br><span class="line">                &lt;text class=&quot;text-white cuIcon-exit&quot;&gt;&lt;/text&gt;</span><br><span class="line">                &lt;text&gt;退出&lt;/text&gt;</span><br><span class="line">            &lt;/view&gt;</span><br><span class="line">        &lt;/view&gt;</span><br><span class="line">        </span><br><span class="line">        &lt;view class=&quot;uni-flex align-center uni-row margin-xs&quot; style=&quot;height: 78%;&quot;&gt;</span><br><span class="line">    </span><br><span class="line">        &lt;/view&gt;</span><br><span class="line"></span><br><span class="line">        &lt;view class=&quot;uni-flex uni-row uni-center&quot; style=&quot;height: 10%;color: #000000;background-color: F8F8F8;border-top: 3px solid #eee;&quot;&gt;</span><br><span class="line"></span><br><span class="line">        &lt;/view&gt;</span><br><span class="line">                </span><br><span class="line">    &lt;/view&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">var _self;</span><br><span class="line">export default &#123;</span><br><span class="line">    components: &#123;</span><br><span class="line">        uniPopup,</span><br><span class="line">    &#125;,</span><br><span class="line">    data() &#123;</span><br><span class="line">        return &#123;</span><br><span class="line">            barHeight:25,</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    methods: &#123;</span><br><span class="line">        //获取系统状态栏高度</span><br><span class="line">        getSystemStatusBarHeight:function()&#123;</span><br><span class="line">            // #ifdef APP-PLUS</span><br><span class="line">            var height = plus.navigator.getStatusbarHeight();</span><br><span class="line">            _self.barHeight = height;</span><br><span class="line">            // #endif</span><br><span class="line">            // #ifdef H5</span><br><span class="line">            _self.barHeight = 0;</span><br><span class="line">            // #endif</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    onLoad:function()&#123;</span><br><span class="line">        _self = this;</span><br><span class="line">        _self.getSystemStatusBarHeight();</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;style&gt; </span><br><span class="line"></span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
-
-<p><code>备注</code>：此种方式经测试，有时页面打开后页面主视图和状态栏区域会留白(留白的高度其实是状态栏高度)。</p>
-
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-          <div class="post-eof"></div>
-        
-      </footer>
-  </div>
-  
-  
-  
-  </article>
-
-    
   </div>
 
   
@@ -1967,7 +1958,7 @@
         
           <a href="/niuxinyublog/archives/">
         
-          <span class="site-state-item-count">76</span>
+          <span class="site-state-item-count">77</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
